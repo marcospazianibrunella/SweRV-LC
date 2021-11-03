@@ -90,7 +90,7 @@ module mem
    input  logic         scan_mode
 
 );
-`include "global.h"
+//`include "global.svh"
 
  `ifdef RV_DCCM_ENABLE
       localparam DCCM_ENABLE = 1'b1;

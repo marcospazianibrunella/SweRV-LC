@@ -109,7 +109,7 @@ module lsu_stbuf
 
 );
 
-`include "global.h"
+`include "global.svh"
 
    localparam DEPTH = LSU_STBUF_DEPTH;
    localparam DATA_WIDTH = DCCM_DATA_WIDTH;

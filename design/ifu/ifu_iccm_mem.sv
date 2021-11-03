@@ -41,7 +41,7 @@ module ifu_iccm_mem
 
 );
 
-`include "global.h"
+`include "global.svh"
 
 
    logic [ICCM_NUM_BANKS/4-1:0]               wren_bank;

@@ -186,7 +186,7 @@ module lsu_bus_buffer
 
 );
 
-`include "global.h"
+`include "global.svh"
 
    // For Ld: IDLE -> WAIT -> CMD -> RESP -> DONE -> IDLE
    // For St: IDLE -> WAIT -> CMD -> RESP(?) -> IDLE

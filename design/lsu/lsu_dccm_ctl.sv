@@ -101,7 +101,7 @@ module lsu_dccm_ctl
    input logic                             scan_mode           // scan mode
 );
 
-`include "global.h"
+`include "global.svh"
 
    `ifdef RV_DCCM_ENABLE
       localparam DCCM_ENABLE = 1'b1;

@@ -59,7 +59,7 @@ module ifu_ic_mem
       input  logic         scan_mode
       ) ;
 
-`include "global.h"
+`include "global.svh"
 
    IC_TAG #( .ICACHE_TAG_HIGH(ICACHE_TAG_HIGH) ,
              .ICACHE_TAG_LOW(ICACHE_TAG_LOW) ,

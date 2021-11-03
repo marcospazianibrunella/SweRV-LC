@@ -48,7 +48,7 @@ module lsu_dccm_mem
    input  logic         scan_mode
 );
 
-`include "global.h"
+`include "global.svh"
 
    localparam DCCM_WIDTH_BITS = $clog2(DCCM_BYTE_WIDTH);
    localparam DCCM_INDEX_BITS = (DCCM_BITS - DCCM_BANK_BITS - DCCM_WIDTH_BITS);

@@ -15,6 +15,7 @@
 
 // all flops call the rvdff flop
 
+`include "global.svh"
 
 module rvdff #( parameter WIDTH=1 )
    (

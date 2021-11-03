@@ -106,7 +106,7 @@ module dec_ib_ctl
 
    );
 
-`include "global.h"
+`include "global.svh"
 
    logic         flush_final;
 

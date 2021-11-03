@@ -180,7 +180,7 @@ module lsu
    );
 
 
-`include "global.h"
+`include "global.svh"
 
    logic        lsu_dccm_rden_dc3;
    logic [63:0] store_data_dc2;

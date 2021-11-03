@@ -110,7 +110,7 @@ module dma_ctrl (
    input logic         scan_mode
 );
 
-`include "global.h"
+`include "global.svh"
 
    localparam DEPTH = DMA_BUF_DEPTH;
    localparam DEPTH_PTR = $clog2(DEPTH);

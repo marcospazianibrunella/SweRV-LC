@@ -109,7 +109,7 @@ module ifu_aln_ctl
 
    );
 
-`include "global.h"
+`include "global.svh"
 
    logic         ifvalid;
    logic         shift_f1_f0, shift_f2_f0, shift_f2_f1;

@@ -175,7 +175,7 @@ module lsu_bus_intf
 
 );
 
-`include "global.h"
+`include "global.svh"
 
    logic              ld_freeze_dc3;
 

@@ -50,7 +50,7 @@ module lsu_addrcheck
    input  logic        scan_mode
 );
 
-`include "global.h"
+`include "global.svh"
 
    localparam DCCM_REGION = `RV_DCCM_REGION;
    localparam PIC_REGION  = `RV_PIC_REGION;

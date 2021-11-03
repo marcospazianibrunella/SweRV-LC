@@ -13,9 +13,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import swerv_types::*;
+
 
 module exu
-   import swerv_types::*;
 (
 
    input logic clk,                                                    // Top level clock

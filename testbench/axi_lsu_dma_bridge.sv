@@ -1,5 +1,6 @@
 
 // connects LSI master to external AXI slave and DMA slave
+
 module axi_lsu_dma_bridge
 #(
 parameter M_ID_WIDTH = 8,
@@ -78,6 +79,9 @@ input[1:0]              s1_bresp,
 input                   s1_bvalid,
 output                  s1_bready
 );
+
+`include "global.svh"
+
 
 parameter ICCM_BASE = `RV_ICCM_BITS; // in LSBs
 localparam IDFIFOSZ = $clog2(`RV_DMA_BUF_DEPTH);

@@ -46,7 +46,7 @@ module pic_ctrl
                      input  logic                   scan_mode             // scan mode
 
 );
-`include "global.h"
+`include "global.svh"
 
 localparam NUM_LEVELS            = $clog2(TOTAL_INT);
 localparam INTPRIORITY_BASE_ADDR = `RV_PIC_BASE_ADDR ;
@@ -450,7 +450,7 @@ logic [14:0] address;
 
 assign address[14:0] = picm_addr_ff[14:0];
 
-`include "pic_map_auto.h"
+`include "pic_map_auto.svh"
 
 endmodule
 

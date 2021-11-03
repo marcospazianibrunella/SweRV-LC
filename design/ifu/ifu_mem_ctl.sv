@@ -188,7 +188,7 @@ module ifu_mem_ctl
    input  logic         scan_mode
    );
 
-`include "global.h"
+`include "global.svh"
 
 //  Create different defines for ICACHE and ICCM enable combinations
 `ifdef RV_ICCM_ENABLE
