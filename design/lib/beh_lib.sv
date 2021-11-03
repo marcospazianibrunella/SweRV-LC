@@ -15,7 +15,17 @@
 
 // all flops call the rvdff flop
 
+/* Understand if I'm in Sim or not */
+
+// synthesis translate_off
+`define IN_SIM
+// synthesis translate_on
+
+`ifndef IN_SIM
+`ifndef VERILATOR
 `include "global.svh"
+`endif
+`endif
 
 module rvdff #( parameter WIDTH=1 )
    (

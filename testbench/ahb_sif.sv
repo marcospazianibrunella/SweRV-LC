@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-`include "common_defines.svh"
+`include "common_defines.vh"
 
 `ifdef RV_BUILD_AHB_LITE
 

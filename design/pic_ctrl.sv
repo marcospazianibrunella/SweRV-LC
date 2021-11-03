@@ -450,7 +450,7 @@ logic [14:0] address;
 
 assign address[14:0] = picm_addr_ff[14:0];
 
-`include "pic_map_auto.svh"
+`include "pic_map_auto.h"
 
 endmodule
 
