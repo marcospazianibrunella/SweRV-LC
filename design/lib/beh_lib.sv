@@ -42,7 +42,7 @@ module rvdff #( parameter WIDTH=1 )
    end
 `endif
 
-   always_ff @(posedge clk or negedge rst_l) begin
+   always_ff @(posedge clk) begin
       if (rst_l == 0)
         dout[WIDTH-1:0] <= 0;
       else
