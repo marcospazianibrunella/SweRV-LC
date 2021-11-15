@@ -714,16 +714,17 @@ VL_MODULE(Vtb_top) {
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_flush_vld;
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_addr_in_pic;
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_dma;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_byteen;
-        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__sel_lo;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_byteen;
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_wr_en;
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_data_en;
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_drain_or_flush_en;
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_flush_en;
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_drain_en;
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_reset;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_byteenin;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_byteenin;
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__store_byteen_ext_dc3;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__store_byteen_hi_dc3;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__store_byteen_lo_dc3;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__ldst_stbuf_reqvld_dc3;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__dual_ecc_error_dc3;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__dual_stbuf_write_dc3;
@@ -746,20 +747,20 @@ VL_MODULE(Vtb_top) {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_ldmatch_hi_lo;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_ldmatch_lo_hi;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_ldmatch_lo_lo;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteen_hi_hi;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteen_hi_lo;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteen_lo_hi;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteen_lo_lo;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteen_hi_hi;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteen_hi_lo;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteen_lo_hi;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteen_lo_lo;
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_ldmatch_hi;
-        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_ldmatch_lo;
     };
     struct {
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteenvec_hi;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteenvec_lo;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteen_hi_dc2;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteen_lo_dc2;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteen_hi_fn_dc2;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteen_lo_fn_dc2;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_ldmatch_lo;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteenvec_hi;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteenvec_lo;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteen_hi_dc2;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteen_lo_dc2;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteen_hi_fn_dc2;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteen_lo_fn_dc2;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__0__KET____DOT__stbuf_data_vldff__DOT__din_new;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__0__KET____DOT__stbuf_drain_vldff__DOT__din_new;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__0__KET____DOT__stbuf_flush_vldff__DOT__din_new;
@@ -788,6 +789,8 @@ VL_MODULE(Vtb_top) {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__is_ldst_hi_dc3;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__is_ldst_lo_dc3;
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__store_byteen_ext_dc3;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__store_byteen_hi_dc3;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__store_byteen_lo_dc3;
         CData/*6:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__Gen_dccm_enable__DOT__lsu_ecc_decode_hi__DOT__ecc_check;
         CData/*6:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__Gen_dccm_enable__DOT__lsu_ecc_decode_lo__DOT__ecc_check;
         CData/*5:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__Gen_dccm_enable__DOT__lsu_ecc_encode__DOT__ecc_out_temp;
@@ -815,11 +818,11 @@ VL_MODULE(Vtb_top) {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__ldst_dual_dc5;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__lsu_busreq_dc3;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__lsu_busreq_dc4;
+    };
+    struct {
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__ldst_byteen_dc2;
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__ldst_byteen_dc3;
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__ldst_byteen_dc4;
-    };
-    struct {
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__ldst_byteen_dc5;
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__ldst_byteen_ext_dc2;
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__ldst_byteen_ext_dc3;
@@ -881,11 +884,11 @@ VL_MODULE(Vtb_top) {
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__ld_byte_ibuf_hit_hi;
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__ldst_byteen_dc5;
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__ldst_byteen_hi_dc5;
+    };
+    struct {
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__ldst_byteen_lo_dc5;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__ldst_samedw_dc5;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__lsu_nonblock_load_valid_dc4;
-    };
-    struct {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__lsu_nonblock_load_valid_dc5;
         CData/*1:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__lsu_nonblock_sz;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__lsu_nonblock_load_data_valid_hi;
@@ -947,11 +950,11 @@ VL_MODULE(Vtb_top) {
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__buf_state_bus_en;
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__buf_dual_in;
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__buf_samedw_in;
+    };
+    struct {
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__buf_nomerge_in;
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__buf_nb_in;
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__buf_sideeffect_in;
-    };
-    struct {
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__buf_unsign_in;
         SData/*15:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__buf_sz_in;
         CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__buf_write_in;
@@ -1013,11 +1016,11 @@ VL_MODULE(Vtb_top) {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__lsu_axi_wready_q;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__lsu_axi_arvalid_q;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__lsu_axi_arready_q;
+    };
+    struct {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__lsu_axi_bvalid_q;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__lsu_axi_bready_q;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__lsu_axi_rvalid_q;
-    };
-    struct {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__lsu_axi_rready_q;
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__lsu_axi_bid_q;
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__lsu_axi_rid_q;
@@ -1079,11 +1082,11 @@ VL_MODULE(Vtb_top) {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__shift_ib3_ib2;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__shift_ib2_ib0;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__shift_ib3_ib1;
+    };
+    struct {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__ifu_i0_val;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__ifu_i1_val;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__debug_valid;
-    };
-    struct {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__debug_read;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__debug_write;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__debug_write_gpr;
@@ -1145,11 +1148,11 @@ VL_MODULE(Vtb_top) {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_rs2_depend_i1_e3;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_rs2_depend_i1_e4;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_rs2_depend_i1_wb;
+    };
+    struct {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_rs1_depend_i0_d;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_rs2_depend_i0_d;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_secondary_d;
-    };
-    struct {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_secondary_d;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__non_block_case_d;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_div_decode_d;
@@ -1211,11 +1214,11 @@ VL_MODULE(Vtb_top) {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__div_wen_wb;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__leak1_i0_stall_in;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__leak1_i0_stall;
+    };
+    struct {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__leak1_i1_stall_in;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__leak1_i1_stall;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_csr_write_only_d;
-    };
-    struct {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__any_csr_d;
         CData/*5:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_pipe_en;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_e1_ctl_en;
@@ -1277,11 +1280,11 @@ VL_MODULE(Vtb_top) {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__freeze_e4;
         CData/*4:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__div_waddr_wb;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__ibradder_correct__DOT__cout;
+    };
+    struct {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__dec_csr_wen_wb_mod;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__allow_dbg_halt_csr_write;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__i0_mp_e4;
-    };
-    struct {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__i1_mp_e4;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__sel_npc_wb;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__mtval_capture_lsu_wb;
@@ -1343,11 +1346,11 @@ VL_MODULE(Vtb_top) {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__ce_int_ready;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__ext_int_ready;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__timer_int_ready;
+    };
+    struct {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__int_timer0_int_ready;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__int_timer1_int_ready;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__take_ext_int;
-    };
-    struct {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__take_ce_int;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__take_timer_int;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__take_int_timer0_int;
@@ -1409,11 +1412,11 @@ VL_MODULE(Vtb_top) {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__trigger_hit_dmode_e4;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__trigger_hit_for_dscr_cause_wb;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__i_cpu_halt_req_sync_qual;
+    };
+    struct {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__pmu_fw_halt_req_ns;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__int_timer_stalled;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__pmu_fw_tlu_halted;
-    };
-    struct {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__internal_pmu_fw_halt_mode;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__nmi_int_detected;
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__trigger_data;
@@ -1475,11 +1478,11 @@ VL_MODULE(Vtb_top) {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__int_timers__DOT__wr_mitcnt0_wb;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__int_timers__DOT__wr_mitcnt1_wb;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__int_timers__DOT__mit0_match_ns;
+    };
+    struct {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__int_timers__DOT__mit1_match_ns;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__int_timers__DOT__csr_mitctl0;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__int_timers__DOT__csr_mitctl1;
-    };
-    struct {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__int_timers__DOT__csr_mitb0;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__int_timers__DOT__csr_mitb1;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__int_timers__DOT__csr_mitcnt0;
@@ -1541,11 +1544,11 @@ VL_MODULE(Vtb_top) {
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__fifo_done;
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__fifo_done_bus;
         SData/*11:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__fifo_sz;
+    };
+    struct {
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__fifo_write;
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__fifo_dbg;
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__fifo_cmd_en;
-    };
-    struct {
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__fifo_valid_en;
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__fifo_data_en;
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__fifo_pend_en;
@@ -1607,11 +1610,11 @@ VL_MODULE(Vtb_top) {
         CData/*1:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__GenFifo__BRA__1__KET____DOT__fifo_error_dff__DOT__din_new;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__GenFifo__BRA__1__KET____DOT__fifo_data_valid_dff__DOT__din_new;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__GenFifo__BRA__1__KET____DOT__fifo_rpend_dff__DOT__din_new;
+    };
+    struct {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__GenFifo__BRA__1__KET____DOT__fifo_done_dff__DOT__din_new;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__GenFifo__BRA__1__KET____DOT__fifo_done_bus_dff__DOT__din_new;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__GenFifo__BRA__2__KET____DOT__fifo_valid_dff__DOT__din_new;
-    };
-    struct {
         CData/*1:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__GenFifo__BRA__2__KET____DOT__fifo_error_dff__DOT__din_new;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__GenFifo__BRA__2__KET____DOT__fifo_data_valid_dff__DOT__din_new;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__GenFifo__BRA__2__KET____DOT__fifo_rpend_dff__DOT__din_new;
@@ -1673,11 +1676,11 @@ VL_MODULE(Vtb_top) {
         SData/*15:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec_tlu_br1_wb_pkt;
         SData/*15:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu_i1_cinst;
         SData/*8:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__aln__DOT__secondbrtag_hash;
+    };
+    struct {
         SData/*8:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__aln__DOT__thirdbrtag_hash;
         SData/*8:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT__fetch_rd_tag_f1;
         SData/*8:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT__fetch_rd_tag_f2;
-    };
-    struct {
         SData/*15:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT__btb_sel_data_f2;
         WData/*127:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT__bht_bank_sel[4];
         SData/*13:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__mem_ctl__DOT__dma_mem_ecc;
@@ -1739,18 +1742,8 @@ VL_MODULE(Vtb_top) {
         IData/*16:0*/ tb_top__DOT__rvtop__DOT__iccm_rw_addr;
         WData/*77:0*/ tb_top__DOT__rvtop__DOT__iccm_wr_data[3];
         WData/*155:0*/ tb_top__DOT__rvtop__DOT__iccm_rd_data[5];
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__gpr_i0_rs1_d;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__gpr_i0_rs2_d;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__gpr_i1_rs1_d;
     };
     struct {
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__gpr_i1_rs2_d;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i0_rs1_bypass_data_d;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i0_rs2_bypass_data_d;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i1_rs1_bypass_data_d;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i1_rs2_bypass_data_d;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu_i0_result_e1;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu_i1_result_e1;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec_tlu_i0_pc_e4;
         IData/*19:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i0_ap;
         IData/*19:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i1_ap;
@@ -1758,18 +1751,10 @@ VL_MODULE(Vtb_top) {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu_i1_instr;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu_flush_path_final;
         IData/*18:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu_p;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu_result_dc3;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu_result_corr_dc4;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu_nonblock_load_data;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu_csr_rs1_e1;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu_mul_result_e3;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__pred_correct_npc_e2;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu_i0_flush_path_e4;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu_i1_flush_path_e4;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_mem_addr;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i0_result_e4_eff;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i1_result_e4_eff;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i0_result_e2;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dbg_cmd_addr;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dbg__DOT__dmstatus_reg;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dbg__DOT__dmcontrol_reg;
@@ -1808,8 +1793,6 @@ VL_MODULE(Vtb_top) {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__aln__DOT__compress1__DOT__l3;
         IData/*19:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__aln__DOT__compress1__DOT__sjald;
         IData/*19:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__aln__DOT__compress1__DOT__sluimmd;
-    };
-    struct {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__aln__DOT__compress2__DOT__o;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__aln__DOT__compress2__DOT__l1;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__aln__DOT__compress2__DOT__l2;
@@ -1825,6 +1808,8 @@ VL_MODULE(Vtb_top) {
         WData/*103:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT__btb_bank1_rd_data_way0_out[4];
         WData/*103:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT__btb_bank2_rd_data_way0_out[4];
         WData/*103:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT__btb_bank3_rd_data_way0_out[4];
+    };
+    struct {
         WData/*103:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT__btb_bank0_rd_data_way1_out[4];
         WData/*103:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT__btb_bank1_rd_data_way1_out[4];
         WData/*103:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT__btb_bank2_rd_data_way1_out[4];
@@ -1858,24 +1843,15 @@ VL_MODULE(Vtb_top) {
         WData/*127:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__mem_ctl__DOT__ic_final_data[4];
         IData/*16:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__mem_ctl__DOT__iccm_ecc_corr_index_ff;
         WData/*127:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__mem_ctl__DOT__iccm_corrected_data[4];
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_rs1_d;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_rs2_d;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_rs1_d;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_rs2_d;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__exu_i0_flush_path_e1;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__div_rs1_d;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__div_rs2_d;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__a_ff_e1;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__a_e1;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__b_ff_e1;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__b_e1;
+        WData/*64:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__a_ff_e2[3];
+        WData/*64:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__b_ff_e2[3];
+        WData/*127:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__prod_e3[4];
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__div_e1__DOT__dividend_eff;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__div_e1__DOT__dividend_c__DOT__dout_temp;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__div_e1__DOT__q_ff_c__DOT__dout_temp;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__div_e1__DOT__a_ff_c__DOT__dout_temp;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_alu_e1__DOT__aout;
-    };
-    struct {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_alu_e1__DOT__bm;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_alu_e1__DOT__a_ff;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_alu_e1__DOT__b_ff;
@@ -1895,13 +1871,11 @@ VL_MODULE(Vtb_top) {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_alu_e4__DOT__a_ff;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_alu_e4__DOT__b_ff;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_alu_e4__DOT__pcout;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__store_data_dc4;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__store_data_dc5;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__store_ecc_datafn_hi_dc3;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__store_ecc_datafn_lo_dc3;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__dccm_data_hi_dc3;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__dccm_data_lo_dc3;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_addr_dc2;
+    };
+    struct {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_addr_dc3;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_addr_dc4;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_addr_dc5;
@@ -1914,16 +1888,8 @@ VL_MODULE(Vtb_top) {
         IData/*18:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_pkt_dc3;
         IData/*18:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_pkt_dc4;
         IData/*18:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_pkt_dc5;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf_data_any;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf_fwddata_hi_dc3;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf_fwddata_lo_dc3;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_read_data_dc3;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__full_addr_dc1;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__full_end_addr_dc1;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__rs1_dc1;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__lsu_ld_datafn_dc3;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__lsu_ld_datafn_corr_dc3;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__rs1_dc1_raw;
         IData/*18:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__dma_pkt_d;
         IData/*18:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__lsu_pkt_dc1_in;
         IData/*18:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__lsu_pkt_dc2_in;
@@ -1931,25 +1897,7 @@ VL_MODULE(Vtb_top) {
         IData/*18:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__lsu_pkt_dc4_in;
         IData/*18:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__lsu_pkt_dc5_in;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__dccm_ctl__DOT__picm_rd_data_lo_dc3;
-        WData/*255:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_data[8];
-        WData/*255:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_datain[8];
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddata_hi_hi;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddata_hi_lo;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddata_lo_hi;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddata_lo_lo;
-        WData/*255:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddatavec_hi[8];
-        WData/*255:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddatavec_lo[8];
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddata_hi_dc2;
-    };
-    struct {
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddata_lo_dc2;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddata_hi_fn_dc2;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddata_lo_fn_dc2;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__sec_data_hi_dc3;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__sec_data_lo_dc3;
         WData/*163:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__store_data_ext_dc3[6];
-        WData/*127:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__trigger__DOT__lsu_match_data[4];
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__trigger__DOT__store_data_trigger_dc3;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__trigger__DOT__genblk1__BRA__0__KET____DOT__trigger_match__DOT__matchvec;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__trigger__DOT__genblk1__BRA__1__KET____DOT__trigger_match__DOT__matchvec;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__trigger__DOT__genblk1__BRA__2__KET____DOT__trigger_match__DOT__matchvec;
@@ -1978,12 +1926,8 @@ VL_MODULE(Vtb_top) {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__ibuf_data_in;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__ibuf_data_out;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__obuf_addr;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__dec_csr_wrdata_wb;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__dec_csr_rddata_d;
         IData/*25:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__dec_tlu_packet_e4;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__dec_illegal_inst;
-        WData/*991:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_out[31];
-        WData/*991:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_in[31];
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__w0v;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__w1v;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__w2v;
@@ -1996,6 +1940,8 @@ VL_MODULE(Vtb_top) {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__dec_trigger__DOT__genblk1__BRA__1__KET____DOT__trigger_i1_match__DOT__matchvec;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__dec_trigger__DOT__genblk1__BRA__2__KET____DOT__trigger_i0_match__DOT__matchvec;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__dec_trigger__DOT__genblk1__BRA__2__KET____DOT__trigger_i1_match__DOT__matchvec;
+    };
+    struct {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__dec_trigger__DOT__genblk1__BRA__3__KET____DOT__trigger_i0_match__DOT__matchvec;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__dec_trigger__DOT__genblk1__BRA__3__KET____DOT__trigger_i1_match__DOT__matchvec;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__ib3;
@@ -2006,31 +1952,8 @@ VL_MODULE(Vtb_top) {
         WData/*67:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__bp2[3];
         WData/*67:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__bp1[3];
         WData/*67:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__bp0[3];
-    };
-    struct {
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_e2;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_e3;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_e3;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_e4;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_e4;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_wb;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_immed_d;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__csr_mask_e1;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__write_csr_data;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_e3_final;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_e3_final;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_wb_raw;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_wb_raw;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_e4_final;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_e4_final;
         IData/*19:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_pcall_imm;
         IData/*19:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_pcall_imm;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_e4_freeze;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_e4_freeze;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_wb_freeze;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_wb_freeze;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_wb_eff;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_wb_eff;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_inst_d;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_inst_e1;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_inst_e1;
@@ -2072,8 +1995,6 @@ VL_MODULE(Vtb_top) {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__mhpmc3h;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__mhpmc4h;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__mhpmc5h;
-    };
-    struct {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__mhpmc6h;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__mrac;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__mdseac;
@@ -2085,6 +2006,8 @@ VL_MODULE(Vtb_top) {
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__tlu_flush_path_e4;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__dicad0;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__mcycleh_inc;
+    };
+    struct {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__minstreth_inc;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__npc_e4;
         IData/*18:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__mfdc;
@@ -2113,19 +2036,44 @@ VL_MODULE(Vtb_top) {
         WData/*543:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__icm__DOT__ic_data_inst__DOT__wb_dout_way_with_premux[17];
         WData/*155:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__iccm__DOT__iccm_bank_dout_hi[5];
         WData/*155:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__iccm__DOT__iccm_bank_dout_lo[5];
+        WData/*567:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT__dccm_bank_dout[18];
+        WData/*70:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT__dccm_rd_data_lo_q[3];
+        WData/*70:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT__dccm_rd_data_hi_q[3];
         QData/*63:0*/ tb_top__DOT__ifu_axi_rdata;
         QData/*63:0*/ tb_top__DOT__sb_axi_rdata;
         QData/*63:0*/ tb_top__DOT__lmem_axi_rdata;
-        QData/*38:0*/ tb_top__DOT__rvtop__DOT__dccm_wr_data;
-        QData/*38:0*/ tb_top__DOT__rvtop__DOT__dccm_rd_data_lo;
-        QData/*38:0*/ tb_top__DOT__rvtop__DOT__dccm_rd_data_hi;
         QData/*33:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu_ic_debug_rd_data;
         QData/*52:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec_tlu_ic_diag_pkt;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__gpr_i0_rs1_d;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__gpr_i0_rs2_d;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__gpr_i1_rs1_d;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__gpr_i1_rs2_d;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i0_rs1_bypass_data_d;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i0_rs2_bypass_data_d;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i1_rs1_bypass_data_d;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i1_rs2_bypass_data_d;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu_result_dc3;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu_result_corr_dc4;
         QData/*37:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu_error_pkt_dc3;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu_csr_rs1_e1;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu_mul_result_e3;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i0_rs1_bypass_data_e3;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i0_rs2_bypass_data_e3;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i1_rs1_bypass_data_e3;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i1_rs2_bypass_data_e3;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i0_rs1_bypass_data_e2;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i0_rs2_bypass_data_e2;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i1_rs1_bypass_data_e2;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i1_rs2_bypass_data_e2;
         WData/*73:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu_mp_pkt[3];
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_mem_wdata;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dccm_dma_rdata;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__iccm_dma_rdata;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i0_result_e4_eff;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i1_result_e4_eff;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i0_result_e2;
+    };
+    struct {
         WData/*67:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i0_brp[3];
         WData/*67:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i1_brp[3];
         WData/*73:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__i0_predict_p_d[3];
@@ -2138,8 +2086,6 @@ VL_MODULE(Vtb_top) {
         QData/*50:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__aln__DOT__misc1;
         QData/*50:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__aln__DOT__misc0;
         QData/*50:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__aln__DOT__misc1eff;
-    };
-    struct {
         QData/*50:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__aln__DOT__misc0eff;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__aln__DOT__brdata_in;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__aln__DOT__brdata2;
@@ -2166,37 +2112,75 @@ VL_MODULE(Vtb_top) {
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__mem_ctl__DOT__ICCM_ECC_CHECK__BRA__3__KET____DOT__ecc_decode__DOT__error_mask;
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__mem_ctl__DOT__ICCM_ECC_CHECK__BRA__3__KET____DOT__ecc_decode__DOT__din_plus_parity;
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__mem_ctl__DOT__ICCM_ECC_CHECK__BRA__3__KET____DOT__ecc_decode__DOT__dout_plus_parity;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_rs1_d;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_rs2_d;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_rs1_d;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_rs2_d;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__div_rs1_d;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__div_rs2_d;
         WData/*73:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_predict_newp_d[3];
         WData/*73:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_predict_newp_d[3];
         WData/*73:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_predict_p_e1[3];
         WData/*73:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_predict_p_e4[3];
         WData/*73:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_predict_p_e1[3];
         WData/*73:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_predict_p_e4[3];
-        QData/*32:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__a_ff_e2;
-        QData/*32:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__b_ff_e2;
-        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__prod_e3;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__a_ff_e1;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__a_e1;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__b_ff_e1;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__b_e1;
         QData/*32:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__div_e1__DOT__m_ff;
         QData/*32:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__div_e1__DOT__q_ff;
         QData/*32:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__div_e1__DOT__a_in;
         QData/*32:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__div_e1__DOT__a_ff;
         QData/*32:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__div_e1__DOT__short_dividend;
-        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__store_data_dc2;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__store_data_dc3;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__store_data_dc4;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__store_data_dc5;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__store_ecc_datafn_hi_dc3;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__store_ecc_datafn_lo_dc3;
+    };
+    struct {
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__picm_mask_data_dc3;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf_data_any;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__full_addr_dc1;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__full_end_addr_dc1;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__rs1_dc1;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__lsu_ld_datafn_dc3;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__lsu_ld_datafn_corr_dc3;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__lsu_result_corr_dc3;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__store_data_dc1;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__store_data_pre_dc2;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__store_data_pre_dc3;
-        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__store_data_dc2_in;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__rs1_dc1_raw;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__dccm_ctl__DOT__dccm_dout_dc3;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__dccm_ctl__DOT__dccm_corr_dout_dc3;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__dccm_ctl__DOT__stbuf_fwddata_dc3;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__dccm_ctl__DOT__lsu_rdata_dc3;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__dccm_ctl__DOT__lsu_rdata_corr_dc3;
+        WData/*511:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_data[16];
+        WData/*511:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_datain[16];
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddata_hi_hi;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddata_hi_lo;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddata_lo_hi;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddata_lo_lo;
+        WData/*511:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddatavec_hi[16];
+        WData/*511:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddatavec_lo[16];
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddata_hi_dc2;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddata_lo_dc2;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddata_hi_fn_dc2;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddata_lo_fn_dc2;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__sec_data_hi_dc3;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__sec_data_lo_dc3;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__store_data_hi_dc3;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__store_data_lo_dc3;
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__Gen_dccm_enable__DOT__lsu_ecc_decode_hi__DOT__error_mask;
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__Gen_dccm_enable__DOT__lsu_ecc_decode_hi__DOT__din_plus_parity;
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__Gen_dccm_enable__DOT__lsu_ecc_decode_hi__DOT__dout_plus_parity;
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__Gen_dccm_enable__DOT__lsu_ecc_decode_lo__DOT__error_mask;
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__Gen_dccm_enable__DOT__lsu_ecc_decode_lo__DOT__din_plus_parity;
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__ecc__DOT__Gen_dccm_enable__DOT__lsu_ecc_decode_lo__DOT__dout_plus_parity;
+        WData/*255:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__trigger__DOT__lsu_match_data[8];
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__trigger__DOT__store_data_trigger_dc3;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__store_data_ext_dc3;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__store_data_ext_dc4;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__store_data_ext_dc5;
@@ -2204,11 +2188,14 @@ VL_MODULE(Vtb_top) {
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__ld_fwddata_hi;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__obuf_data;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__obuf_data_in;
-    };
-    struct {
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__obuf_data0_in;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__obuf_data1_in;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__lsu_axi_rdata_q;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__dec_i0_wdata_wb;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__dec_i1_wdata_wb;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__dec_csr_wrdata_wb;
+        WData/*4031:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_out[126];
+        WData/*4031:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_in[126];
         QData/*36:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__pc3;
         QData/*36:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__pc2;
         QData/*36:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__pc1;
@@ -2217,8 +2204,37 @@ VL_MODULE(Vtb_top) {
         QData/*36:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__ifu_i0_pcdata;
         QData/*49:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_dp_raw;
         QData/*49:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_dp;
+    };
+    struct {
         QData/*49:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_dp_raw;
         QData/*49:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_dp;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_e1;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_e1;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_e2;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_e3;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_e3;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_e4;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_e4;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_wb;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_wb;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_immed_d;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__csr_mask_e1;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__write_csr_data_e1;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__write_csr_data_in;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__write_csr_data;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__csr_rddata_e1;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_e3_final;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_e3_final;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_wb_raw;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_wb_raw;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_e4_final;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_e4_final;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_e4_freeze;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_e4_freeze;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_wb_freeze;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_wb_freeze;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i1_result_wb_eff;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__i0_result_wb_eff;
         WData/*66:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__dd[3];
         WData/*66:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__e1d_in[3];
         WData/*66:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT__e2d_in[3];
@@ -2232,9 +2248,6 @@ VL_MODULE(Vtb_top) {
         WData/*255:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__fifo_data_in[8];
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__wrbuf_data;
         WData/*135:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__icm__DOT__ic_data_inst__DOT__ic_sb_wr_data[5];
-        WData/*311:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT__dccm_bank_dout[10];
-        QData/*38:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT__dccm_rd_data_lo_q;
-        QData/*38:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT__dccm_rd_data_hi_q;
         QData/*40:0*/ tb_top__DOT__rvtop__DOT__dmi_wrapper__DOT__i_jtag_tap__DOT__dr;
         QData/*63:0*/ tb_top__DOT__imem__DOT__memdata;
         QData/*63:0*/ tb_top__DOT__lmem__DOT__memdata;
@@ -2257,6 +2270,8 @@ VL_MODULE(Vtb_top) {
         QData/*33:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__icm__DOT__ic_data_inst__DOT__WAYS__BRA__2__KET____DOT__SUBBANKS__BRA__3__KET____DOT__ic_bank_sb_way_data__DOT__ram_core[256];
         QData/*33:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__icm__DOT__ic_data_inst__DOT__WAYS__BRA__3__KET____DOT__SUBBANKS__BRA__0__KET____DOT__ic_bank_sb_way_data__DOT__ram_core[256];
         QData/*33:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__icm__DOT__ic_data_inst__DOT__WAYS__BRA__3__KET____DOT__SUBBANKS__BRA__1__KET____DOT__ic_bank_sb_way_data__DOT__ram_core[256];
+    };
+    struct {
         QData/*33:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__icm__DOT__ic_data_inst__DOT__WAYS__BRA__3__KET____DOT__SUBBANKS__BRA__2__KET____DOT__ic_bank_sb_way_data__DOT__ram_core[256];
         QData/*33:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__icm__DOT__ic_data_inst__DOT__WAYS__BRA__3__KET____DOT__SUBBANKS__BRA__3__KET____DOT__ic_bank_sb_way_data__DOT__ram_core[256];
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__iccm__DOT__mem_bank__BRA__0__KET____DOT__iccm_bank_hi0__DOT__ram_core[16384];
@@ -2270,8 +2285,6 @@ VL_MODULE(Vtb_top) {
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT__mem_bank__BRA__0__KET____DOT__dccm_bank__DOT__ram_core[2048];
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT__mem_bank__BRA__1__KET____DOT__dccm_bank__DOT__ram_core[2048];
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT__mem_bank__BRA__2__KET____DOT__dccm_bank__DOT__ram_core[2048];
-    };
-    struct {
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT__mem_bank__BRA__3__KET____DOT__dccm_bank__DOT__ram_core[2048];
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT__mem_bank__BRA__4__KET____DOT__dccm_bank__DOT__ram_core[2048];
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT__mem_bank__BRA__5__KET____DOT__dccm_bank__DOT__ram_core[2048];
@@ -3362,49 +3375,49 @@ VL_MODULE(Vtb_top) {
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__0__KET____DOT__stbuf_flush_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__0__KET____DOT__stbuf_dma_picff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__0__KET____DOT__stbuf_addr_in_picff__dout;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__0__KET____DOT__stbuf_byteenff__dout;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__0__KET____DOT__stbuf_byteenff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__1__KET____DOT__stbuf_data_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__1__KET____DOT__stbuf_drain_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__1__KET____DOT__stbuf_flush_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__1__KET____DOT__stbuf_dma_picff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__1__KET____DOT__stbuf_addr_in_picff__dout;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__1__KET____DOT__stbuf_byteenff__dout;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__1__KET____DOT__stbuf_byteenff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__2__KET____DOT__stbuf_data_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__2__KET____DOT__stbuf_drain_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__2__KET____DOT__stbuf_flush_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__2__KET____DOT__stbuf_dma_picff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__2__KET____DOT__stbuf_addr_in_picff__dout;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__2__KET____DOT__stbuf_byteenff__dout;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__2__KET____DOT__stbuf_byteenff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__3__KET____DOT__stbuf_data_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__3__KET____DOT__stbuf_drain_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__3__KET____DOT__stbuf_flush_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__3__KET____DOT__stbuf_dma_picff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__3__KET____DOT__stbuf_addr_in_picff__dout;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__3__KET____DOT__stbuf_byteenff__dout;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__3__KET____DOT__stbuf_byteenff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__4__KET____DOT__stbuf_data_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__4__KET____DOT__stbuf_drain_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__4__KET____DOT__stbuf_flush_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__4__KET____DOT__stbuf_dma_picff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__4__KET____DOT__stbuf_addr_in_picff__dout;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__4__KET____DOT__stbuf_byteenff__dout;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__4__KET____DOT__stbuf_byteenff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__5__KET____DOT__stbuf_data_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__5__KET____DOT__stbuf_drain_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__5__KET____DOT__stbuf_flush_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__5__KET____DOT__stbuf_dma_picff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__5__KET____DOT__stbuf_addr_in_picff__dout;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__5__KET____DOT__stbuf_byteenff__dout;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__5__KET____DOT__stbuf_byteenff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__6__KET____DOT__stbuf_data_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__6__KET____DOT__stbuf_drain_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__6__KET____DOT__stbuf_flush_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__6__KET____DOT__stbuf_dma_picff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__6__KET____DOT__stbuf_addr_in_picff__dout;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__6__KET____DOT__stbuf_byteenff__dout;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__6__KET____DOT__stbuf_byteenff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__7__KET____DOT__stbuf_data_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__7__KET____DOT__stbuf_drain_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__7__KET____DOT__stbuf_flush_vldff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__7__KET____DOT__stbuf_dma_picff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__7__KET____DOT__stbuf_addr_in_picff__dout;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__7__KET____DOT__stbuf_byteenff__dout;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__7__KET____DOT__stbuf_byteenff__dout;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__ldst_dual_dc2ff__DOT__dffs__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__ldst_dual_dc3ff__DOT__dffs__DOT____Vcellinp__dffs__din;
         CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwdbyteen_hi_dc3ff__DOT__dffs__DOT____Vcellinp__dffs__din;
@@ -3415,28 +3428,28 @@ VL_MODULE(Vtb_top) {
         CData/*2:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__RdPtrff__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__0__KET____DOT__stbuf_dma_picff__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__0__KET____DOT__stbuf_addr_in_picff__DOT____Vcellinp__dffs__din;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__0__KET____DOT__stbuf_byteenff__DOT____Vcellinp__dffs__din;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__0__KET____DOT__stbuf_byteenff__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__1__KET____DOT__stbuf_dma_picff__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__1__KET____DOT__stbuf_addr_in_picff__DOT____Vcellinp__dffs__din;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__1__KET____DOT__stbuf_byteenff__DOT____Vcellinp__dffs__din;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__1__KET____DOT__stbuf_byteenff__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__2__KET____DOT__stbuf_dma_picff__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__2__KET____DOT__stbuf_addr_in_picff__DOT____Vcellinp__dffs__din;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__2__KET____DOT__stbuf_byteenff__DOT____Vcellinp__dffs__din;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__2__KET____DOT__stbuf_byteenff__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__3__KET____DOT__stbuf_dma_picff__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__3__KET____DOT__stbuf_addr_in_picff__DOT____Vcellinp__dffs__din;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__3__KET____DOT__stbuf_byteenff__DOT____Vcellinp__dffs__din;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__3__KET____DOT__stbuf_byteenff__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__4__KET____DOT__stbuf_dma_picff__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__4__KET____DOT__stbuf_addr_in_picff__DOT____Vcellinp__dffs__din;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__4__KET____DOT__stbuf_byteenff__DOT____Vcellinp__dffs__din;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__4__KET____DOT__stbuf_byteenff__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__5__KET____DOT__stbuf_dma_picff__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__5__KET____DOT__stbuf_addr_in_picff__DOT____Vcellinp__dffs__din;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__5__KET____DOT__stbuf_byteenff__DOT____Vcellinp__dffs__din;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__5__KET____DOT__stbuf_byteenff__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__6__KET____DOT__stbuf_dma_picff__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__6__KET____DOT__stbuf_addr_in_picff__DOT____Vcellinp__dffs__din;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__6__KET____DOT__stbuf_byteenff__DOT____Vcellinp__dffs__din;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__6__KET____DOT__stbuf_byteenff__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__7__KET____DOT__stbuf_dma_picff__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__7__KET____DOT__stbuf_addr_in_picff__DOT____Vcellinp__dffs__din;
-        CData/*3:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__7__KET____DOT__stbuf_byteenff__DOT____Vcellinp__dffs__din;
+        CData/*7:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__7__KET____DOT__stbuf_byteenff__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__clkdomain__DOT__lsu_freeze_c1_dc1_clkenff__DOT__dffs__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__clkdomain__DOT__lsu_freeze_c1_dc2_clkenff__DOT__dffs__DOT____Vcellinp__dffs__din;
         CData/*0:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__clkdomain__DOT__lsu_freeze_c1_dc3_clkenff__DOT__dffs__DOT____Vcellinp__dffs__din;
@@ -4096,6 +4109,7 @@ VL_MODULE(Vtb_top) {
         SData/*8:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__mcgc_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         SData/*14:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__mfdc_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         SData/*13:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__tlu__DOT__dcsr_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+        WData/*70:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT____Vcellout__lsu__dccm_wr_data[3];
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dbg__DOT__dbg_sbaddress0_reg__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dbg__DOT__dbg_data0_reg__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dbg__DOT__dbg_data1_reg__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
@@ -4133,9 +4147,9 @@ VL_MODULE(Vtb_top) {
         IData/*25:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT____Vcellout__BTB_FLOPS__BRA__1__KET____DOT__btb_bank2_way0__dout;
         IData/*25:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT____Vcellout__BTB_FLOPS__BRA__1__KET____DOT__btb_bank3_way0__dout;
         IData/*25:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT____Vcellout__BTB_FLOPS__BRA__1__KET____DOT__btb_bank0_way1__dout;
-        IData/*25:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT____Vcellout__BTB_FLOPS__BRA__1__KET____DOT__btb_bank1_way1__dout;
     };
     struct {
+        IData/*25:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT____Vcellout__BTB_FLOPS__BRA__1__KET____DOT__btb_bank1_way1__dout;
         IData/*25:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT____Vcellout__BTB_FLOPS__BRA__1__KET____DOT__btb_bank2_way1__dout;
         IData/*25:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT____Vcellout__BTB_FLOPS__BRA__1__KET____DOT__btb_bank3_way1__dout;
         IData/*25:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT____Vcellout__BTB_FLOPS__BRA__2__KET____DOT__btb_bank0_way0__dout;
@@ -4199,9 +4213,9 @@ VL_MODULE(Vtb_top) {
         IData/*25:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT__BTB_FLOPS__BRA__3__KET____DOT__btb_bank1_way1__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*25:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT__BTB_FLOPS__BRA__3__KET____DOT__btb_bank2_way1__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*25:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__bp__DOT__BTB_FLOPS__BRA__3__KET____DOT__btb_bank3_way1__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
-        IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__mem_ctl__DOT____Vcellout__ifu_fetch_addr_f2_ff__dout;
     };
     struct {
+        IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__mem_ctl__DOT____Vcellout__ifu_fetch_addr_f2_ff__dout;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__mem_ctl__DOT____Vcellout__imb_f2_ff__dout;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__mem_ctl__DOT____Vcellout__ecc_dat0_ff__dout;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__mem_ctl__DOT__ifu_fetch_addr_f2_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
@@ -4219,20 +4233,20 @@ VL_MODULE(Vtb_top) {
         IData/*19:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i1_ap_e2_ff__dout;
         IData/*19:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i1_ap_e3_ff__dout;
         IData/*19:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i1_ap_e4_ff__dout;
-        WData/*75:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i0_src_e1_ff__dout[3];
-        WData/*75:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i0_src_e2_ff__dout[3];
-        WData/*75:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i0_src_e3_ff__dout[3];
-        WData/*75:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i1_src_e1_ff__dout[3];
-        WData/*75:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i1_src_e2_ff__dout[3];
-        WData/*75:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i1_src_e3_ff__dout[3];
+        WData/*139:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i0_src_e1_ff__dout[5];
+        WData/*139:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i0_src_e2_ff__dout[5];
+        WData/*139:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i0_src_e3_ff__dout[5];
+        WData/*139:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i1_src_e1_ff__dout[5];
+        WData/*139:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i1_src_e2_ff__dout[5];
+        WData/*139:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i1_src_e3_ff__dout[5];
         WData/*73:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__predict_mp_ff__dout[3];
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i0_upper_flush_e2_ff__dout;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i1_upper_flush_e3_ff__dout;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i1_upper_flush_e4_ff__dout;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__npc_any_ff__dout;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__csr_rs1_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__a_e1_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__b_e1_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+        WData/*64:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__a_e2_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[3];
+        WData/*64:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__b_e2_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[3];
+        WData/*127:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__prod_e3_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[4];
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_alu_e1__DOT____Vcellout__pcff__dout;
         WData/*73:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_alu_e1__DOT____Vcellout__predictpacketff__dout[3];
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_alu_e1__DOT__aff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
@@ -4257,17 +4271,17 @@ VL_MODULE(Vtb_top) {
         IData/*19:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_ap_e2_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*19:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_ap_e3_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*19:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_ap_e4_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
-        WData/*75:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_src_e1_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[3];
-        WData/*75:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_src_e2_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[3];
-        WData/*75:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_src_e3_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[3];
-        WData/*75:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_src_e1_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[3];
-        WData/*75:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_src_e2_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[3];
-        WData/*75:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_src_e3_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[3];
+        WData/*139:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_src_e1_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[5];
+        WData/*139:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_src_e2_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[5];
+        WData/*139:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_src_e3_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[5];
+        WData/*139:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_src_e1_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[5];
+        WData/*139:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_src_e2_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[5];
+        WData/*139:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_src_e3_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[5];
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_alu_e4__DOT____Vcellout__pcff__dout;
         WData/*73:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_alu_e4__DOT____Vcellout__predictpacketff__dout[3];
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_alu_e4__DOT__aff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
     };
     struct {
+        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_alu_e4__DOT__aff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_alu_e4__DOT__bff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_alu_e4__DOT__pcff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         WData/*73:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_alu_e4__DOT__predictpacketff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[3];
@@ -4282,12 +4296,14 @@ VL_MODULE(Vtb_top) {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_upper_flush_e3_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_upper_flush_e4_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__npc_any_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT____Vcellout__bus_intf__lsu_nonblock_load_data;
+        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT____Vcellout__bus_intf__bus_read_data_dc3;
         IData/*17:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT____Vcellout__lsu_pkt_dc1ff__dout;
         IData/*17:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT____Vcellout__lsu_pkt_dc2ff__dout;
         IData/*17:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT____Vcellout__lsu_pkt_dc3ff__dout;
         IData/*17:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT____Vcellout__lsu_pkt_dc4ff__dout;
         IData/*17:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT____Vcellout__lsu_pkt_dc5ff__dout;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__rs1ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT____Vcellout__lsu_result_corr_dc4ff__dout;
         IData/*17:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__lsu_pkt_dc1ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*17:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__lsu_pkt_dc2ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*17:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__lsu_pkt_dc3ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
@@ -4298,24 +4314,8 @@ VL_MODULE(Vtb_top) {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__dccm_ctl__DOT__picm_data_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__dccm_ctl__DOT__Gen_dccm_enable__DOT__dccm_data_hi_ff__DOT__dffs__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__dccm_ctl__DOT__Gen_dccm_enable__DOT__dccm_data_lo_ff__DOT__dffs__DOT____Vcellinp__dffs__din;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__0__KET____DOT__stbuf_dataff__dout;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__1__KET____DOT__stbuf_dataff__dout;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__2__KET____DOT__stbuf_dataff__dout;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__3__KET____DOT__stbuf_dataff__dout;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__4__KET____DOT__stbuf_dataff__dout;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__5__KET____DOT__stbuf_dataff__dout;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__6__KET____DOT__stbuf_dataff__dout;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__7__KET____DOT__stbuf_dataff__dout;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddata_hi_dc3ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__stbuf_fwddata_lo_dc3ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__0__KET____DOT__stbuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__1__KET____DOT__stbuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__2__KET____DOT__stbuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__3__KET____DOT__stbuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__4__KET____DOT__stbuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__5__KET____DOT__stbuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__6__KET____DOT__stbuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__7__KET____DOT__stbuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT____Vcellout__genblk8__BRA__0__KET____DOT__buf_addrff__dout;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT____Vcellout__genblk8__BRA__0__KET____DOT__buf_dataff__dout;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT____Vcellout__genblk8__BRA__1__KET____DOT__buf_addrff__dout;
@@ -4332,8 +4332,6 @@ VL_MODULE(Vtb_top) {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT____Vcellout__genblk8__BRA__6__KET____DOT__buf_dataff__dout;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT____Vcellout__genblk8__BRA__7__KET____DOT__buf_addrff__dout;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT____Vcellout__genblk8__BRA__7__KET____DOT__buf_dataff__dout;
-    };
-    struct {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__ibuf_addrff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__ibuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__obuf_addrff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
@@ -4347,12 +4345,15 @@ VL_MODULE(Vtb_top) {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__genblk8__BRA__3__KET____DOT__buf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__genblk8__BRA__4__KET____DOT__buf_addrff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__genblk8__BRA__4__KET____DOT__buf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+    };
+    struct {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__genblk8__BRA__5__KET____DOT__buf_addrff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__genblk8__BRA__5__KET____DOT__buf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__genblk8__BRA__6__KET____DOT__buf_addrff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__genblk8__BRA__6__KET____DOT__buf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__genblk8__BRA__7__KET____DOT__buf_addrff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__genblk8__BRA__7__KET____DOT__buf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT____Vcellout__tlu__dec_csr_rddata_d;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT____Vcellout__gpr_banks__BRA__0__KET____DOT__gpr__BRA__1__KET____DOT__gprff__dout;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT____Vcellout__gpr_banks__BRA__0__KET____DOT__gpr__BRA__2__KET____DOT__gprff__dout;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT____Vcellout__gpr_banks__BRA__0__KET____DOT__gpr__BRA__3__KET____DOT__gprff__dout;
@@ -4384,7 +4385,6 @@ VL_MODULE(Vtb_top) {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT____Vcellout__gpr_banks__BRA__0__KET____DOT__gpr__BRA__29__KET____DOT__gprff__dout;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT____Vcellout__gpr_banks__BRA__0__KET____DOT__gpr__BRA__30__KET____DOT__gprff__dout;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT____Vcellout__gpr_banks__BRA__0__KET____DOT__gpr__BRA__31__KET____DOT__gprff__dout;
-        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT____Vlvbound4;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_banks__BRA__0__KET____DOT__gpr__BRA__1__KET____DOT__gprff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_banks__BRA__0__KET____DOT__gpr__BRA__2__KET____DOT__gprff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_banks__BRA__0__KET____DOT__gpr__BRA__3__KET____DOT__gprff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
@@ -4398,8 +4398,6 @@ VL_MODULE(Vtb_top) {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_banks__BRA__0__KET____DOT__gpr__BRA__11__KET____DOT__gprff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_banks__BRA__0__KET____DOT__gpr__BRA__12__KET____DOT__gprff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_banks__BRA__0__KET____DOT__gpr__BRA__13__KET____DOT__gprff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
-    };
-    struct {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_banks__BRA__0__KET____DOT__gpr__BRA__14__KET____DOT__gprff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_banks__BRA__0__KET____DOT__gpr__BRA__15__KET____DOT__gprff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_banks__BRA__0__KET____DOT__gpr__BRA__16__KET____DOT__gprff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
@@ -4413,6 +4411,8 @@ VL_MODULE(Vtb_top) {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_banks__BRA__0__KET____DOT__gpr__BRA__24__KET____DOT__gprff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_banks__BRA__0__KET____DOT__gpr__BRA__25__KET____DOT__gprff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_banks__BRA__0__KET____DOT__gpr__BRA__26__KET____DOT__gprff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+    };
+    struct {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_banks__BRA__0__KET____DOT__gpr__BRA__27__KET____DOT__gprff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_banks__BRA__0__KET____DOT__gpr__BRA__28__KET____DOT__gprff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT__gpr_banks__BRA__0__KET____DOT__gpr__BRA__29__KET____DOT__gprff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
@@ -4426,6 +4426,11 @@ VL_MODULE(Vtb_top) {
         WData/*67:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__genblk7__DOT__bp2ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[3];
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__genblk9__DOT__ib3ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__genblk9__DOT__ib2ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__write_csr_ff__dout;
+        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__freeze_i0_e4ff__dout;
+        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__freeze_i1_e4ff__dout;
+        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__freeze_i0_wbff__dout;
+        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__freeze_i1_wbff__dout;
         IData/*25:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__trap_e1ff__dout;
         IData/*25:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__trap_e2ff__dout;
         IData/*25:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__trap_e3ff__dout;
@@ -4436,6 +4441,14 @@ VL_MODULE(Vtb_top) {
         WData/*66:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__e4ff__dout[3];
         WData/*66:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__wbff__dout[3];
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__divpcff__dout;
+        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__i0e2resultff__dout;
+        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__i1e2resultff__dout;
+        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__i0e3resultff__dout;
+        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__i1e3resultff__dout;
+        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__i0e4resultff__dout;
+        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__i1e4resultff__dout;
+        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__i0wbresultff__dout;
+        IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__i1wbresultff__dout;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__i0wbpcff__dout;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__i0wb1pcff__dout;
         IData/*30:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__decode__DOT____Vcellout__i1wb1pcff__dout;
@@ -4551,11 +4564,17 @@ VL_MODULE(Vtb_top) {
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__GenFifo__BRA__1__KET____DOT__fifo_addr_dff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__GenFifo__BRA__2__KET____DOT__fifo_addr_dff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         IData/*31:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__GenFifo__BRA__3__KET____DOT__fifo_addr_dff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+        WData/*70:0*/ tb_top__DOT__rvtop__DOT__mem__DOT____Vcellout__Gen_dccm_enable__DOT__dccm__dccm_rd_data_hi[3];
+        WData/*70:0*/ tb_top__DOT__rvtop__DOT__mem__DOT____Vcellout__Gen_dccm_enable__DOT__dccm__dccm_rd_data_lo[3];
         IData/*19:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__icm__DOT__ic_tag_inst__DOT____Vcellout__adr_ff__dout;
         IData/*20:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__icm__DOT__ic_tag_inst__DOT____Vcellout__WAYS__BRA__0__KET____DOT__ICACHE_SZ_16__DOT__ic_way_tag__Q;
         IData/*20:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__icm__DOT__ic_tag_inst__DOT____Vcellout__WAYS__BRA__1__KET____DOT__ICACHE_SZ_16__DOT__ic_way_tag__Q;
         IData/*20:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__icm__DOT__ic_tag_inst__DOT____Vcellout__WAYS__BRA__2__KET____DOT__ICACHE_SZ_16__DOT__ic_way_tag__Q;
         IData/*20:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__icm__DOT__ic_tag_inst__DOT____Vcellout__WAYS__BRA__3__KET____DOT__ICACHE_SZ_16__DOT__ic_way_tag__Q;
+        WData/*70:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT__dccm_rd_data_loff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[3];
+        WData/*70:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT__dccm_rd_data_hiff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din[3];
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT____Vcellout__dec__dec_i1_immed_d;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT____Vcellout__dec__dec_i0_immed_d;
         QData/*50:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__aln__DOT__misc2ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         QData/*50:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__aln__DOT__misc1ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         QData/*50:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__ifu__DOT__aln__DOT__misc0ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
@@ -4568,21 +4587,41 @@ VL_MODULE(Vtb_top) {
         QData/*32:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i1_upper_flush_e2_ff__dout;
         QData/*62:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i0_upper_flush_e3_ff__dout;
         QData/*62:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT____Vcellout__i0_upper_flush_e4_ff__dout;
-        QData/*32:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__a_e2_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
-        QData/*32:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__b_e2_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
-        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__prod_e3_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__csr_rs1_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__a_e1_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__mul_e1__DOT__b_e1_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         QData/*32:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__div_e1__DOT__mff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         QData/*32:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__div_e1__DOT__qff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         QData/*32:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__div_e1__DOT__aff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         QData/*32:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i1_upper_flush_e2_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         QData/*62:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_upper_flush_e3_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         QData/*62:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__exu__DOT__i0_upper_flush_e4_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__rs1ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__sddc1ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__sddc2ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__lsu_lsc_ctl__DOT__sddc3ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__0__KET____DOT__stbuf_dataff__dout;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__1__KET____DOT__stbuf_dataff__dout;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__2__KET____DOT__stbuf_dataff__dout;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__3__KET____DOT__stbuf_dataff__dout;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__4__KET____DOT__stbuf_dataff__dout;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__5__KET____DOT__stbuf_dataff__dout;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__6__KET____DOT__stbuf_dataff__dout;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT____Vcellout__GenStBuf__BRA__7__KET____DOT__stbuf_dataff__dout;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__0__KET____DOT__stbuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+    };
+    struct {
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__1__KET____DOT__stbuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__2__KET____DOT__stbuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__3__KET____DOT__stbuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__4__KET____DOT__stbuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__5__KET____DOT__stbuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__6__KET____DOT__stbuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__stbuf__DOT__GenStBuf__BRA__7__KET____DOT__stbuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__obuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__lsu__DOT__bus_intf__DOT__bus_buffer__DOT__lsu_axi_rdata_ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         WData/*151:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT____Vcellout__tlu__trigger_pkt_any[5];
+        QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__arf__DOT____Vlvbound4;
         QData/*36:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__pc1ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         QData/*36:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__pc0ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         QData/*36:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dec__DOT__instbuff__DOT__genblk5__DOT__pc3ff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
@@ -4596,8 +4635,6 @@ VL_MODULE(Vtb_top) {
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT____Vcellout__GenFifo__BRA__2__KET____DOT__fifo_data_dff__dout;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT____Vcellout__GenFifo__BRA__3__KET____DOT__fifo_data_dff__dout;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__wrbuf_dataff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
-    };
-    struct {
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__GenFifo__BRA__0__KET____DOT__fifo_data_dff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__GenFifo__BRA__1__KET____DOT__fifo_data_dff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
         QData/*63:0*/ tb_top__DOT__rvtop__DOT__swerv__DOT__dma_ctrl__DOT__GenFifo__BRA__2__KET____DOT__fifo_data_dff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
@@ -4634,8 +4671,6 @@ VL_MODULE(Vtb_top) {
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT____Vcellout__mem_bank__BRA__5__KET____DOT__dccm_bank__Q;
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT____Vcellout__mem_bank__BRA__6__KET____DOT__dccm_bank__Q;
         QData/*38:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT____Vcellout__mem_bank__BRA__7__KET____DOT__dccm_bank__Q;
-        QData/*38:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT__dccm_rd_data_loff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
-        QData/*38:0*/ tb_top__DOT__rvtop__DOT__mem__DOT__Gen_dccm_enable__DOT__dccm__DOT__dccm_rd_data_hiff__DOT__genblock__DOT__dff__DOT____Vcellinp__dffs__din;
     };
     
     // INTERNAL VARIABLES

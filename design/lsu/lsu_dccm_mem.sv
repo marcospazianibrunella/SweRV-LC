@@ -40,10 +40,10 @@ module lsu_dccm_mem
    input logic [`RV_DCCM_BITS-1:0]  dccm_wr_addr,                        // write address
    input logic [`RV_DCCM_BITS-1:0]  dccm_rd_addr_lo,                     // read address
    input logic [`RV_DCCM_BITS-1:0]  dccm_rd_addr_hi,                     // read address for the upper bank in case of a misaligned access
-   input logic [`RV_DCCM_FDATA_WIDTH-1:0]  dccm_wr_data,                 // write data
+   input logic [DCCM_FDATA_WIDTH-1:0]  dccm_wr_data,                 // write data
 
-   output logic [`RV_DCCM_FDATA_WIDTH-1:0] dccm_rd_data_lo,              // read data from the lo bank
-   output logic [`RV_DCCM_FDATA_WIDTH-1:0] dccm_rd_data_hi,              // read data from the hi bank
+   output logic [DCCM_FDATA_WIDTH-1:0] dccm_rd_data_lo,              // read data from the lo bank
+   output logic [DCCM_FDATA_WIDTH-1:0] dccm_rd_data_hi,              // read data from the hi bank
 
    input  logic         scan_mode
 );
@@ -125,8 +125,8 @@ module lsu_dccm_mem
                                      .CLK(dccm_clk[i]),
                                      .WE(wren_bank[i]),
                                      .ADR(addr_bank[i]),
-                                     .D(dccm_wr_data[DCCM_FDATA_WIDTH-1:0]),
-                                     .Q(dccm_bank_dout[i][DCCM_FDATA_WIDTH-1:0])
+                                     .D(dccm_wr_data[38:0]),
+                                     .Q(dccm_bank_dout[i][38:0])
 
                                     );
 

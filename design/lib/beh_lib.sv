@@ -19,6 +19,7 @@
 
 // synthesis translate_off
 `define IN_SIM
+`include "global.svh"
 // synthesis translate_on
 
 `ifndef IN_SIM
@@ -259,31 +260,31 @@ module rvsyncss #(parameter WIDTH = 251)
 
 endmodule // rvsyncss
 
-module rvlsadder
+module rvlsadder #(parameter XLEN = 64)
   (
-    input logic [31:0] rs1,
+    input logic [XLEN-1:0] rs1,
     input logic [11:0] offset,
 
-    output logic [31:0] dout
+    output logic [XLEN-1:0] dout
     );
 
    logic                cout;
    logic                sign;
 
-   logic [31:12]        rs1_inc;
-   logic [31:12]        rs1_dec;
+   logic [XLEN-1:12]        rs1_inc;
+   logic [XLEN-1:12]        rs1_dec;
 
    assign {cout,dout[11:0]} = {1'b0,rs1[11:0]} + {1'b0,offset[11:0]};
 
-   assign rs1_inc[31:12] = rs1[31:12] + 1;
+   assign rs1_inc[XLEN-1:12] = rs1[XLEN-1:12] + 1;
 
-   assign rs1_dec[31:12] = rs1[31:12] - 1;
+   assign rs1_dec[XLEN-1:12] = rs1[XLEN-1:12] - 1;
 
    assign sign = offset[11];
 
-   assign dout[31:12] = ({20{  sign ^~  cout}} &     rs1[31:12]) |
-                        ({20{ ~sign &   cout}}  & rs1_inc[31:12]) |
-                        ({20{  sign &  ~cout}}  & rs1_dec[31:12]);
+   assign dout[XLEN-1:12] = ({XLEN-12{  sign ^~  cout}} &     rs1[XLEN-1:12]) |
+                        ({XLEN-12{ ~sign &   cout}}  & rs1_inc[XLEN-1:12]) |
+                        ({XLEN-12{  sign &  ~cout}}  & rs1_dec[XLEN-1:12]);
 
 endmodule // rvlsadder
 

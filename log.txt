@@ -1,0 +1,227 @@
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu.sv:359: Input port connection 'store_data_dc3' expects 64 bits on the pin connection, but pin connection's SEL generates 32 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.lsu
+      .store_data_dc3(store_data_dc3[31:0]),
+       ^~~~~~~~~~~~~~
+                ... Use "/* verilator lint_off WIDTH */" and lint_on around source to disable this message.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu.sv:367: Input port connection 'store_data_dc4' expects 32 bits on the pin connection, but pin connection's VARREF 'store_data_dc4' generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.lsu
+   lsu_bus_intf bus_intf (.*);
+                ^~~~~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu.sv:367: Input port connection 'store_data_dc5' expects 32 bits on the pin connection, but pin connection's VARREF 'store_data_dc5' generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.lsu
+   lsu_bus_intf bus_intf (.*);
+                ^~~~~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu.sv:367: Output port connection 'bus_read_data_dc3' expects 32 bits on the pin connection, but pin connection's VARREF 'bus_read_data_dc3' generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.lsu
+   lsu_bus_intf bus_intf (.*);
+                ^~~~~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu.sv:367: Output port connection 'lsu_nonblock_load_data' expects 32 bits on the pin connection, but pin connection's VARREF 'lsu_nonblock_load_data' generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.lsu
+   lsu_bus_intf bus_intf (.*);
+                ^~~~~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:281: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                           ({XLEN{~dec_i0_rs1_bypass_en_d   & dec_i0_select_pc_d}} & { dec_i0_pc_d[31:1], 1'b0}) |     
+                                                                                   ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:292: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                                 ({XLEN{~dec_i1_rs1_bypass_en_d   & dec_i1_select_pc_d}} & { dec_i1_pc_d[31:1], 1'b0}) |   
+                                                                                         ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:352: Input port connection 'lsu_result_dc3' expects 64 bits on the pin connection, but pin connection's VARREF 'lsu_result_dc3' generates 32 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+   exu_mul_ctl mul_e1    (.*,
+               ^~~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:364: Input port connection 'dividend' expects 32 bits on the pin connection, but pin connection's SEL generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                          .dividend      ( div_rs1_d[XLEN-1:0]             ),    
+                           ^~~~~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:365: Input port connection 'divisor' expects 32 bits on the pin connection, but pin connection's SEL generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                          .divisor       ( div_rs2_d[XLEN-1:0]             ),    
+                           ^~~~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:370: Output port connection 'out' expects 32 bits on the pin connection, but pin connection's SEL generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                          .out           ( exu_div_result[XLEN-1:0]        ));   
+                           ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:408: Input port connection 'a' expects 32 bits on the pin connection, but pin connection's SEL generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                          .a             ( i0_rs1_final_d[XLEN-1:0]        ),    
+                           ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:409: Input port connection 'b' expects 32 bits on the pin connection, but pin connection's SEL generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                          .b             ( i0_rs2_d[XLEN-1:0]              ),    
+                           ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:413: Output port connection 'out' expects 32 bits on the pin connection, but pin connection's SEL generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                          .out           ( exu_i0_result_e1[XLEN-1:0]      ),    
+                           ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:428: Input port connection 'a' expects 32 bits on the pin connection, but pin connection's SEL generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                          .a             ( i1_rs1_d[XLEN-1:0]              ),    
+                           ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:429: Input port connection 'b' expects 32 bits on the pin connection, but pin connection's SEL generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                          .b             ( i1_rs2_d[XLEN-1:0]              ),    
+                           ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:433: Output port connection 'out' expects 32 bits on the pin connection, but pin connection's SEL generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                          .out           ( exu_i1_result_e1[XLEN-1:0]      ),    
+                           ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:599: Input port connection 'a' expects 32 bits on the pin connection, but pin connection's SEL generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                          .a             ( i0_rs1_e3_final[XLEN-1:0]       ),    
+                           ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:600: Input port connection 'b' expects 32 bits on the pin connection, but pin connection's SEL generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                          .b             ( i0_rs2_e3_final[XLEN-1:0]       ),    
+                           ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:604: Output port connection 'out' expects 32 bits on the pin connection, but pin connection's SEL generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                          .out           ( exu_i0_result_e4[XLEN-1:0]      ),    
+                           ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:619: Input port connection 'a' expects 32 bits on the pin connection, but pin connection's SEL generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                          .a             ( i1_rs1_e3_final[XLEN-1:0]       ),    
+                           ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:620: Input port connection 'b' expects 32 bits on the pin connection, but pin connection's SEL generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                          .b             ( i1_rs2_e3_final[XLEN-1:0]       ),    
+                           ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:624: Output port connection 'out' expects 32 bits on the pin connection, but pin connection's SEL generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                          .out           ( exu_i1_result_e4[XLEN-1:0]      ),    
+                           ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec.sv:545: Input port connection 'wd0' expects 64 bits on the pin connection, but pin connection's SEL generates 32 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.dec
+      .wd0(dec_i0_wdata_wb[31:0]),
+       ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec.sv:548: Input port connection 'wd1' expects 64 bits on the pin connection, but pin connection's SEL generates 32 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.dec
+      .wd1(dec_i1_wdata_wb[31:0]),
+       ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec.sv:551: Input port connection 'wd2' expects 64 bits on the pin connection, but pin connection's SEL generates 32 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.dec
+      .wd2(lsu_nonblock_load_data[31:0]),
+       ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec.sv:604: Input port connection 'exu_i0_result_e1' expects 32 bits on the pin connection, but pin connection's VARREF 'exu_i0_result_e1' generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.dec
+  dec_decode_ctl decode (.*);
+                 ^~~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec.sv:604: Input port connection 'exu_i1_result_e1' expects 32 bits on the pin connection, but pin connection's VARREF 'exu_i1_result_e1' generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.dec
+  dec_decode_ctl decode (.*);
+                 ^~~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec.sv:604: Input port connection 'exu_i0_result_e4' expects 32 bits on the pin connection, but pin connection's VARREF 'exu_i0_result_e4' generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.dec
+  dec_decode_ctl decode (.*);
+                 ^~~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec.sv:604: Input port connection 'exu_i1_result_e4' expects 32 bits on the pin connection, but pin connection's VARREF 'exu_i1_result_e4' generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.dec
+  dec_decode_ctl decode (.*);
+                 ^~~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec.sv:606: Input port connection 'dec_csr_wrdata_wb' expects 32 bits on the pin connection, but pin connection's VARREF 'dec_csr_wrdata_wb' generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.dec
+  dec_tlu_ctl tlu (.*);
+              ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec.sv:606: Output port connection 'dec_csr_rddata_d' expects 32 bits on the pin connection, but pin connection's VARREF 'dec_csr_rddata_d' generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.dec
+  dec_tlu_ctl tlu (.*);
+              ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec.sv:606: Output port connection 'dec_tlu_mrac_ff' expects 32 bits on the pin connection, but pin connection's VARREF 'dec_tlu_mrac_ff' generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.dec
+  dec_tlu_ctl tlu (.*);
+              ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv.sv:1001: Input port connection 'lsu_result_dc3' expects 32 bits on the pin connection, but pin connection's VARREF 'lsu_result_dc3' generates 64 bits.
+                                                                               : ... In instance tb_top.rvtop.swerv
+  exu exu (
+      ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv.sv:1001: Input port connection 'dec_i0_immed_d' expects 64 bits on the pin connection, but pin connection's VARREF 'dec_i0_immed_d' generates 32 bits.
+                                                                               : ... In instance tb_top.rvtop.swerv
+  exu exu (
+      ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv.sv:1001: Input port connection 'dec_i1_immed_d' expects 64 bits on the pin connection, but pin connection's VARREF 'dec_i1_immed_d' generates 32 bits.
+                                                                               : ... In instance tb_top.rvtop.swerv
+  exu exu (
+      ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv.sv:1007: Output port connection 'lsu_imprecise_error_addr_any' expects 32 bits on the pin connection, but pin connection's VARREF 'lsu_imprecise_error_addr_any' generates 64 bits.
+                                                                               : ... In instance tb_top.rvtop.swerv
+  lsu lsu (
+      ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv.sv:1007: Output port connection 'lsu_nonblock_load_data' expects 64 bits on the pin connection, but pin connection's VARREF 'lsu_nonblock_load_data' generates 32 bits.
+                                                                               : ... In instance tb_top.rvtop.swerv
+  lsu lsu (
+      ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv.sv:1007: Output port connection 'dccm_wr_data' expects 71 bits on the pin connection, but pin connection's VARREF 'dccm_wr_data' generates 39 bits.
+                                                                               : ... In instance tb_top.rvtop.swerv
+  lsu lsu (
+      ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv.sv:1021: Input port connection 'lsu_nonblock_load_data' expects 64 bits on the pin connection, but pin connection's VARREF 'lsu_nonblock_load_data' generates 32 bits.
+                                                                               : ... In instance tb_top.rvtop.swerv
+  dec dec (
+      ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv.sv:1021: Input port connection 'lsu_imprecise_error_addr_any' expects 32 bits on the pin connection, but pin connection's VARREF 'lsu_imprecise_error_addr_any' generates 64 bits.
+                                                                               : ... In instance tb_top.rvtop.swerv
+  dec dec (
+      ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv.sv:1021: Output port connection 'dec_i0_immed_d' expects 64 bits on the pin connection, but pin connection's VARREF 'dec_i0_immed_d' generates 32 bits.
+                                                                               : ... In instance tb_top.rvtop.swerv
+  dec dec (
+      ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv.sv:1021: Output port connection 'dec_i1_immed_d' expects 64 bits on the pin connection, but pin connection's VARREF 'dec_i1_immed_d' generates 32 bits.
+                                                                               : ... In instance tb_top.rvtop.swerv
+  dec dec (
+      ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv.sv:1021: Output port connection 'dec_tlu_mrac_ff' expects 64 bits on the pin connection, but pin connection's VARREF 'dec_tlu_mrac_ff' generates 32 bits.
+                                                                               : ... In instance tb_top.rvtop.swerv
+  dec dec (
+      ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/mem.sv:106: Input port connection 'dccm_wr_data' expects 71 bits on the pin connection, but pin connection's VARREF 'dccm_wr_data' generates 39 bits.
+                                                                            : ... In instance tb_top.rvtop.mem
+      lsu_dccm_mem dccm (
+                   ^~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/mem.sv:106: Output port connection 'dccm_rd_data_lo' expects 71 bits on the pin connection, but pin connection's VARREF 'dccm_rd_data_lo' generates 39 bits.
+                                                                            : ... In instance tb_top.rvtop.mem
+      lsu_dccm_mem dccm (
+                   ^~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/mem.sv:106: Output port connection 'dccm_rd_data_hi' expects 71 bits on the pin connection, but pin connection's VARREF 'dccm_rd_data_hi' generates 39 bits.
+                                                                            : ... In instance tb_top.rvtop.mem
+      lsu_dccm_mem dccm (
+                   ^~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv_wrapper.sv:405: Output port connection 'dccm_wr_data' expects 39 bits on the pin connection, but pin connection's VARREF 'dccm_wr_data' generates 71 bits.
+                                                                                      : ... In instance tb_top.rvtop
+  swerv swerv (.*);
+        ^~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv_wrapper.sv:405: Input port connection 'dccm_rd_data_lo' expects 39 bits on the pin connection, but pin connection's VARREF 'dccm_rd_data_lo' generates 71 bits.
+                                                                                      : ... In instance tb_top.rvtop
+  swerv swerv (.*);
+        ^~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv_wrapper.sv:405: Input port connection 'dccm_rd_data_hi' expects 39 bits on the pin connection, but pin connection's VARREF 'dccm_rd_data_hi' generates 71 bits.
+                                                                                      : ... In instance tb_top.rvtop
+  swerv swerv (.*);
+        ^~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv_wrapper.sv:408: Input port connection 'dccm_wr_data' expects 39 bits on the pin connection, but pin connection's VARREF 'dccm_wr_data' generates 71 bits.
+                                                                                      : ... In instance tb_top.rvtop
+  mem mem (
+      ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv_wrapper.sv:408: Output port connection 'dccm_rd_data_lo' expects 39 bits on the pin connection, but pin connection's VARREF 'dccm_rd_data_lo' generates 71 bits.
+                                                                                      : ... In instance tb_top.rvtop
+  mem mem (
+      ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv_wrapper.sv:408: Output port connection 'dccm_rd_data_hi' expects 39 bits on the pin connection, but pin connection's VARREF 'dccm_rd_data_hi' generates 71 bits.
+                                                                                      : ... In instance tb_top.rvtop
+  mem mem (
+      ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/testbench/tb_top.sv:360: Operator PATMEMBER expects 32 bits on the Pattern value, but Pattern value's VARXREF 'dec_i1_wdata_wb' generates 64 bits.
+                                                                                  : ... In instance tb_top
+        wb_data[1:0]   <= '{rvtop.swerv.dec.dec_i1_wdata_wb, rvtop.swerv.dec.dec_i0_wdata_wb};
+                                           ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/testbench/tb_top.sv:360: Operator PATMEMBER expects 32 bits on the Pattern value, but Pattern value's VARXREF 'dec_i0_wdata_wb' generates 64 bits.
+                                                                                  : ... In instance tb_top
+        wb_data[1:0]   <= '{rvtop.swerv.dec.dec_i1_wdata_wb, rvtop.swerv.dec.dec_i0_wdata_wb};
+                                                                            ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/testbench/tb_top.sv:379: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARXREF 'lsu_nonblock_load_data' generates 64 bits.
+                                                                                  : ... In instance tb_top
+            tb_top.gpr[0][rvtop.swerv.dec.dec_nonblock_load_waddr] = rvtop.swerv.dec.lsu_nonblock_load_data;
+                                                                   ^
+%Error: Exiting due to 56 warning(s)
+make: *** [tools/Makefile:98: verilator-build] Error 1

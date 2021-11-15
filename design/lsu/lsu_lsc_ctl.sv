@@ -55,10 +55,10 @@ module lsu_lsc_ctl
    input logic        lsu_store_c1_dc4_clk,
    input logic        lsu_store_c1_dc5_clk,
 
-   input logic [31:0] i0_result_e4_eff,
-   input logic [31:0] i1_result_e4_eff,
+   input logic [XLEN-1:0] i0_result_e4_eff,
+   input logic [XLEN-1:0] i1_result_e4_eff,
 
-   input logic [31:0] i0_result_e2,
+   input logic [XLEN-1:0] i0_result_e2,
 
    input logic         ld_bus_error_dc3,
    input logic [31:0]  ld_bus_error_addr_dc3,
@@ -73,18 +73,18 @@ module lsu_lsc_ctl
    input logic         flush_dc4,
    input logic         flush_dc5,
 
-   input logic [31:0]  exu_lsu_rs1_d, // address
-   input logic [31:0]  exu_lsu_rs2_d, // store data
+   input logic [XLEN-1:0]  exu_lsu_rs1_d, // address
+   input logic [XLEN-1:0]  exu_lsu_rs2_d, // store data
 
    input lsu_pkt_t     lsu_p,         // lsu control packet
    input logic [11:0]  dec_lsu_offset_d,
 
-   input  logic [31:0] picm_mask_data_dc3,
-   input  logic [31:0] lsu_ld_data_dc3,
-   input  logic [31:0] lsu_ld_data_corr_dc3,
-   input  logic [31:0]  bus_read_data_dc3,
-   output logic [31:0] lsu_result_dc3,
-   output logic [31:0] lsu_result_corr_dc4,   // This is the ECC corrected data going to RF
+   input  logic [XLEN-1:0] picm_mask_data_dc3,
+   input  logic [XLEN-1:0] lsu_ld_data_dc3,
+   input  logic [XLEN-1:0] lsu_ld_data_corr_dc3,
+   input  logic [XLEN-1:0]  bus_read_data_dc3,
+   output logic [XLEN-1:0] lsu_result_dc3,
+   output logic [XLEN-1:0] lsu_result_corr_dc4,   // This is the ECC corrected data going to RF
    // lsu address down the pipe
    output logic [31:0] lsu_addr_dc1,
    output logic [31:0] lsu_addr_dc2,
@@ -98,10 +98,10 @@ module lsu_lsc_ctl
    output logic [31:0] end_addr_dc4,
    output logic [31:0] end_addr_dc5,
    // store data down the pipe
-   output logic [63:0] store_data_dc2,
-   output logic [63:0] store_data_dc3,
-   output logic [31:0] store_data_dc4,
-   output logic [31:0] store_data_dc5,
+   output logic [XLEN-1:0] store_data_dc2,
+   output logic [XLEN-1:0] store_data_dc3,
+   output logic [XLEN-1:0] store_data_dc4,
+   output logic [XLEN-1:0] store_data_dc5,
 
    input  logic [31:0]    dec_tlu_mrac_ff,
    output logic           lsu_exc_dc2,
@@ -143,16 +143,16 @@ module lsu_lsc_ctl
 
 `include "global.svh"
 
-   logic [31:0]        full_addr_dc1;
-   logic [31:0]        full_end_addr_dc1;
-   logic [31:0]        lsu_rs1_d;
+   logic [XLEN-1:0]        full_addr_dc1;
+   logic [XLEN-1:0]        full_end_addr_dc1;
+   logic [XLEN-1:0]        lsu_rs1_d;
    logic [11:0]        lsu_offset_d;
-   logic [31:0]        rs1_dc1;
+   logic [XLEN-1:0]        rs1_dc1;
    logic [11:0]        offset_dc1;
    logic [12:0]        end_addr_offset_dc1;
-   logic [31:0]        lsu_ld_datafn_dc3;
-   logic [31:0]        lsu_ld_datafn_corr_dc3;
-   logic [31:0]        lsu_result_corr_dc3;
+   logic [XLEN-1:0]        lsu_ld_datafn_dc3;
+   logic [XLEN-1:0]        lsu_ld_datafn_corr_dc3;
+   logic [XLEN-1:0]        lsu_result_corr_dc3;
    logic [2:0]         addr_offset_dc1;
 
    logic [63:0]        dma_mem_wdata_shifted;
@@ -167,26 +167,26 @@ module lsu_lsc_ctl
    logic [63:0]        store_data_pre_dc3;
    logic [63:0]        store_data_dc2_in;
 
-   logic [31:0]        rs1_dc1_raw;
+   logic [XLEN-1:0]        rs1_dc1_raw;
 
    lsu_pkt_t           dma_pkt_d;
    lsu_pkt_t           lsu_pkt_dc1_in, lsu_pkt_dc2_in, lsu_pkt_dc3_in, lsu_pkt_dc4_in, lsu_pkt_dc5_in;
 
    // Premux the rs1/offset for dma
-   assign lsu_rs1_d[31:0] = dma_dccm_req ? dma_mem_addr[31:0] : exu_lsu_rs1_d[31:0];
+   assign lsu_rs1_d[XLEN-1:0] = dma_dccm_req ? {XLEN-32'h0,dma_mem_addr[31:0]} : exu_lsu_rs1_d[XLEN-1:0];
    assign lsu_offset_d[11:0] = dec_lsu_offset_d[11:0] & ~{12{dma_dccm_req}};
 
-   rvdffe #(32) rs1ff (.*, .din(lsu_rs1_d[31:0]), .dout(rs1_dc1_raw[31:0]), .en(lsu_freeze_c1_dc1_clken));
+   rvdffe #(XLEN) rs1ff (.*, .din(lsu_rs1_d[XLEN-1:0]), .dout(rs1_dc1_raw[XLEN-1:0]), .en(lsu_freeze_c1_dc1_clken));
    rvdffe #(12) offsetff (.*, .din(lsu_offset_d[11:0]), .dout(offset_dc1[11:0]), .en(lsu_freeze_c1_dc1_clken));
 
-   assign rs1_dc1[31:0] = (lsu_pkt_dc1.load_ldst_bypass_c1) ? lsu_result_dc3[31:0] : rs1_dc1_raw[31:0];
+   assign rs1_dc1[XLEN-1:0] = (lsu_pkt_dc1.load_ldst_bypass_c1) ? lsu_result_dc3[XLEN-1:0] : rs1_dc1_raw[XLEN-1:0];
 
 
    // generate the ls address
    // need to refine this is memory is only 128KB
-   rvlsadder   lsadder  (.rs1(rs1_dc1[31:0]),
+   rvlsadder   lsadder  (.rs1(rs1_dc1[XLEN-1:0]),
                        .offset(offset_dc1[11:0]),
-                       .dout(full_addr_dc1[31:0])
+                       .dout(full_addr_dc1[XLEN-1:0])
                        );
 
    // Module to generate the memory map of the address
@@ -199,7 +199,7 @@ module lsu_lsc_ctl
    // Calculate start/end address for load/store
    assign addr_offset_dc1[2:0]      = ({3{lsu_pkt_dc1.half}} & 3'b01) | ({3{lsu_pkt_dc1.word}} & 3'b11) | ({3{lsu_pkt_dc1.dword}} & 3'b111);
    assign end_addr_offset_dc1[12:0] = {offset_dc1[11],offset_dc1[11:0]} + {9'b0,addr_offset_dc1[2:0]};
-   assign full_end_addr_dc1[31:0]   = rs1_dc1[31:0] + {{19{end_addr_offset_dc1[12]}},end_addr_offset_dc1[12:0]};
+   assign full_end_addr_dc1[31:0]   = rs1_dc1[31:0] + {{32-13{end_addr_offset_dc1[12]}},end_addr_offset_dc1[12:0]};
    assign end_addr_dc1[31:0]        = full_end_addr_dc1[31:0];
    assign lsu_exc_dc2               = access_fault_dc2 | misaligned_fault_dc2;
    assign lsu_freeze_external_ints_dc3 = lsu_freeze_dc3 & is_sideeffects_dc3;
@@ -284,23 +284,23 @@ module lsu_lsc_ctl
    assign lsu_commit_dc5 = lsu_pkt_dc5.valid & (lsu_pkt_dc5.store | lsu_pkt_dc5.load) & ~flush_dc5 & ~lsu_pkt_dc5.dma;
 
    assign dma_mem_wdata_shifted[63:0] = dma_mem_wdata[63:0] >> {dma_mem_addr[2:0], 3'b000};   // Shift the dma data to lower bits to make it consistent to lsu stores
-   assign store_data_d[63:0] = dma_dccm_req ? dma_mem_wdata_shifted[63:0] : {32'b0,exu_lsu_rs2_d[31:0]};
+   assign store_data_d[63:0] = dma_dccm_req ? dma_mem_wdata_shifted[63:0] : {exu_lsu_rs2_d[XLEN-1:0]};
 
-   assign store_data_dc2_in[63:32] = store_data_dc1[63:32];
-   assign store_data_dc2_in[31:0] = (lsu_pkt_dc1.store_data_bypass_c1) ? lsu_result_dc3[31:0] :
-                                    (lsu_pkt_dc1.store_data_bypass_e4_c1[1]) ? i1_result_e4_eff[31:0] :
-                                    (lsu_pkt_dc1.store_data_bypass_e4_c1[0]) ? i0_result_e4_eff[31:0] : store_data_dc1[31:0];
+ //  assign store_data_dc2_in[63:32] = store_data_dc1[63:32];
+   assign store_data_dc2_in[XLEN-1:0] = (lsu_pkt_dc1.store_data_bypass_c1) ? lsu_result_dc3[XLEN-1:0] :
+                                    (lsu_pkt_dc1.store_data_bypass_e4_c1[1]) ? i1_result_e4_eff[XLEN-1:0] :
+                                    (lsu_pkt_dc1.store_data_bypass_e4_c1[0]) ? i0_result_e4_eff[XLEN-1:0] : store_data_dc1[XLEN-1:0];
 
-   assign store_data_dc2[63:32] = store_data_pre_dc2[63:32];
-   assign store_data_dc2[31:0] = (lsu_pkt_dc2.store_data_bypass_i0_e2_c2) ? i0_result_e2[31:0]     :
-                                 (lsu_pkt_dc2.store_data_bypass_c2)       ? lsu_result_dc3[31:0]   :
-                                 (lsu_pkt_dc2.store_data_bypass_e4_c2[1]) ? i1_result_e4_eff[31:0] :
-                                 (lsu_pkt_dc2.store_data_bypass_e4_c2[0]) ? i0_result_e4_eff[31:0] : store_data_pre_dc2[31:0];
+  // assign store_data_dc2[63:32] = store_data_pre_dc2[63:32];
+   assign store_data_dc2[XLEN-1:0] = (lsu_pkt_dc2.store_data_bypass_i0_e2_c2) ? i0_result_e2[XLEN-1:0]     :
+                                 (lsu_pkt_dc2.store_data_bypass_c2)       ? lsu_result_dc3[XLEN-1:0]   :
+                                 (lsu_pkt_dc2.store_data_bypass_e4_c2[1]) ? i1_result_e4_eff[XLEN-1:0] :
+                                 (lsu_pkt_dc2.store_data_bypass_e4_c2[0]) ? i0_result_e4_eff[XLEN-1:0] : store_data_pre_dc2[XLEN-1:0];
 
-   assign store_data_dc3[63:32] = store_data_pre_dc3[63:32];
-   assign store_data_dc3[31:0] = (picm_mask_data_dc3[31:0] | {32{~addr_in_pic_dc3}}) &
-                                 ((lsu_pkt_dc3.store_data_bypass_e4_c3[1]) ? i1_result_e4_eff[31:0] :
-                                  (lsu_pkt_dc3.store_data_bypass_e4_c3[0]) ? i0_result_e4_eff[31:0] : store_data_pre_dc3[31:0]);
+//   assign store_data_dc3[63:32] = store_data_pre_dc3[63:32];
+   assign store_data_dc3[XLEN-1:0] = (picm_mask_data_dc3[XLEN-1:0] | {XLEN{~addr_in_pic_dc3}}) &
+                                 ((lsu_pkt_dc3.store_data_bypass_e4_c3[1]) ? i1_result_e4_eff[XLEN-1:0] :
+                                  (lsu_pkt_dc3.store_data_bypass_e4_c3[0]) ? i0_result_e4_eff[XLEN-1:0] : store_data_pre_dc3[XLEN-1:0]);
 
    rvdff #(32) lsu_result_corr_dc4ff (.*, .din(lsu_result_corr_dc3[31:0]), .dout(lsu_result_corr_dc4[31:0]), .clk(lsu_c1_dc4_clk));
 
@@ -308,18 +308,18 @@ module lsu_lsc_ctl
    rvdffe #(64) sddc2ff (.*, .din(store_data_dc2_in[63:0]), .dout(store_data_pre_dc2[63:0]), .en(lsu_store_c1_dc2_clken));
    rvdffe #(64) sddc3ff (.*, .din(store_data_dc2[63:0]), .dout(store_data_pre_dc3[63:0]), .en(~lsu_freeze_dc3 & lsu_store_c1_dc3_clken) );
 
-   rvdff #(32) sddc4ff (.*, .din(store_data_dc3[31:0]), .dout(store_data_dc4[31:0]), .clk(lsu_store_c1_dc4_clk));
-   rvdff #(32) sddc5ff (.*, .din(store_data_dc4[31:0]), .dout(store_data_dc5[31:0]), .clk(lsu_store_c1_dc5_clk));
+   rvdff #(XLEN) sddc4ff (.*, .din(store_data_dc3[XLEN-1:0]), .dout(store_data_dc4[XLEN-1:0]), .clk(lsu_store_c1_dc4_clk));
+   rvdff #(XLEN) sddc5ff (.*, .din(store_data_dc4[XLEN-1:0]), .dout(store_data_dc5[XLEN-1:0]), .clk(lsu_store_c1_dc5_clk));
 
-   rvdffe #(32) sadc2ff (.*, .din(lsu_addr_dc1[31:0]), .dout(lsu_addr_dc2[31:0]), .en(lsu_freeze_c1_dc2_clken));
-   rvdffe #(32) sadc3ff (.*, .din(lsu_addr_dc2[31:0]), .dout(lsu_addr_dc3[31:0]), .en(lsu_freeze_c1_dc3_clken));
-   rvdff #(32) sadc4ff (.*, .din(lsu_addr_dc3[31:0]), .dout(lsu_addr_dc4[31:0]), .clk(lsu_c1_dc4_clk));
-   rvdff #(32) sadc5ff (.*, .din(lsu_addr_dc4[31:0]), .dout(lsu_addr_dc5[31:0]), .clk(lsu_c1_dc5_clk));
+   rvdffe #(32) sadc2ff (.*, .din(lsu_addr_dc1[32-1:0]), .dout(lsu_addr_dc2[32-1:0]), .en(lsu_freeze_c1_dc2_clken));
+   rvdffe #(32) sadc3ff (.*, .din(lsu_addr_dc2[32-1:0]), .dout(lsu_addr_dc3[32-1:0]), .en(lsu_freeze_c1_dc3_clken));
+   rvdff #(32) sadc4ff (.*, .din(lsu_addr_dc3[32-1:0]), .dout(lsu_addr_dc4[32-1:0]), .clk(lsu_c1_dc4_clk));
+   rvdff #(32) sadc5ff (.*, .din(lsu_addr_dc4[32-1:0]), .dout(lsu_addr_dc5[32-1:0]), .clk(lsu_c1_dc5_clk));
 
-   rvdffe #(32) end_addr_dc2ff (.*, .din(end_addr_dc1[31:0]), .dout(end_addr_dc2[31:0]), .en(lsu_freeze_c1_dc2_clken));
-   rvdffe #(32) end_addr_dc3ff (.*, .din(end_addr_dc2[31:0]), .dout(end_addr_dc3[31:0]), .en(lsu_freeze_c1_dc3_clken));
-   rvdff #(32) end_addr_dc4ff (.*, .din(end_addr_dc3[31:0]), .dout(end_addr_dc4[31:0]), .clk(lsu_c1_dc4_clk));
-   rvdff #(32) end_addr_dc5ff (.*, .din(end_addr_dc4[31:0]), .dout(end_addr_dc5[31:0]), .clk(lsu_c1_dc5_clk));
+   rvdffe #(32) end_addr_dc2ff (.*, .din(end_addr_dc1[32-1:0]), .dout(end_addr_dc2[32-1:0]), .en(lsu_freeze_c1_dc2_clken));
+   rvdffe #(32) end_addr_dc3ff (.*, .din(end_addr_dc2[32-1:0]), .dout(end_addr_dc3[32-1:0]), .en(lsu_freeze_c1_dc3_clken));
+   rvdff #(32) end_addr_dc4ff (.*, .din(end_addr_dc3[32-1:0]), .dout(end_addr_dc4[32-1:0]), .clk(lsu_c1_dc4_clk));
+   rvdff #(32) end_addr_dc5ff (.*, .din(end_addr_dc4[32-1:0]), .dout(end_addr_dc5[32-1:0]), .clk(lsu_c1_dc5_clk));
 
    rvdff_fpga #(1) addr_in_dccm_dc2ff     (.din(addr_in_dccm_dc1),     .dout(addr_in_dccm_dc2),     .clk(lsu_freeze_c1_dc2_clk), .rawclk(clk), .clken(lsu_freeze_c1_dc2_clken), .*);
    rvdff_fpga #(1) addr_in_dccm_dc3ff     (.din(addr_in_dccm_dc2),     .dout(addr_in_dccm_dc3),     .clk(lsu_freeze_c1_dc3_clk), .rawclk(clk), .clken(lsu_freeze_c1_dc3_clken), .*);

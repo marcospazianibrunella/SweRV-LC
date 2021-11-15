@@ -381,8 +381,8 @@ module swerv
     input  logic        dmi_hard_reset,
 
     input logic [`RV_PIC_TOTAL_INT:1] extintsrc_req,
-    input logic                         timer_int,
-    input logic                         scan_mode
+    input logic                       timer_int,
+    input logic                       scan_mode
 );
 
 
@@ -598,16 +598,16 @@ module swerv
   cache_debug_pkt_t dec_tlu_ic_diag_pkt; // packet of DICAWICS, DICAD0/1, DICAGO info for icache diagnostics
 
 
-  logic [31:0] gpr_i0_rs1_d;
-  logic [31:0] gpr_i0_rs2_d;
-  logic [31:0] gpr_i1_rs1_d;
-  logic [31:0] gpr_i1_rs2_d;
+  logic [XLEN-1:0] gpr_i0_rs1_d;
+  logic [XLEN-1:0] gpr_i0_rs2_d;
+  logic [XLEN-1:0] gpr_i1_rs1_d;
+  logic [XLEN-1:0] gpr_i1_rs2_d;
 
-  logic [31:0] i0_rs1_bypass_data_d;
-  logic [31:0] i0_rs2_bypass_data_d;
-  logic [31:0] i1_rs1_bypass_data_d;
-  logic [31:0] i1_rs2_bypass_data_d;
-  logic [31:0] exu_i0_result_e1, exu_i1_result_e1;
+  logic [XLEN-1:0] i0_rs1_bypass_data_d;
+  logic [XLEN-1:0] i0_rs2_bypass_data_d;
+  logic [XLEN-1:0] i1_rs1_bypass_data_d;
+  logic [XLEN-1:0] i1_rs2_bypass_data_d;
+  logic [XLEN-1:0] exu_i0_result_e1, exu_i1_result_e1;
   logic [31:1] exu_i0_pc_e1;
   logic [31:1] exu_i1_pc_e1;  // from the primary alu's
   logic [31:1] exu_npc_e4;
@@ -663,8 +663,8 @@ module swerv
 
   logic [31:1] exu_flush_path_final;
 
-  logic [31:0] exu_lsu_rs1_d;
-  logic [31:0] exu_lsu_rs2_d;
+  logic [XLEN-1:0] exu_lsu_rs1_d;
+  logic [XLEN-1:0] exu_lsu_rs2_d;
 
 
   lsu_pkt_t lsu_p;
@@ -673,14 +673,14 @@ module swerv
   logic dec_i0_lsu_d;  // chose which gpr value to use
   logic dec_i1_lsu_d;
 
-  logic [31:0] lsu_result_dc3;
-  logic [31:0] lsu_result_corr_dc4;  // ECC corrected lsu load data
+  logic [XLEN-1:0] lsu_result_dc3;
+  logic [XLEN-1:0] lsu_result_corr_dc4;  // ECC corrected lsu load data
   lsu_error_pkt_t lsu_error_pkt_dc3;
   logic lsu_single_ecc_error_incr;  // Increment the counter for Single ECC error
   logic lsu_freeze_external_ints_dc3;
   logic lsu_imprecise_error_load_any;
   logic lsu_imprecise_error_store_any;
-  logic [31:0] lsu_imprecise_error_addr_any;
+  logic [XLEN-1:0] lsu_imprecise_error_addr_any;
   logic lsu_load_stall_any;  // This is for blocking stores
   logic lsu_store_stall_any;  // This is for blocking stores
   logic lsu_load_ecc_stbuf_full_dc3;  // Load with ecc error can't allocate to stbuf
@@ -701,7 +701,7 @@ module swerv
 
   logic dec_csr_ren_d;
 
-  logic [31:0] exu_csr_rs1_e1;
+  logic [XLEN-1:0] exu_csr_rs1_e1;
 
   logic dec_tlu_flush_lower_wb;
   logic dec_tlu_i0_kill_writeb_wb;  // I0 is flushed, don't writeback any results to arch state
@@ -717,14 +717,14 @@ module swerv
 
   mul_pkt_t                          mul_p;
 
-  logic         [             31:0 ] exu_mul_result_e3;
+  logic         [         XLEN-1:0 ] exu_mul_result_e3;
 
   logic                              dec_i0_mul_d;
   logic                              dec_i1_mul_d;
 
   div_pkt_t                          div_p;
 
-  logic         [             31:0 ] exu_div_result;
+  logic         [         XLEN-1:0 ] exu_div_result;
   logic                              exu_div_finish;
   logic                              exu_div_stall;
 
@@ -741,17 +741,17 @@ module swerv
 
   logic         [             31:1 ] pred_correct_npc_e2;
 
-  logic         [             31:0 ] exu_i0_result_e4;
-  logic         [             31:0 ] exu_i1_result_e4;
+  logic         [             XLEN-1:0 ] exu_i0_result_e4;
+  logic         [             XLEN-1:0 ] exu_i1_result_e4;
 
   logic                              dec_i0_rs1_bypass_en_e3;
   logic                              dec_i0_rs2_bypass_en_e3;
   logic                              dec_i1_rs1_bypass_en_e3;
   logic                              dec_i1_rs2_bypass_en_e3;
-  logic         [             31:0 ] i0_rs1_bypass_data_e3;
-  logic         [             31:0 ] i0_rs2_bypass_data_e3;
-  logic         [             31:0 ] i1_rs1_bypass_data_e3;
-  logic         [             31:0 ] i1_rs2_bypass_data_e3;
+  logic         [             XLEN-1:0 ] i0_rs1_bypass_data_e3;
+  logic         [             XLEN-1:0 ] i0_rs2_bypass_data_e3;
+  logic         [             XLEN-1:0 ] i1_rs1_bypass_data_e3;
+  logic         [             XLEN-1:0 ] i1_rs2_bypass_data_e3;
   logic                              dec_i0_sec_decode_e3;
   logic                              dec_i1_sec_decode_e3;
   logic         [             31:1 ] dec_i0_pc_e3;
@@ -761,10 +761,10 @@ module swerv
   logic                              dec_i0_rs2_bypass_en_e2;
   logic                              dec_i1_rs1_bypass_en_e2;
   logic                              dec_i1_rs2_bypass_en_e2;
-  logic         [             31:0 ] i0_rs1_bypass_data_e2;
-  logic         [             31:0 ] i0_rs2_bypass_data_e2;
-  logic         [             31:0 ] i1_rs1_bypass_data_e2;
-  logic         [             31:0 ] i1_rs2_bypass_data_e2;
+  logic         [             XLEN-1:0 ] i0_rs1_bypass_data_e2;
+  logic         [             XLEN-1:0 ] i0_rs2_bypass_data_e2;
+  logic         [             XLEN-1:0 ] i1_rs1_bypass_data_e2;
+  logic         [             XLEN-1:0 ] i1_rs2_bypass_data_e2;
 
   logic                              exu_i0_flush_lower_e4;  // to tlu for lower branch flushes
   logic                              exu_i1_flush_lower_e4;
@@ -833,10 +833,10 @@ module swerv
   logic dccm_ready;
   logic iccm_ready;
 
-  logic [31:0] i0_result_e4_eff;
-  logic [31:0] i1_result_e4_eff;
+  logic [XLEN-1:0] i0_result_e4_eff;
+  logic [XLEN-1:0] i1_result_e4_eff;
 
-  logic [31:0] i0_result_e2;
+  logic [XLEN-1:0] i0_result_e2;
 
   logic ifu_i0_icaf;
   logic ifu_i1_icaf;

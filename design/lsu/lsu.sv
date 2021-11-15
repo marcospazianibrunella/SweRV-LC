@@ -29,9 +29,9 @@ module lsu
    import swerv_types::*;
 (
 
-   input logic [31:0]                      i0_result_e4_eff, // I0 e4 result for e4 -> dc3 store forwarding
-   input logic [31:0]                      i1_result_e4_eff, // I1 e4 result for e4 -> dc3 store forwarding
-   input logic [31:0]                      i0_result_e2,     // I0 e2 result for e2 -> dc2 store forwarding
+   input logic [XLEN-1:0]                      i0_result_e4_eff, // I0 e4 result for e4 -> dc3 store forwarding
+   input logic [XLEN-1:0]                      i1_result_e4_eff, // I1 e4 result for e4 -> dc3 store forwarding
+   input logic [XLEN-1:0]                      i0_result_e2,     // I0 e2 result for e2 -> dc2 store forwarding
 
    input logic                             flush_final_e3,    // I0/I1 flush in e3
    input logic                             i0_flush_final_e3, // I0 flush in e3
@@ -47,17 +47,17 @@ module lsu
    input logic                             dec_tlu_sideeffect_posted_disable,  // disable posted writes to sideeffect addr to the bus
    input logic                             dec_tlu_core_ecc_disable,        // disable the generation of the ecc
 
-   input logic [31:0]                      exu_lsu_rs1_d,      // address rs operand
-   input logic [31:0]                      exu_lsu_rs2_d,      // store data
+   input logic [XLEN-1:0]                      exu_lsu_rs1_d,      // address rs operand
+   input logic [XLEN-1:0]                      exu_lsu_rs2_d,      // store data
    input logic [11:0]                      dec_lsu_offset_d,   // address offset operand
 
    input                                   lsu_pkt_t lsu_p,     // lsu control packet
    input logic                             dec_i0_lsu_decode_d, // lsu is in i0
    input logic [31:0]                      dec_tlu_mrac_ff,     // CSR for memory region control
 
-   output logic [31:0]                     lsu_result_dc3,      // lsu load data
+   output logic [XLEN-1:0]                     lsu_result_dc3,      // lsu load data
    output logic                            lsu_single_ecc_error_incr,     // Increment the counter for Single ECC error
-   output logic [31:0]                     lsu_result_corr_dc4, // This is the ECC corrected data going to RF
+   output logic [XLEN-1:0]                     lsu_result_corr_dc4, // This is the ECC corrected data going to RF
    output logic                            lsu_freeze_dc3,      // lsu freeze due to load to external
    output logic                            lsu_load_stall_any, // This is for blocking loads in the decode
    output logic                            lsu_store_stall_any, // This is for blocking stores in the decode
@@ -80,7 +80,7 @@ module lsu
    output logic                                 lsu_nonblock_load_data_valid,   // the non block is valid - sending information back to the cam
    output logic                                 lsu_nonblock_load_data_error,   // non block load has an error
    output logic [`RV_LSU_NUM_NBLOAD_WIDTH-1:0]  lsu_nonblock_load_data_tag,     // the tag of the non block load sending the data/error
-   output logic [31:0]                          lsu_nonblock_load_data,         // Data of the non block load
+   output logic [XLEN-1:0]                          lsu_nonblock_load_data,         // Data of the non block load
 
    output logic                            lsu_pmu_misaligned_dc3,         // PMU : misaligned
    output logic                            lsu_pmu_bus_trxn,               // PMU : bus transaction
@@ -98,7 +98,7 @@ module lsu
    output logic [`RV_DCCM_BITS-1:0]        dccm_wr_addr,    // DCCM write address (write can happen to one bank only)
    output logic [`RV_DCCM_BITS-1:0]        dccm_rd_addr_lo, // DCCM read address low bank
    output logic [`RV_DCCM_BITS-1:0]        dccm_rd_addr_hi, // DCCM read address hi bank (hi and low same if aligned read)
-   output logic [`RV_DCCM_FDATA_WIDTH-1:0] dccm_wr_data,    // DCCM write data (this is always aligned)
+   output logic [DCCM_FDATA_WIDTH-1:0] dccm_wr_data,    // DCCM write data (this is always aligned)
 
    input logic [`RV_DCCM_FDATA_WIDTH-1:0]  dccm_rd_data_lo, // DCCM read data low bank
    input logic [`RV_DCCM_FDATA_WIDTH-1:0]  dccm_rd_data_hi, // DCCM read data hi bank
@@ -183,12 +183,12 @@ module lsu
 `include "global.svh"
 
    logic        lsu_dccm_rden_dc3;
-   logic [63:0] store_data_dc2;
-   logic [63:0] store_data_dc3;
-   logic [31:0] store_data_dc4;
-   logic [31:0] store_data_dc5;
-   logic [31:0] store_ecc_datafn_hi_dc3;
-   logic [31:0] store_ecc_datafn_lo_dc3;
+   logic [XLEN-1:0] store_data_dc2;
+   logic [XLEN-1:0] store_data_dc3;
+   logic [XLEN-1:0] store_data_dc4;
+   logic [XLEN-1:0] store_data_dc5;
+   logic [XLEN-1:0] store_ecc_datafn_hi_dc3;
+   logic [XLEN-1:0] store_ecc_datafn_lo_dc3;
 
    logic        single_ecc_error_hi_dc3, single_ecc_error_lo_dc3;
    logic        lsu_single_ecc_error_dc3, lsu_single_ecc_error_dc4, lsu_single_ecc_error_dc5;
@@ -199,9 +199,9 @@ module lsu
    logic [6:0]  dccm_data_ecc_hi_dc3;
    logic [6:0]  dccm_data_ecc_lo_dc3;
 
-   logic [31:0] lsu_ld_data_dc3;
-   logic [31:0] lsu_ld_data_corr_dc3;
-   logic [31:0] picm_mask_data_dc3;
+   logic [XLEN-1:0] lsu_ld_data_dc3;
+   logic [XLEN-1:0] lsu_ld_data_corr_dc3;
+   logic [XLEN-1:0] picm_mask_data_dc3;
 
    logic [31:0] lsu_addr_dc1, lsu_addr_dc2, lsu_addr_dc3, lsu_addr_dc4, lsu_addr_dc5;
    logic [31:0] end_addr_dc1, end_addr_dc2, end_addr_dc3, end_addr_dc4, end_addr_dc5;
@@ -230,10 +230,10 @@ module lsu
    logic [(DCCM_FDATA_WIDTH-DCCM_DATA_WIDTH-1):0] stbuf_ecc_any;
 
    logic                       lsu_cmpen_dc2;
-   logic [DCCM_DATA_WIDTH-1:0] stbuf_fwddata_hi_dc3;
-   logic [DCCM_DATA_WIDTH-1:0] stbuf_fwddata_lo_dc3;
-   logic [DCCM_BYTE_WIDTH-1:0] stbuf_fwdbyteen_hi_dc3;
-   logic [DCCM_BYTE_WIDTH-1:0] stbuf_fwdbyteen_lo_dc3;
+   logic [DCCM_DATA_WIDTH/2-1:0] stbuf_fwddata_hi_dc3;
+   logic [DCCM_DATA_WIDTH/2-1:0] stbuf_fwddata_lo_dc3;
+   logic [DCCM_BYTE_WIDTH/2-1:0] stbuf_fwdbyteen_hi_dc3;
+   logic [DCCM_BYTE_WIDTH/2-1:0] stbuf_fwdbyteen_lo_dc3;
 
    logic        lsu_stbuf_commit_any;
    logic        lsu_stbuf_empty_any;
@@ -246,7 +246,7 @@ module lsu
    logic        lsu_bus_buffer_empty_any;
    logic        lsu_bus_buffer_full_any;
    logic        lsu_busreq_dc2;
-   logic [31:0] bus_read_data_dc3;
+   logic [XLEN-1:0] bus_read_data_dc3;
    logic        ld_bus_error_dc3;
    logic [31:0] ld_bus_error_addr_dc3;
 
@@ -344,6 +344,14 @@ module lsu
    lsu_ecc ecc (
       .lsu_addr_dc3(lsu_addr_dc3[DCCM_BITS-1:0]),
       .end_addr_dc3(end_addr_dc3[DCCM_BITS-1:0]),
+      .stbuf_fwddata_hi_dc3({32'h0,stbuf_fwddata_hi_dc3}),
+      .stbuf_fwddata_lo_dc3({32'h0,stbuf_fwddata_lo_dc3}),
+      .stbuf_fwdbyteen_hi_dc3({4'h0,stbuf_fwdbyteen_hi_dc3}),
+      .stbuf_fwdbyteen_lo_dc3({4'h0,stbuf_fwdbyteen_lo_dc3}),
+      .dccm_data_hi_dc3({32'h0,dccm_data_hi_dc3}),
+      .dccm_data_lo_dc3({32'h0,dccm_data_lo_dc3}),
+      .dccm_data_ecc_hi_dc3(dccm_data_ecc_hi_dc3),
+      .dccm_data_ecc_lo_dc3(dccm_data_ecc_lo_dc3),
       .*
    );
 

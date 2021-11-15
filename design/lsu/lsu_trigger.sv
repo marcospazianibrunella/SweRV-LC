@@ -32,22 +32,22 @@ module lsu_trigger
    input trigger_pkt_t [3:0] trigger_pkt_any,        // trigger packet from dec
    input lsu_pkt_t     lsu_pkt_dc3,                  // lsu packet
    input logic [31:0]  lsu_addr_dc3,                 // address
-   input logic [31:0]  lsu_result_dc3,               // load data
-   input logic [31:0]  store_data_dc3,               // store data
+   input logic [XLEN-1:0]  lsu_result_dc3,               // load data:49
+
+   input logic [XLEN-1:0]  store_data_dc3,               // store data
 
    output logic [3:0] lsu_trigger_match_dc3          // match result
 );
 
-   logic [3:0][31:0]  lsu_match_data;
+   logic [3:0][XLEN-1:0]  lsu_match_data;
    logic [3:0]        lsu_trigger_data_match;
-   logic [31:0]       store_data_trigger_dc3;
+   logic [XLEN-1:0]       store_data_trigger_dc3;
 
-   assign store_data_trigger_dc3[31:0] = { ({16{lsu_pkt_dc3.word}} & store_data_dc3[31:16]) , ({8{(lsu_pkt_dc3.half | lsu_pkt_dc3.word)}} & store_data_dc3[15:8]), store_data_dc3[7:0]};
-
+   assign store_data_trigger_dc3[XLEN-1:0] = { ({32{lsu_pkt_dc3.word}} & store_data_dc3[XLEN-1:XLEN/2]) , ({16{(lsu_pkt_dc3.half | lsu_pkt_dc3.word)}} & store_data_dc3[XLEN/2-1: XLEN/4]), store_data_dc3[XLEN/4-1:0]};
 
    for (genvar i=0; i<4; i++) begin
-      assign lsu_match_data[i][31:0] = ({32{~trigger_pkt_any[i].select}} & lsu_addr_dc3[31:0]) |
-                                       ({32{trigger_pkt_any[i].select & trigger_pkt_any[i].store}} & store_data_trigger_dc3[31:0]);
+      assign lsu_match_data[i][XLEN-1:0] = ({XLEN{~trigger_pkt_any[i].select}} & {32'h0,lsu_addr_dc3[31:0]}) |
+                                       ({XLEN{trigger_pkt_any[i].select & trigger_pkt_any[i].store}} & store_data_trigger_dc3[XLEN-1:0]);
 
 
       rvmaskandmatch trigger_match (.mask(trigger_pkt_any[i].tdata2[31:0]), .data(lsu_match_data[i][31:0]), .masken(trigger_pkt_any[i].match), .match(lsu_trigger_data_match[i]));
