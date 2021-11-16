@@ -37,7 +37,7 @@ module exu
 
    input logic [31:0] dbg_cmd_wrdata,                                  // Debug data   to primary I0 RS1
 
-   input logic [31:0] lsu_result_dc3,                                  // Load result
+   input logic [XLEN-1:0] lsu_result_dc3,                                  // Load result
 
    input predict_pkt_t  i0_predict_p_d,                                // DEC branch predict packet
    input predict_pkt_t  i1_predict_p_d,                                // DEC branch predict packet
@@ -353,21 +353,21 @@ module exu
                           .clk_override  ( clk_override                ),   // I
                           .freeze        ( freeze                      ),   // I
                           .mp            ( mul_p                       ),   // I
-                          .a             ( mul_rs1_d[XLEN-1:0]             ),   // I
-                          .b             ( mul_rs2_d[XLEN-1:0]             ),   // I
-                          .out           ( exu_mul_result_e3[XLEN-1:0]     ));  // O
+                          .a             ( mul_rs1_d             ),   // I
+                          .b             ( mul_rs2_d             ),   // I
+                          .out           ( exu_mul_result_e3     ));  // O
 
 
    exu_div_ctl div_e1    (.*,
                           .flush_lower   ( dec_tlu_flush_lower_wb      ),   // I
                           .dp            ( div_p                       ),   // I
-                          .dividend      ( div_rs1_d[XLEN-1:0]             ),   // I
-                          .divisor       ( div_rs2_d[XLEN-1:0]             ),   // I
+                          .dividend      ( div_rs1_d             ),   // I
+                          .divisor       ( div_rs2_d             ),   // I
                           .valid_ff_e1   ( div_valid_e1                ),   // O
                           .div_stall     ( exu_div_stall               ),   // O
                           .finish_early  ( div_finish_early            ),   // O
                           .finish        ( exu_div_finish              ),   // O
-                          .out           ( exu_div_result[XLEN-1:0]        ));  // O
+                          .out           ( exu_div_result        ));  // O
 
 
    predict_pkt_t i0_predict_newp_d, i1_predict_newp_d;
