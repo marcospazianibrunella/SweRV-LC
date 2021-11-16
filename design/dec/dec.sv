@@ -365,7 +365,7 @@ module dec (
     output logic dec_tlu_i1_valid_e4,  // slot 1 instruction is valid at e4, implies i0_valid_e4
 
     output logic [XLEN-1:0] i0_result_e2,    // i0 result data e2
-    output logic [XLEN-1:0] dec_tlu_mrac_ff, // CSR for memory region control
+    output logic [31:0] dec_tlu_mrac_ff, // CSR for memory region control
 
     output logic [31:1] dec_tlu_i0_pc_e4,  // pc e4
     output logic [31:1] dec_tlu_i1_pc_e4,
@@ -457,9 +457,9 @@ module dec (
   logic      [11:0] dec_csr_rdaddr_d;  // read address for csr
   logic      [11:0] dec_csr_wraddr_wb;  // write address for csryes
 
-  logic      [XLEN-1:0] dec_csr_wrdata_wb;  // csr write data at wb
+  logic      [31:0] dec_csr_wrdata_wb;  // csr write data at wb
 
-  logic      [XLEN-1:0] dec_csr_rddata_d;  // csr read data at wb
+  logic      [31:0] dec_csr_rddata_d;  // csr read data at wb
   logic             dec_csr_legal_d;  // csr indicates legal operation
 
   logic             dec_csr_wen_unq_d;  // valid csr with write - for csr legal
@@ -541,13 +541,13 @@ module dec (
 
       .waddr0(dec_i0_waddr_wb[4:0]),
       .wen0(dec_i0_wen_wb),
-      .wd0(dec_i0_wdata_wb[31:0]),
+      .wd0(dec_i0_wdata_wb[XLEN-1:0]),
       .waddr1(dec_i1_waddr_wb[4:0]),
       .wen1(dec_i1_wen_wb),
-      .wd1(dec_i1_wdata_wb[31:0]),
+      .wd1(dec_i1_wdata_wb[XLEN-1:0]),
       .waddr2(dec_nonblock_load_waddr[4:0]),
       .wen2(dec_nonblock_load_wen),
-      .wd2(lsu_nonblock_load_data[31:0]),
+      .wd2(lsu_nonblock_load_data[XLEN-1:0]),
 
       // outputs
       .rd0(gpr_i0_rs1_d[XLEN-1:0]),

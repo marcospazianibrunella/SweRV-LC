@@ -78,8 +78,8 @@ module dec_decode_ctl
     input logic lsu_store_stall_any,  // stall any store at decode
     input logic dma_dccm_stall_any,   // stall any load/store at decode
 
-    input logic        exu_div_finish,  // div finish this cycle
-    input logic        exu_div_stall,   // div executing: stall decode
+    input logic            exu_div_finish,  // div finish this cycle
+    input logic            exu_div_stall,   // div executing: stall decode
     input logic [XLEN-1:0] exu_div_result,  // div result
 
     input logic dec_tlu_i0_kill_writeb_wb,    // I0 is flushed, don't writeback any results to arch state
@@ -95,7 +95,7 @@ module dec_decode_ctl
     input logic dec_i0_pc4_d,  // inst is 4B inst else 2B
     input logic dec_i1_pc4_d,
 
-    input logic [XLEN-1:0] dec_csr_rddata_d,  // csr read data at wb
+    input logic [31:0] dec_csr_rddata_d,  // csr read data at wb
     input logic        dec_csr_legal_d,   // csr indicates legal operation
 
     input logic [XLEN-1:0] exu_csr_rs1_e1,  // rs1 for csr instr
@@ -115,11 +115,11 @@ module dec_decode_ctl
     input logic dec_ib0_valid_d,  // inst valid at decode
     input logic dec_ib1_valid_d,
 
-    input logic [31:0] exu_i0_result_e1,  // from primary alu's
-    input logic [31:0] exu_i1_result_e1,
+    input logic [XLEN-1:0] exu_i0_result_e1,  // from primary alu's
+    input logic [XLEN-1:0] exu_i1_result_e1,
 
-    input logic [31:0] exu_i0_result_e4,  // from secondary alu's
-    input logic [31:0] exu_i1_result_e4,
+    input logic [XLEN-1:0] exu_i0_result_e4,  // from secondary alu's
+    input logic [XLEN-1:0] exu_i1_result_e4,
 
     input logic clk,         // for rvdffe's
     input logic active_clk,  // clk except for halt / pause
@@ -211,7 +211,7 @@ module dec_decode_ctl
     output logic        dec_csr_wen_wb,       // csr write enable at wb
     output logic [11:0] dec_csr_rdaddr_d,     // read address for csr
     output logic [11:0] dec_csr_wraddr_wb,    // write address for csr
-    output logic [XLEN-1:0] dec_csr_wrdata_wb,    // csr write data at wb
+    output logic [31:0] dec_csr_wrdata_wb,    // csr write data at wb
     output logic        dec_csr_stall_int_ff, // csr is mie/mstatus
 
     output dec_tlu_i0_valid_e4,  // i0 valid inst at e4
@@ -323,25 +323,25 @@ module dec_decode_ctl
 
 
   logic csr_clr_e1, csr_set_e1, csr_write_e1, csr_imm_e1;
-  logic [XLEN-1:0] csr_mask_e1;
-  logic [XLEN-1:0] write_csr_data_e1;
-  logic [XLEN-1:0] write_csr_data_in;
-  logic [XLEN-1:0] write_csr_data;
-  logic        csr_data_wen;
+  logic [31:0] csr_mask_e1;
+  logic [31:0] write_csr_data_e1;
+  logic [31:0] write_csr_data_in;
+  logic [31:0] write_csr_data;
+  logic            csr_data_wen;
 
-  logic [ 4:0] csrimm_e1;
+  logic [     4:0] csrimm_e1;
 
-  logic [XLEN-1:0] csr_rddata_e1;
+  logic [31:0] csr_rddata_e1;
 
-  logic        flush_lower_wb;
+  logic            flush_lower_wb;
 
-  logic        i1_load_block_d;
-  logic        i1_mul_block_d;
-  logic        i1_load2_block_d;
-  logic        i1_mul2_block_d;
-  logic        mul_decode_d;
-  logic        div_decode_d;
-  logic [31:1] div_pc;
+  logic            i1_load_block_d;
+  logic            i1_mul_block_d;
+  logic            i1_load2_block_d;
+  logic            i1_mul2_block_d;
+  logic            mul_decode_d;
+  logic            div_decode_d;
+  logic [    31:1] div_pc;
   logic div_stall, div_stall_ff;
   logic [ 3:0] div_trigger;
 
@@ -1343,23 +1343,21 @@ module dec_decode_ctl
 
 
   // read the csr value through rs2 immed port
-  assign dec_i0_immed_d[31:0] = ({32{ i0_dp.csr_read}} & dec_csr_rddata_d[31:0]) |
-                                 ({32{~i0_dp.csr_read}} & i0_immed_d[31:0]);
+  assign dec_i0_immed_d = {
+    {XLEN - 32{0}}, ({32{i0_dp.csr_read}} & dec_csr_rddata_d)
+  } | ({XLEN{~i0_dp.csr_read}} & i0_immed_d[XLEN-1:0]);
 
   // end csr stuff
-// XXX
-  assign i0_immed_d[31:0] = ({32{i0_dp.imm12}} & {
+  // XXX
+  assign i0_immed_d = ({XLEN{i0_dp.imm12}} & {
     {20{i0[31]}}, i0[31:20]
   }) |  // jalr
-  ({32{i0_dp.shimm5}} & {
-    27'b0, i0[24:20]
-  }) | ({32{i0_jalimm20}} & {
+  ({XLEN{i0_dp.shimm5}} & i0[25:20]) | ({32{i0_jalimm20}} & {
     {12{i0[31]}}, i0[19:12], i0[20], i0[30:21], 1'b0
   }) | ({32{i0_uiimm20}} & {
     i0[31:12], 12'b0
-  }) | ({32{i0_csr_write_only_d & i0_dp.csr_imm}} & {
-    27'b0, i0[19:15]
-  });  // for csr's that only write csr, dont read csr
+  }) | ({32{i0_csr_write_only_d & i0_dp.csr_imm}} & i0[19:15])
+      ;  // for csr's that only write csr, dont read csr
 
 
   //   assign dec_i0_br_immed_d[12:1] = ({12{ i0_ap.predict_nt }} &           {i0[31],i0[7],i0[30:25],i0[11:8]}) |
@@ -1380,12 +1378,10 @@ module dec_decode_ctl
   assign dec_i1_rs2_d[4:0] = i1r.rs2[4:0];
   assign i1_rd_d[4:0] = i1r.rd[4:0];
 
-// XXX
-  assign dec_i1_immed_d[31:0] = ({32{i1_dp.imm12}} & {
+  // XXX
+  assign dec_i1_immed_d = ({XLEN{i1_dp.imm12}} & {
     {20{i1[31]}}, i1[31:20]
-  }) | ({32{i1_dp.shimm5}} & {
-    27'b0, i1[24:20]
-  }) | ({32{i1_jalimm20}} & {
+  }) | ({32{i1_dp.shimm5}} & i1[25:20]) | ({32{i1_jalimm20}} & {
     {12{i1[31]}}, i1[19:12], i1[20], i1[30:21], 1'b0
   }) | ({32{i1_uiimm20}} & {
     i1[31:12], 12'b0
@@ -1694,32 +1690,32 @@ module dec_decode_ctl
   assign unfreeze_cycle1 = ~freeze & freeze_prior1;
   assign unfreeze_cycle2 = ~freeze & ~freeze_prior1 & freeze_prior2;
 
-  rvdffe #(32) freeze_i0_e4ff (
+  rvdffe #(XLEN) freeze_i0_e4ff (
       .*,
       .en  (freeze_after_unfreeze1),
-      .din (i0_result_e4_final[31:0]),
-      .dout(i0_result_e4_freeze[31:0])
+      .din (i0_result_e4_final),
+      .dout(i0_result_e4_freeze)
   );
-  rvdffe #(32) freeze_i1_e4ff (
+  rvdffe #(XLEN) freeze_i1_e4ff (
       .*,
       .en  (freeze_after_unfreeze1),
-      .din (i1_result_e4_final[31:0]),
-      .dout(i1_result_e4_freeze[31:0])
-  );
-
-
-  rvdffe #(32) freeze_i0_wbff (
-      .*,
-      .en  (freeze_after_unfreeze1),
-      .din ((freeze_after_unfreeze2) ? i0_result_wb[31:0] : i0_result_e4_freeze[31:0]),
-      .dout(i0_result_wb_freeze[31:0])
+      .din (i1_result_e4_final),
+      .dout(i1_result_e4_freeze)
   );
 
-  rvdffe #(32) freeze_i1_wbff (
+
+  rvdffe #(XLEN) freeze_i0_wbff (
       .*,
       .en  (freeze_after_unfreeze1),
-      .din ((freeze_after_unfreeze2) ? i1_result_wb[31:0] : i1_result_e4_freeze[31:0]),
-      .dout(i1_result_wb_freeze[31:0])
+      .din ((freeze_after_unfreeze2) ? i0_result_wb : i0_result_e4_freeze),
+      .dout(i0_result_wb_freeze)
+  );
+
+  rvdffe #(XLEN) freeze_i1_wbff (
+      .*,
+      .en  (freeze_after_unfreeze1),
+      .din ((freeze_after_unfreeze2) ? i1_result_wb : i1_result_e4_freeze),
+      .dout(i1_result_wb_freeze)
   );
 
 
@@ -1747,26 +1743,26 @@ module dec_decode_ctl
   };
 
 
-  assign i1_result_wb_eff[31:0] = (unfreeze_cycle1) ? i1_result_wb_freeze[31:0] :
-                                   (unfreeze_cycle2) ? i1_result_e4_freeze[31:0] :
-                                   i1_result_wb[31:0];
+  assign i1_result_wb_eff = (unfreeze_cycle1) ? i1_result_wb_freeze :
+                                   (unfreeze_cycle2) ? i1_result_e4_freeze :
+                                   i1_result_wb;
 
-  assign i0_result_wb_eff[31:0] = (unfreeze_cycle1) ? i0_result_wb_freeze[31:0] :
-                                   (unfreeze_cycle2) ? i0_result_e4_freeze[31:0] :
-                                   i0_result_wb[31:0];
+  assign i0_result_wb_eff = (unfreeze_cycle1) ? i0_result_wb_freeze :
+                                   (unfreeze_cycle2) ? i0_result_e4_freeze :
+                                   i0_result_wb;
 
 
-  assign i0_rs1_bypass_data_e2[31:0] = ({32{e2d.i0rs1bype2[1]}} & i1_result_wb_eff[31:0]) |
-                                        ({32{e2d.i0rs1bype2[0]}} & i0_result_wb_eff[31:0]);
+  assign i0_rs1_bypass_data_e2 = ({XLEN{e2d.i0rs1bype2[1]}} & i1_result_wb_eff) |
+                                        ({XLEN{e2d.i0rs1bype2[0]}} & i0_result_wb_eff);
 
-  assign i0_rs2_bypass_data_e2[31:0] = ({32{e2d.i0rs2bype2[1]}} & i1_result_wb_eff[31:0]) |
-                                        ({32{e2d.i0rs2bype2[0]}} & i0_result_wb_eff[31:0]);
+  assign i0_rs2_bypass_data_e2 = ({XLEN{e2d.i0rs2bype2[1]}} & i1_result_wb_eff) |
+                                        ({XLEN{e2d.i0rs2bype2[0]}} & i0_result_wb_eff);
 
-  assign i1_rs1_bypass_data_e2[31:0] = ({32{e2d.i1rs1bype2[1]}} & i1_result_wb_eff[31:0]) |
-                                        ({32{e2d.i1rs1bype2[0]}} & i0_result_wb_eff[31:0]);
+  assign i1_rs1_bypass_data_e2 = ({XLEN{e2d.i1rs1bype2[1]}} & i1_result_wb_eff) |
+                                        ({XLEN{e2d.i1rs1bype2[0]}} & i0_result_wb_eff);
 
-  assign i1_rs2_bypass_data_e2[31:0] = ({32{e2d.i1rs2bype2[1]}} & i1_result_wb_eff[31:0]) |
-                                        ({32{e2d.i1rs2bype2[0]}} & i0_result_wb_eff[31:0]);
+  assign i1_rs2_bypass_data_e2 = ({XLEN{e2d.i1rs2bype2[1]}} & i1_result_wb_eff) |
+                                        ({XLEN{e2d.i1rs2bype2[0]}} & i0_result_wb_eff);
 
 
   assign dec_i0_rs1_bypass_en_e2 = |e2d.i0rs1bype2[1:0];
@@ -1774,11 +1770,7 @@ module dec_decode_ctl
   assign dec_i1_rs1_bypass_en_e2 = |e2d.i1rs1bype2[1:0];
   assign dec_i1_rs2_bypass_en_e2 = |e2d.i1rs2bype2[1:0];
 
-
-
-
   // define bypasses for e3 stage before secondary alu's
-
 
   assign i1_rs1_depend_i0_d = dec_i1_rs1_en_d & i0_dp.rd & (i1r.rs1[4:0] == i0r.rd[4:0]);
   assign i1_rs2_depend_i0_d = dec_i1_rs2_en_d & i0_dp.rd & (i1r.rs2[4:0] == i0r.rd[4:0]);
@@ -1842,45 +1834,37 @@ module dec_decode_ctl
   assign dec_i1_rs1_bypass_en_e3 = |e3d.i1rs1bype3[6:0];
   assign dec_i1_rs2_bypass_en_e3 = |e3d.i1rs2bype3[6:0];
 
+  assign i0_result_e4_eff = (unfreeze_cycle1) ? i0_result_e4_freeze : i0_result_e4_final;
+
+  assign i1_result_e4_eff = (unfreeze_cycle1) ? i1_result_e4_freeze : i1_result_e4_final;
 
 
+  assign i0_rs1_bypass_data_e3 = ({XLEN{e3d.i0rs1bype3[3]}} & i1_result_e4_eff) |
+                                        ({XLEN{e3d.i0rs1bype3[2]}} & i0_result_e4_eff) |
+                                        ({XLEN{e3d.i0rs1bype3[1]}} & i1_result_wb_eff) |
+                                        ({XLEN{e3d.i0rs1bype3[0]}} & i0_result_wb_eff);
+
+  assign i0_rs2_bypass_data_e3 = ({XLEN{e3d.i0rs2bype3[3]}} & i1_result_e4_eff) |
+                                        ({XLEN{e3d.i0rs2bype3[2]}} & i0_result_e4_eff) |
+                                        ({XLEN{e3d.i0rs2bype3[1]}} & i1_result_wb_eff) |
+                                        ({XLEN{e3d.i0rs2bype3[0]}} & i0_result_wb_eff);
+
+  assign i1_rs1_bypass_data_e3 = ({XLEN{e3d.i1rs1bype3[6]}} & i0_result_e3) |
+                                        ({XLEN{e3d.i1rs1bype3[5]}} & exu_mul_result_e3) |
+                                        ({XLEN{e3d.i1rs1bype3[4]}} & lsu_result_dc3) |
+                                        ({XLEN{e3d.i1rs1bype3[3]}} & i1_result_e4_eff) |
+                                        ({XLEN{e3d.i1rs1bype3[2]}} & i0_result_e4_eff) |
+                                        ({XLEN{e3d.i1rs1bype3[1]}} & i1_result_wb_eff) |
+                                        ({XLEN{e3d.i1rs1bype3[0]}} & i0_result_wb_eff);
 
 
-
-
-  assign i1_result_e4_eff[31:0] = (unfreeze_cycle1) ? i1_result_e4_freeze[31:0] :
-                                   i1_result_e4_final[31:0];
-
-  assign i0_result_e4_eff[31:0] = (unfreeze_cycle1) ? i0_result_e4_freeze[31:0] :
-                                   i0_result_e4_final[31:0];
-
-
-  assign i0_rs1_bypass_data_e3[31:0] = ({32{e3d.i0rs1bype3[3]}} & i1_result_e4_eff[31:0]) |
-                                        ({32{e3d.i0rs1bype3[2]}} & i0_result_e4_eff[31:0]) |
-                                        ({32{e3d.i0rs1bype3[1]}} & i1_result_wb_eff[31:0]) |
-                                        ({32{e3d.i0rs1bype3[0]}} & i0_result_wb_eff[31:0]);
-
-  assign i0_rs2_bypass_data_e3[31:0] = ({32{e3d.i0rs2bype3[3]}} & i1_result_e4_eff[31:0]) |
-                                        ({32{e3d.i0rs2bype3[2]}} & i0_result_e4_eff[31:0]) |
-                                        ({32{e3d.i0rs2bype3[1]}} & i1_result_wb_eff[31:0]) |
-                                        ({32{e3d.i0rs2bype3[0]}} & i0_result_wb_eff[31:0]);
-
-  assign i1_rs1_bypass_data_e3[31:0] = ({32{e3d.i1rs1bype3[6]}} & i0_result_e3[31:0]) |
-                                        ({32{e3d.i1rs1bype3[5]}} & exu_mul_result_e3[31:0]) |
-                                        ({32{e3d.i1rs1bype3[4]}} & lsu_result_dc3[31:0]) |
-                                        ({32{e3d.i1rs1bype3[3]}} & i1_result_e4_eff[31:0]) |
-                                        ({32{e3d.i1rs1bype3[2]}} & i0_result_e4_eff[31:0]) |
-                                        ({32{e3d.i1rs1bype3[1]}} & i1_result_wb_eff[31:0]) |
-                                        ({32{e3d.i1rs1bype3[0]}} & i0_result_wb_eff[31:0]);
-
-
-  assign i1_rs2_bypass_data_e3[31:0] = ({32{e3d.i1rs2bype3[6]}} & i0_result_e3[31:0]) |
-                                        ({32{e3d.i1rs2bype3[5]}} & exu_mul_result_e3[31:0]) |
-                                        ({32{e3d.i1rs2bype3[4]}} & lsu_result_dc3[31:0]) |
-                                        ({32{e3d.i1rs2bype3[3]}} & i1_result_e4_eff[31:0]) |
-                                        ({32{e3d.i1rs2bype3[2]}} & i0_result_e4_eff[31:0]) |
-                                        ({32{e3d.i1rs2bype3[1]}} & i1_result_wb_eff[31:0]) |
-                                        ({32{e3d.i1rs2bype3[0]}} & i0_result_wb_eff[31:0]);
+  assign i1_rs2_bypass_data_e3 = ({XLEN{e3d.i1rs2bype3[6]}} & i0_result_e3) |
+                                        ({XLEN{e3d.i1rs2bype3[5]}} & exu_mul_result_e3) |
+                                        ({XLEN{e3d.i1rs2bype3[4]}} & lsu_result_dc3) |
+                                        ({XLEN{e3d.i1rs2bype3[3]}} & i1_result_e4_eff) |
+                                        ({XLEN{e3d.i1rs2bype3[2]}} & i0_result_e4_eff) |
+                                        ({XLEN{e3d.i1rs2bype3[1]}} & i1_result_wb_eff) |
+                                        ({XLEN{e3d.i1rs2bype3[0]}} & i0_result_wb_eff);
 
 
 
@@ -2600,14 +2584,14 @@ module dec_decode_ctl
   assign     i0_wen_wb = wbd.i0v & ~(~dec_tlu_i1_kill_writeb_wb & ~i1_load_kill_wen & wbd.i0v & wbd.i1v & (wbd.i0rd[4:0] == wbd.i1rd[4:0])) & ~dec_tlu_i0_kill_writeb_wb;
   assign dec_i0_wen_wb = i0_wen_wb & ~i0_load_kill_wen;  // don't write a nonblock load 1st time down the pipe
 
-  assign dec_i0_wdata_wb[31:0] = i0_result_wb[31:0];
+  assign dec_i0_wdata_wb = i0_result_wb;
 
   assign dec_i1_waddr_wb[4:0] = wbd.i1rd[4:0];
 
   assign i1_wen_wb = wbd.i1v & ~dec_tlu_i1_kill_writeb_wb;
   assign dec_i1_wen_wb = i1_wen_wb & ~i1_load_kill_wen;
 
-  assign dec_i1_wdata_wb[31:0] = i1_result_wb[31:0];
+  assign dec_i1_wdata_wb = i1_result_wb;
 
   // divide stuff
 
@@ -2656,79 +2640,79 @@ module dec_decode_ctl
   );
 
 
-  assign i0_result_e1[31:0] = exu_i0_result_e1[31:0];
-  assign i1_result_e1[31:0] = exu_i1_result_e1[31:0];
+  assign i0_result_e1 = exu_i0_result_e1;
+  assign i1_result_e1 = exu_i1_result_e1;
 
   // pipe the results down the pipe
-  rvdffe #(32) i0e2resultff (
+  rvdffe #(XLEN) i0e2resultff (
       .*,
       .en  (i0_e2_data_en),
-      .din (i0_result_e1[31:0]),
-      .dout(i0_result_e2[31:0])
+      .din (i0_result_e1),
+      .dout(i0_result_e2)
   );
-  rvdffe #(32) i1e2resultff (
+  rvdffe #(XLEN) i1e2resultff (
       .*,
       .en  (i1_e2_data_en),
-      .din (i1_result_e1[31:0]),
-      .dout(i1_result_e2[31:0])
+      .din (i1_result_e1),
+      .dout(i1_result_e2)
   );
 
-  rvdffe #(32) i0e3resultff (
+  rvdffe #(XLEN) i0e3resultff (
       .*,
       .en  (i0_e3_data_en),
-      .din (i0_result_e2[31:0]),
-      .dout(i0_result_e3[31:0])
+      .din (i0_result_e2),
+      .dout(i0_result_e3)
   );
-  rvdffe #(32) i1e3resultff (
+  rvdffe #(XLEN) i1e3resultff (
       .*,
       .en  (i1_e3_data_en),
-      .din (i1_result_e2[31:0]),
-      .dout(i1_result_e3[31:0])
+      .din (i1_result_e2),
+      .dout(i1_result_e3)
   );
 
 
 
-  assign i0_result_e3_final[31:0] = (e3d.i0v & e3d.i0load) ? lsu_result_dc3[31:0] : (e3d.i0v & e3d.i0mul) ? exu_mul_result_e3[31:0] : i0_result_e3[31:0];
+  assign i0_result_e3_final = (e3d.i0v & e3d.i0load) ? lsu_result_dc3 : (e3d.i0v & e3d.i0mul) ? exu_mul_result_e3 : i0_result_e3;
 
-  assign i1_result_e3_final[31:0] = (e3d.i1v & e3d.i1load) ? lsu_result_dc3[31:0] : (e3d.i1v & e3d.i1mul) ? exu_mul_result_e3[31:0] : i1_result_e3[31:0];
+  assign i1_result_e3_final = (e3d.i1v & e3d.i1load) ? lsu_result_dc3 : (e3d.i1v & e3d.i1mul) ? exu_mul_result_e3 : i1_result_e3;
 
 
 
-  rvdffe #(32) i0e4resultff (
+  rvdffe #(XLEN) i0e4resultff (
       .*,
       .en  (i0_e4_data_en),
-      .din (i0_result_e3_final[31:0]),
-      .dout(i0_result_e4[31:0])
+      .din (i0_result_e3_final),
+      .dout(i0_result_e4)
   );
-  rvdffe #(32) i1e4resultff (
+  rvdffe #(XLEN) i1e4resultff (
       .*,
       .en  (i1_e4_data_en),
-      .din (i1_result_e3_final[31:0]),
-      .dout(i1_result_e4[31:0])
+      .din (i1_result_e3_final),
+      .dout(i1_result_e4)
   );
 
-  assign i0_result_e4_final[31:0] =
-                                     (          e4d.i0secondary) ? exu_i0_result_e4[31:0] : (e4d.i0v & e4d.i0load) ? lsu_result_corr_dc4[31:0] : i0_result_e4[31:0];
+  assign i0_result_e4_final =
+                                     (          e4d.i0secondary) ? exu_i0_result_e4 : (e4d.i0v & e4d.i0load) ? lsu_result_corr_dc4 : i0_result_e4;
 
-  assign i1_result_e4_final[31:0] =
-                                     (e4d.i1v & e4d.i1secondary) ? exu_i1_result_e4[31:0] : (e4d.i1v & e4d.i1load) ? lsu_result_corr_dc4[31:0] :i1_result_e4[31:0];
+  assign i1_result_e4_final =
+                                     (e4d.i1v & e4d.i1secondary) ? exu_i1_result_e4 : (e4d.i1v & e4d.i1load) ? lsu_result_corr_dc4 :i1_result_e4;
 
-  rvdffe #(32) i0wbresultff (
+  rvdffe #(XLEN) i0wbresultff (
       .*,
       .en  (i0_wb_data_en),
-      .din (i0_result_e4_final[31:0]),
-      .dout(i0_result_wb_raw[31:0])
+      .din (i0_result_e4_final),
+      .dout(i0_result_wb_raw)
   );
-  rvdffe #(32) i1wbresultff (
+  rvdffe #(XLEN) i1wbresultff (
       .*,
       .en  (i1_wb_data_en),
-      .din (i1_result_e4_final[31:0]),
-      .dout(i1_result_wb_raw[31:0])
+      .din (i1_result_e4_final),
+      .dout(i1_result_wb_raw)
   );
 
-  assign i0_result_wb[31:0] = (div_wen_wb) ? exu_div_result[31:0] : i0_result_wb_raw[31:0];
+  assign i0_result_wb = (div_wen_wb) ? exu_div_result : i0_result_wb_raw;
 
-  assign i1_result_wb[31:0] = i1_result_wb_raw[31:0];
+  assign i1_result_wb = i1_result_wb_raw;
 
 
   rvdffe #(12) e1brpcff (
@@ -3002,51 +2986,51 @@ module dec_decode_ctl
 
 
 
-  assign i0_rs1_bypass_data_d[31:0] = ({32{i0_rs1bypass[9]}} & i1_result_e1[31:0]) |
-                                       ({32{i0_rs1bypass[8]}} & i0_result_e1[31:0]) |
-                                       ({32{i0_rs1bypass[7]}} & i1_result_e2[31:0]) |
-                                       ({32{i0_rs1bypass[6]}} & i0_result_e2[31:0]) |
-                                       ({32{i0_rs1bypass[5]}} & i1_result_e3_final[31:0]) |
-                                       ({32{i0_rs1bypass[4]}} & i0_result_e3_final[31:0]) |
-                                       ({32{i0_rs1bypass[3]}} & i1_result_e4_final[31:0]) |
-                                       ({32{i0_rs1bypass[2]}} & i0_result_e4_final[31:0]) |
-                                       ({32{i0_rs1bypass[1]}} & i1_result_wb[31:0]) |
-                                       ({32{i0_rs1bypass[0]}} & i0_result_wb[31:0]);
+  assign i0_rs1_bypass_data_d = ({XLEN{i0_rs1bypass[9]}} & i1_result_e1) |
+                                       ({XLEN{i0_rs1bypass[8]}} & i0_result_e1) |
+                                       ({XLEN{i0_rs1bypass[7]}} & i1_result_e2) |
+                                       ({XLEN{i0_rs1bypass[6]}} & i0_result_e2) |
+                                       ({XLEN{i0_rs1bypass[5]}} & i1_result_e3_final) |
+                                       ({XLEN{i0_rs1bypass[4]}} & i0_result_e3_final) |
+                                       ({XLEN{i0_rs1bypass[3]}} & i1_result_e4_final) |
+                                       ({XLEN{i0_rs1bypass[2]}} & i0_result_e4_final) |
+                                       ({XLEN{i0_rs1bypass[1]}} & i1_result_wb) |
+                                       ({XLEN{i0_rs1bypass[0]}} & i0_result_wb);
 
 
-  assign i0_rs2_bypass_data_d[31:0] = ({32{i0_rs2bypass[9]}} & i1_result_e1[31:0]) |
-                                       ({32{i0_rs2bypass[8]}} & i0_result_e1[31:0]) |
-                                       ({32{i0_rs2bypass[7]}} & i1_result_e2[31:0]) |
-                                       ({32{i0_rs2bypass[6]}} & i0_result_e2[31:0]) |
-                                       ({32{i0_rs2bypass[5]}} & i1_result_e3_final[31:0]) |
-                                       ({32{i0_rs2bypass[4]}} & i0_result_e3_final[31:0]) |
-                                       ({32{i0_rs2bypass[3]}} & i1_result_e4_final[31:0]) |
-                                       ({32{i0_rs2bypass[2]}} & i0_result_e4_final[31:0]) |
-                                       ({32{i0_rs2bypass[1]}} & i1_result_wb[31:0]) |
-                                       ({32{i0_rs2bypass[0]}} & i0_result_wb[31:0]);
+  assign i0_rs2_bypass_data_d = ({XLEN{i0_rs2bypass[9]}} & i1_result_e1) |
+                                       ({XLEN{i0_rs2bypass[8]}} & i0_result_e1) |
+                                       ({XLEN{i0_rs2bypass[7]}} & i1_result_e2) |
+                                       ({XLEN{i0_rs2bypass[6]}} & i0_result_e2) |
+                                       ({XLEN{i0_rs2bypass[5]}} & i1_result_e3_final) |
+                                       ({XLEN{i0_rs2bypass[4]}} & i0_result_e3_final) |
+                                       ({XLEN{i0_rs2bypass[3]}} & i1_result_e4_final) |
+                                       ({XLEN{i0_rs2bypass[2]}} & i0_result_e4_final) |
+                                       ({XLEN{i0_rs2bypass[1]}} & i1_result_wb) |
+                                       ({XLEN{i0_rs2bypass[0]}} & i0_result_wb);
 
-  assign i1_rs1_bypass_data_d[31:0] = ({32{i1_rs1bypass[9]}} & i1_result_e1[31:0]) |
-                                       ({32{i1_rs1bypass[8]}} & i0_result_e1[31:0]) |
-                                       ({32{i1_rs1bypass[7]}} & i1_result_e2[31:0]) |
-                                       ({32{i1_rs1bypass[6]}} & i0_result_e2[31:0]) |
-                                       ({32{i1_rs1bypass[5]}} & i1_result_e3_final[31:0]) |
-                                       ({32{i1_rs1bypass[4]}} & i0_result_e3_final[31:0]) |
-                                       ({32{i1_rs1bypass[3]}} & i1_result_e4_final[31:0]) |
-                                       ({32{i1_rs1bypass[2]}} & i0_result_e4_final[31:0]) |
-                                       ({32{i1_rs1bypass[1]}} & i1_result_wb[31:0]) |
-                                       ({32{i1_rs1bypass[0]}} & i0_result_wb[31:0]);
+  assign i1_rs1_bypass_data_d = ({XLEN{i1_rs1bypass[9]}} & i1_result_e1) |
+                                       ({XLEN{i1_rs1bypass[8]}} & i0_result_e1) |
+                                       ({XLEN{i1_rs1bypass[7]}} & i1_result_e2) |
+                                       ({XLEN{i1_rs1bypass[6]}} & i0_result_e2) |
+                                       ({XLEN{i1_rs1bypass[5]}} & i1_result_e3_final) |
+                                       ({XLEN{i1_rs1bypass[4]}} & i0_result_e3_final) |
+                                       ({XLEN{i1_rs1bypass[3]}} & i1_result_e4_final) |
+                                       ({XLEN{i1_rs1bypass[2]}} & i0_result_e4_final) |
+                                       ({XLEN{i1_rs1bypass[1]}} & i1_result_wb) |
+                                       ({XLEN{i1_rs1bypass[0]}} & i0_result_wb);
 
 
-  assign i1_rs2_bypass_data_d[31:0] = ({32{i1_rs2bypass[9]}} & i1_result_e1[31:0]) |
-                                       ({32{i1_rs2bypass[8]}} & i0_result_e1[31:0]) |
-                                       ({32{i1_rs2bypass[7]}} & i1_result_e2[31:0]) |
-                                       ({32{i1_rs2bypass[6]}} & i0_result_e2[31:0]) |
-                                       ({32{i1_rs2bypass[5]}} & i1_result_e3_final[31:0]) |
-                                       ({32{i1_rs2bypass[4]}} & i0_result_e3_final[31:0]) |
-                                       ({32{i1_rs2bypass[3]}} & i1_result_e4_final[31:0]) |
-                                       ({32{i1_rs2bypass[2]}} & i0_result_e4_final[31:0]) |
-                                       ({32{i1_rs2bypass[1]}} & i1_result_wb[31:0]) |
-                                       ({32{i1_rs2bypass[0]}} & i0_result_wb[31:0]);
+  assign i1_rs2_bypass_data_d = ({XLEN{i1_rs2bypass[9]}} & i1_result_e1) |
+                                       ({XLEN{i1_rs2bypass[8]}} & i0_result_e1) |
+                                       ({XLEN{i1_rs2bypass[7]}} & i1_result_e2) |
+                                       ({XLEN{i1_rs2bypass[6]}} & i0_result_e2) |
+                                       ({XLEN{i1_rs2bypass[5]}} & i1_result_e3_final) |
+                                       ({XLEN{i1_rs2bypass[4]}} & i0_result_e3_final) |
+                                       ({XLEN{i1_rs2bypass[3]}} & i1_result_e4_final) |
+                                       ({XLEN{i1_rs2bypass[2]}} & i0_result_e4_final) |
+                                       ({XLEN{i1_rs2bypass[1]}} & i1_result_wb) |
+                                       ({XLEN{i1_rs2bypass[0]}} & i0_result_wb);
 
 
 
