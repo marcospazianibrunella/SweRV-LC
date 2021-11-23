@@ -24,9 +24,9 @@
 // DC1 -> DC2 -> DC3 -> DC4 (Commit)
 //
 //********************************************************************************
-
-module lsu
+module lsu 
    import swerv_types::*;
+  // #(parameter XLEN = 64)
 (
 
    input logic [XLEN-1:0]                      i0_result_e4_eff, // I0 e4 result for e4 -> dc3 store forwarding
@@ -187,15 +187,15 @@ module lsu
    logic [XLEN-1:0] store_data_dc3;
    logic [XLEN-1:0] store_data_dc4;
    logic [XLEN-1:0] store_data_dc5;
-   logic [XLEN-1:0] store_ecc_datafn_hi_dc3;
-   logic [XLEN-1:0] store_ecc_datafn_lo_dc3;
+   logic [XLEN/2-1:0] store_ecc_datafn_hi_dc3;
+   logic [XLEN/2-1:0] store_ecc_datafn_lo_dc3;
 
    logic        single_ecc_error_hi_dc3, single_ecc_error_lo_dc3;
    logic        lsu_single_ecc_error_dc3, lsu_single_ecc_error_dc4, lsu_single_ecc_error_dc5;
    logic        lsu_double_ecc_error_dc3;
 
-   logic [31:0] dccm_data_hi_dc3;
-   logic [31:0] dccm_data_lo_dc3;
+   logic [XLEN/2-1:0] dccm_data_hi_dc3;
+   logic [XLEN/2-1:0] dccm_data_lo_dc3;
    logic [6:0]  dccm_data_ecc_hi_dc3;
    logic [6:0]  dccm_data_ecc_lo_dc3;
 
@@ -226,14 +226,14 @@ module lsu
    logic                       stbuf_addr_in_pic_any;
    logic [DCCM_BYTE_WIDTH-1:0] stbuf_byteen_any;
    logic [LSU_SB_BITS-1:0]     stbuf_addr_any;
-   logic [DCCM_DATA_WIDTH-1:0] stbuf_data_any;
+   logic [XLEN-1:0] stbuf_data_any;
    logic [(DCCM_FDATA_WIDTH-DCCM_DATA_WIDTH-1):0] stbuf_ecc_any;
 
    logic                       lsu_cmpen_dc2;
-   logic [DCCM_DATA_WIDTH/2-1:0] stbuf_fwddata_hi_dc3;
-   logic [DCCM_DATA_WIDTH/2-1:0] stbuf_fwddata_lo_dc3;
-   logic [DCCM_BYTE_WIDTH/2-1:0] stbuf_fwdbyteen_hi_dc3;
-   logic [DCCM_BYTE_WIDTH/2-1:0] stbuf_fwdbyteen_lo_dc3;
+   logic [XLEN/2-1:0] stbuf_fwddata_hi_dc3;
+   logic [XLEN/2-1:0] stbuf_fwddata_lo_dc3;
+   logic [XLEN/16-1:0] stbuf_fwdbyteen_hi_dc3;
+   logic [XLEN/16-1:0] stbuf_fwdbyteen_lo_dc3;
 
    logic        lsu_stbuf_commit_any;
    logic        lsu_stbuf_empty_any;
@@ -344,19 +344,19 @@ module lsu
    lsu_ecc ecc (
       .lsu_addr_dc3(lsu_addr_dc3[DCCM_BITS-1:0]),
       .end_addr_dc3(end_addr_dc3[DCCM_BITS-1:0]),
-      .stbuf_fwddata_hi_dc3({32'h0,stbuf_fwddata_hi_dc3}),
-      .stbuf_fwddata_lo_dc3({32'h0,stbuf_fwddata_lo_dc3}),
-      .stbuf_fwdbyteen_hi_dc3({4'h0,stbuf_fwdbyteen_hi_dc3}),
-      .stbuf_fwdbyteen_lo_dc3({4'h0,stbuf_fwdbyteen_lo_dc3}),
-      .dccm_data_hi_dc3({32'h0,dccm_data_hi_dc3}),
-      .dccm_data_lo_dc3({32'h0,dccm_data_lo_dc3}),
+      .stbuf_fwddata_hi_dc3(stbuf_fwddata_hi_dc3),
+      .stbuf_fwddata_lo_dc3(stbuf_fwddata_lo_dc3),
+      .stbuf_fwdbyteen_hi_dc3(stbuf_fwdbyteen_hi_dc3),
+      .stbuf_fwdbyteen_lo_dc3(stbuf_fwdbyteen_lo_dc3),
+      .dccm_data_hi_dc3(dccm_data_hi_dc3),
+      .dccm_data_lo_dc3(dccm_data_lo_dc3),
       .dccm_data_ecc_hi_dc3(dccm_data_ecc_hi_dc3),
       .dccm_data_ecc_lo_dc3(dccm_data_ecc_lo_dc3),
       .*
    );
 
    lsu_trigger trigger (
-      .store_data_dc3(store_data_dc3[31:0]),
+      .store_data_dc3(store_data_dc3),
       .*
    );
 

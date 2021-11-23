@@ -40,23 +40,23 @@ module lsu_ecc
    input logic        addr_in_dccm_dc3,                   // address in dccm
    input logic [`RV_DCCM_BITS-1:0]       lsu_addr_dc3,    // start address
    input logic [`RV_DCCM_BITS-1:0]       end_addr_dc3,    // end address
-   input logic [63:0]                    store_data_dc3,  // store data
-   input logic [DCCM_DATA_WIDTH-1:0] stbuf_data_any,
+   input logic [XLEN-1:0]                    store_data_dc3,  // store data
+   input logic [XLEN-1:0] stbuf_data_any,
 
-   input logic [DCCM_DATA_WIDTH-1:0] stbuf_fwddata_hi_dc3,  // data forward from the store buffer
-   input logic [DCCM_DATA_WIDTH-1:0] stbuf_fwddata_lo_dc3,  // data forward from the store buffer
-   input logic [DCCM_BYTE_WIDTH-1:0] stbuf_fwdbyteen_hi_dc3,// which bytes from the store buffer are on
-   input logic [DCCM_BYTE_WIDTH-1:0] stbuf_fwdbyteen_lo_dc3,// which bytes from the store buffer are on
+   input logic [XLEN/2-1:0] stbuf_fwddata_hi_dc3,  // data forward from the store buffer
+   input logic [XLEN/2-1:0] stbuf_fwddata_lo_dc3,  // data forward from the store buffer
+   input logic [XLEN/16-1:0] stbuf_fwdbyteen_hi_dc3,// which bytes from the store buffer are on
+   input logic [XLEN/16-1:0] stbuf_fwdbyteen_lo_dc3,// which bytes from the store buffer are on
 
-   input logic [DCCM_DATA_WIDTH-1:0] dccm_data_hi_dc3,     // raw data from mem
-   input logic [DCCM_DATA_WIDTH-1:0] dccm_data_lo_dc3,     // raw data from mem
+   input logic [XLEN/2-1:0] dccm_data_hi_dc3,     // raw data from mem
+   input logic [XLEN/2-1:0] dccm_data_lo_dc3,     // raw data from mem
    input logic [`RV_DCCM_ECC_WIDTH-1:0]  dccm_data_ecc_hi_dc3, // ecc read out from mem
    input logic [`RV_DCCM_ECC_WIDTH-1:0]  dccm_data_ecc_lo_dc3, // ecc read out from mem
 
    input logic                           dec_tlu_core_ecc_disable,  // disables the ecc computation and error flagging
 
-   output logic [DCCM_DATA_WIDTH-1:0] store_ecc_datafn_hi_dc3,  // final store data either from stbuf or SEC DCCM readout
-   output logic [DCCM_DATA_WIDTH-1:0] store_ecc_datafn_lo_dc3,
+   output logic [XLEN/2-1:0] store_ecc_datafn_hi_dc3,  // final store data either from stbuf or SEC DCCM readout
+   output logic [XLEN/2-1:0] store_ecc_datafn_lo_dc3,
 
    output logic [`RV_DCCM_ECC_WIDTH-1:0] stbuf_ecc_any,
    output logic        single_ecc_error_hi_dc3,                   // sec detected
@@ -116,7 +116,7 @@ module lsu_ecc
 
    // Merge store data and sec data
    // This is used for loads as well for ecc error case. store_byteen will be 0 for loads
-   for (genvar i=0; i<DCCM_BYTE_WIDTH; i++) begin
+   for (genvar i=0; i<DCCM_BYTE_WIDTH/2; i++) begin
       assign store_ecc_datafn_hi_dc3[(8*i)+7:(8*i)] = store_byteen_hi_dc3[i] ? store_data_hi_dc3[(8*i)+7:(8*i)] :
                                                                                (stbuf_fwdbyteen_hi_dc3[i] ? stbuf_fwddata_hi_dc3[(8*i)+7:(8*i)] : sec_data_hi_dc3[(8*i)+7:(8*i)]);
       assign store_ecc_datafn_lo_dc3[(8*i)+7:(8*i)] = store_byteen_lo_dc3[i] ? store_data_lo_dc3[(8*i)+7:(8*i)] :

@@ -62,8 +62,8 @@ module lsu_dccm_ctl
    input logic [DCCM_BYTE_WIDTH/2-1:0]   stbuf_fwdbyteen_lo_dc3,    // stbuf fowarding to load
 
    input logic                             lsu_double_ecc_error_dc3,  // lsu has a DED
-   input logic [DCCM_DATA_WIDTH-1:0]   store_ecc_datafn_hi_dc3,   // store data
-   input logic [DCCM_DATA_WIDTH-1:0]   store_ecc_datafn_lo_dc3,   // store data
+   input logic [DCCM_DATA_WIDTH/2-1:0]   store_ecc_datafn_hi_dc3,   // store data
+   input logic [DCCM_DATA_WIDTH/2-1:0]   store_ecc_datafn_lo_dc3,   // store data
 
    output logic [DCCM_DATA_WIDTH/2-1:0]  dccm_data_hi_dc3,          // data from the dccm
    output logic [DCCM_DATA_WIDTH/2-1:0]  dccm_data_lo_dc3,          // data from the dccm
@@ -177,7 +177,7 @@ module lsu_dccm_ctl
 
 
    // Flops
-   assign picm_mask_data_dc3[31:0] = picm_rd_data_lo_dc3[31:0];
+   assign picm_mask_data_dc3 = {{XLEN-32{'0}},picm_rd_data_lo_dc3[31:0]};
    assign picm_rd_data_dc3[63:0] = {picm_rd_data_lo_dc3[31:0], picm_rd_data_lo_dc3[31:0]} ;
    rvdffe #(32) picm_data_ff (.*, .din(picm_rd_data[31:0]), .dout(picm_rd_data_lo_dc3[31:0]), .en(lsu_pic_c1_dc3_clken));
    if (DCCM_ENABLE == 1) begin: Gen_dccm_enable

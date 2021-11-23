@@ -14,6 +14,8 @@
 // limitations under the License.
 package swerv_types;
 
+//`include "global.svh"
+
 // performance monitor stuff
 typedef struct packed {
                        logic [2:0] trace_rv_i_valid_ip;

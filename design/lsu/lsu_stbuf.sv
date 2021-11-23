@@ -58,8 +58,8 @@ module lsu_stbuf
    input logic        addr_in_pic_dc3,                    // address is in pic
    input logic        addr_in_dccm_dc2,                    // address is in pic
    input logic        addr_in_dccm_dc3,                    // address is in pic
-   input logic [DCCM_DATA_WIDTH-1:0] store_ecc_datafn_hi_dc3,   // data to write
-   input logic [DCCM_DATA_WIDTH-1:0] store_ecc_datafn_lo_dc3,   // data to write
+   input logic [DCCM_DATA_WIDTH/2-1:0] store_ecc_datafn_hi_dc3,   // data to write
+   input logic [DCCM_DATA_WIDTH/2-1:0] store_ecc_datafn_lo_dc3,   // data to write
 
    input logic        isldst_dc1,                         // instruction in dc1 is lsu
    input logic        dccm_ldst_dc2,                         // instruction in dc2 is lsu
@@ -100,10 +100,10 @@ module lsu_stbuf
    input lsu_pkt_t    lsu_pkt_dc3,
    input lsu_pkt_t    lsu_pkt_dc5,
 
-   output logic [DCCM_DATA_WIDTH/2-1:0] stbuf_fwddata_hi_dc3,     // stbuf data
-   output logic [DCCM_DATA_WIDTH/2-1:0] stbuf_fwddata_lo_dc3,
-   output logic [DCCM_BYTE_WIDTH/2-1:0] stbuf_fwdbyteen_hi_dc3,
-   output logic [DCCM_BYTE_WIDTH/2-1:0] stbuf_fwdbyteen_lo_dc3,
+   output logic [XLEN/2-1:0] stbuf_fwddata_hi_dc3,     // stbuf data
+   output logic [XLEN/2-1:0] stbuf_fwddata_lo_dc3,
+   output logic [XLEN/16-1:0] stbuf_fwdbyteen_hi_dc3,
+   output logic [XLEN/16-1:0] stbuf_fwdbyteen_lo_dc3,
 
    input  logic       scan_mode
 
@@ -112,8 +112,8 @@ module lsu_stbuf
 `include "global.svh"
 
    localparam DEPTH = LSU_STBUF_DEPTH;
-   localparam DATA_WIDTH = DCCM_DATA_WIDTH;
-   localparam BYTE_WIDTH = DCCM_BYTE_WIDTH;
+   localparam DATA_WIDTH = XLEN;
+   localparam BYTE_WIDTH = XLEN/8;
    localparam DEPTH_LOG2 = $clog2(DEPTH);
 
    logic [DEPTH-1:0]       stbuf_data_vld;
@@ -138,8 +138,8 @@ module lsu_stbuf
 
    logic [7:0]             ldst_byteen_dc3;
    logic [7:0]             store_byteen_ext_dc3;
-   logic [BYTE_WIDTH-1:0]  store_byteen_hi_dc3;
-   logic [BYTE_WIDTH-1:0]  store_byteen_lo_dc3;
+   logic [BYTE_WIDTH/2-1:0]  store_byteen_hi_dc3;
+   logic [BYTE_WIDTH/2-1:0]  store_byteen_lo_dc3;
 
    logic                   ldst_stbuf_reqvld_dc3;
    logic                   dual_ecc_error_dc3;
@@ -164,18 +164,18 @@ module lsu_stbuf
 
    logic                   stbuf_ldmatch_hi_hi, stbuf_ldmatch_hi_lo;
    logic                   stbuf_ldmatch_lo_hi, stbuf_ldmatch_lo_lo;
-   logic [BYTE_WIDTH-1:0]  stbuf_fwdbyteen_hi_hi, stbuf_fwdbyteen_hi_lo;
-   logic [BYTE_WIDTH-1:0]  stbuf_fwdbyteen_lo_hi, stbuf_fwdbyteen_lo_lo;
-   logic [DATA_WIDTH-1:0]  stbuf_fwddata_hi_hi, stbuf_fwddata_hi_lo;
-   logic [DATA_WIDTH-1:0]  stbuf_fwddata_lo_hi, stbuf_fwddata_lo_lo;
+   logic [BYTE_WIDTH/2-1:0]  stbuf_fwdbyteen_hi_hi, stbuf_fwdbyteen_hi_lo;
+   logic [BYTE_WIDTH/2-1:0]  stbuf_fwdbyteen_lo_hi, stbuf_fwdbyteen_lo_lo;
+   logic [DATA_WIDTH/2-1:0]  stbuf_fwddata_hi_hi, stbuf_fwddata_hi_lo;
+   logic [DATA_WIDTH/2-1:0]  stbuf_fwddata_lo_hi, stbuf_fwddata_lo_lo;
 
    logic [DEPTH-1:0]                 stbuf_ldmatch_hi, stbuf_ldmatch_lo;
    logic [DEPTH-1:0][BYTE_WIDTH-1:0] stbuf_fwdbyteenvec_hi, stbuf_fwdbyteenvec_lo;
    logic [DEPTH-1:0][DATA_WIDTH-1:0] stbuf_fwddatavec_hi, stbuf_fwddatavec_lo;
-   logic [DATA_WIDTH-1:0]            stbuf_fwddata_hi_dc2, stbuf_fwddata_lo_dc2;
-   logic [DATA_WIDTH-1:0]            stbuf_fwddata_hi_fn_dc2, stbuf_fwddata_lo_fn_dc2;
-   logic [BYTE_WIDTH-1:0]            stbuf_fwdbyteen_hi_dc2, stbuf_fwdbyteen_lo_dc2;
-   logic [BYTE_WIDTH-1:0]            stbuf_fwdbyteen_hi_fn_dc2, stbuf_fwdbyteen_lo_fn_dc2;
+   logic [DATA_WIDTH/2-1:0]            stbuf_fwddata_hi_dc2, stbuf_fwddata_lo_dc2;
+   logic [DATA_WIDTH/2-1:0]            stbuf_fwddata_hi_fn_dc2, stbuf_fwddata_lo_fn_dc2;
+   logic [BYTE_WIDTH/2-1:0]            stbuf_fwdbyteen_hi_dc2, stbuf_fwdbyteen_lo_dc2;
+   logic [BYTE_WIDTH/2-1:0]            stbuf_fwdbyteen_hi_fn_dc2, stbuf_fwdbyteen_lo_fn_dc2;
    logic                             stbuf_load_repair_dc5;
    //----------------------------------------
    // Logic starts here
@@ -185,7 +185,7 @@ module lsu_stbuf
                                  ({8{lsu_pkt_dc3.half}} & 8'b0000_0011) |
                                  ({8{lsu_pkt_dc3.word}} & 8'b0000_1111) |
                                  ({8{lsu_pkt_dc3.dword}} & 8'b1111_1111);
-   assign store_byteen_ext_dc3[7:0] = ldst_byteen_dc3[7:0] << lsu_addr_dc3[1:0];
+   assign store_byteen_ext_dc3[7:0] = ldst_byteen_dc3[7:0] << lsu_addr_dc3[2:0];
    assign store_byteen_hi_dc3[BYTE_WIDTH/2-1:0] = store_byteen_ext_dc3[7:4];
    assign store_byteen_lo_dc3[BYTE_WIDTH/2-1:0] = store_byteen_ext_dc3[3:0];
 
@@ -300,7 +300,7 @@ module lsu_stbuf
    assign stbuf_ldmatch_lo_hi = (end_addr_dc3[LSU_SB_BITS-1:$clog2(BYTE_WIDTH)] == cmpaddr_lo_dc2[LSU_SB_BITS-1:$clog2(BYTE_WIDTH)]) & ~(cmpen_lo_dc2 & lsu_pkt_dc2.dma & ~lsu_pkt_dc3.dma) & jit_in_same_region;
    assign stbuf_ldmatch_lo_lo = (lsu_addr_dc3[LSU_SB_BITS-1:$clog2(BYTE_WIDTH)] == cmpaddr_lo_dc2[LSU_SB_BITS-1:$clog2(BYTE_WIDTH)]) & ~(cmpen_lo_dc2 & lsu_pkt_dc2.dma & ~lsu_pkt_dc3.dma) & jit_in_same_region;
 
-   for (genvar i=0; i<BYTE_WIDTH; i++) begin
+   for (genvar i=0; i<BYTE_WIDTH/2; i++) begin
       assign stbuf_fwdbyteen_hi_hi[i] = stbuf_ldmatch_hi_hi & store_byteen_hi_dc3[i] & ldst_stbuf_reqvld_dc3 & dual_stbuf_write_dc3;
       assign stbuf_fwdbyteen_hi_lo[i] = stbuf_ldmatch_hi_lo & store_byteen_lo_dc3[i] & ldst_stbuf_reqvld_dc3;
       assign stbuf_fwdbyteen_lo_hi[i] = stbuf_ldmatch_lo_hi & store_byteen_hi_dc3[i] & ldst_stbuf_reqvld_dc3 & dual_stbuf_write_dc3;
@@ -314,15 +314,15 @@ module lsu_stbuf
 
 
    always_comb begin: GenLdFwd
-      stbuf_fwdbyteen_hi_dc2[BYTE_WIDTH-1:0]   = '0;
-      stbuf_fwdbyteen_lo_dc2[BYTE_WIDTH-1:0]   = '0;
+      stbuf_fwdbyteen_hi_dc2[BYTE_WIDTH/2-1:0]   = '0;
+      stbuf_fwdbyteen_lo_dc2[BYTE_WIDTH/2-1:0]   = '0;
       for (int i=0; i<DEPTH; i++) begin
          stbuf_ldmatch_hi[i] = (stbuf_addr[i][LSU_SB_BITS-1:$clog2(BYTE_WIDTH)] == cmpaddr_hi_dc2[LSU_SB_BITS-1:$clog2(BYTE_WIDTH)]) &
                                (stbuf_drain_vld[i] | ~lsu_pkt_dc2.dma) & ~stbuf_flush_vld[i] & ((stbuf_addr_in_pic[i] & addr_in_pic_dc2) | (~stbuf_addr_in_pic[i] & addr_in_dccm_dc2));
          stbuf_ldmatch_lo[i] = (stbuf_addr[i][LSU_SB_BITS-1:$clog2(BYTE_WIDTH)] == cmpaddr_lo_dc2[LSU_SB_BITS-1:$clog2(BYTE_WIDTH)]) &
                                (stbuf_drain_vld[i] | ~lsu_pkt_dc2.dma) & ~stbuf_flush_vld[i] & ((stbuf_addr_in_pic[i] & addr_in_pic_dc2) | (~stbuf_addr_in_pic[i] & addr_in_dccm_dc2));
 
-         for (int j=0; j<BYTE_WIDTH; j++) begin
+         for (int j=0; j<BYTE_WIDTH/2; j++) begin
             stbuf_fwdbyteenvec_hi[i][j] = stbuf_ldmatch_hi[i] & stbuf_byteen[i][j] & stbuf_data_vld[i];
             stbuf_fwdbyteen_hi_dc2[j] |= stbuf_fwdbyteenvec_hi[i][j];
 
@@ -333,15 +333,15 @@ module lsu_stbuf
    end // block: GenLdFwd
 
    for (genvar i=0; i<DEPTH; i++) begin
-      for (genvar j=0; j<BYTE_WIDTH; j++) begin
+      for (genvar j=0; j<BYTE_WIDTH/2; j++) begin
          assign stbuf_fwddatavec_hi[i][(8*j)+7:(8*j)] = {8{stbuf_fwdbyteenvec_hi[i][j]}} & stbuf_data[i][(8*j)+7:(8*j)];
          assign stbuf_fwddatavec_lo[i][(8*j)+7:(8*j)] = {8{stbuf_fwdbyteenvec_lo[i][j]}} & stbuf_data[i][(8*j)+7:(8*j)];
       end
    end
 
    always_comb begin
-      stbuf_fwddata_hi_dc2[DATA_WIDTH-1:0] = '0;
-      stbuf_fwddata_lo_dc2[DATA_WIDTH-1:0] = '0;
+      stbuf_fwddata_hi_dc2[DATA_WIDTH/2-1:0] = '0;
+      stbuf_fwddata_lo_dc2[DATA_WIDTH/2-1:0] = '0;
       for (int i=0; i<DEPTH; i++) begin
          // Byte0
          if (stbuf_fwdbyteenvec_hi[DEPTH_LOG2'(WrPtr[DEPTH_LOG2-1:0] + DEPTH_LOG2'(i))][0]) begin
@@ -377,7 +377,7 @@ module lsu_stbuf
       end
    end
 
-   for (genvar i=0; i<BYTE_WIDTH; i++) begin
+   for (genvar i=0; i<BYTE_WIDTH/2; i++) begin
       assign stbuf_fwdbyteen_hi_fn_dc2[i] = stbuf_fwdbyteen_hi_hi[i] | stbuf_fwdbyteen_hi_lo[i] | stbuf_fwdbyteen_hi_dc2[i];
       assign stbuf_fwdbyteen_lo_fn_dc2[i] = stbuf_fwdbyteen_lo_hi[i] | stbuf_fwdbyteen_lo_lo[i] | stbuf_fwdbyteen_lo_dc2[i];
 
