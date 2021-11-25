@@ -74,7 +74,7 @@ module swerv
     output logic [       `RV_DCCM_BITS-1:0] dccm_wr_addr,
     output logic [       `RV_DCCM_BITS-1:0] dccm_rd_addr_lo,
     output logic [       `RV_DCCM_BITS-1:0] dccm_rd_addr_hi,
-    output logic [`RV_DCCM_FDATA_WIDTH-1:0] dccm_wr_data,
+    output logic [DCCM_FDATA_WIDTH-1:0] dccm_wr_data,
 
     input logic [`RV_DCCM_FDATA_WIDTH-1:0] dccm_rd_data_lo,
     input logic [`RV_DCCM_FDATA_WIDTH-1:0] dccm_rd_data_hi,
@@ -624,8 +624,8 @@ module swerv
   logic        dec_ib0_valid_eff_d;
 
 
-  logic [31:0] dec_i0_immed_d;
-  logic [31:0] dec_i1_immed_d;
+  logic [XLEN-1:0] dec_i0_immed_d;
+  logic [XLEN-1:0] dec_i1_immed_d;
 
   logic [12:1] dec_i0_br_immed_d;
   logic [12:1] dec_i1_br_immed_d;
@@ -680,7 +680,7 @@ module swerv
   logic lsu_freeze_external_ints_dc3;
   logic lsu_imprecise_error_load_any;
   logic lsu_imprecise_error_store_any;
-  logic [XLEN-1:0] lsu_imprecise_error_addr_any;
+  logic [31:0] lsu_imprecise_error_addr_any;
   logic lsu_load_stall_any;  // This is for blocking stores
   logic lsu_store_stall_any;  // This is for blocking stores
   logic lsu_load_ecc_stbuf_full_dc3;  // Load with ecc error can't allocate to stbuf
@@ -694,7 +694,7 @@ module swerv
   logic [`RV_LSU_NUM_NBLOAD_WIDTH-1:0] lsu_nonblock_load_inv_tag_dc5;
   logic lsu_nonblock_load_data_valid;
   logic [`RV_LSU_NUM_NBLOAD_WIDTH-1:0] lsu_nonblock_load_data_tag;
-  logic [31:0] lsu_nonblock_load_data;
+  logic [XLEN-1:0] lsu_nonblock_load_data;
 
   logic flush_final_e3;
   logic i0_flush_final_e3;

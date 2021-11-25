@@ -22,7 +22,6 @@
 // Comments:
 //
 //********************************************************************************
-
 module lsu_bus_intf
   import swerv_types::*;
 (
@@ -81,10 +80,10 @@ module lsu_bus_intf
     input logic addr_external_dc4,  // lsu instruction going to external
     input logic addr_external_dc5,  // lsu instruction going to external
 
-    input logic [XLEN-1:0] store_data_dc2,  // store data flowing down the pipe
-    input logic [XLEN-1:0] store_data_dc3,  // store data flowing down the pipe
-    input logic [XLEN-1:0] store_data_dc4,  // store data flowing down the pipe
-    input logic [XLEN-1:0] store_data_dc5,  // store data flowing down the pipe
+    input logic [DCCM_DATA_WIDTH*2-1:0] store_data_dc2,  // store data flowing down the pipe
+    input logic [DCCM_DATA_WIDTH*2-1:0] store_data_dc3,  // store data flowing down the pipe
+    input logic [    DCCM_DATA_WIDTH:0] store_data_dc4,  // store data flowing down the pipe
+    input logic [    DCCM_DATA_WIDTH:0] store_data_dc5,  // store data flowing down the pipe
 
     input logic lsu_commit_dc5,      // lsu instruction in dc5 commits
     input logic is_sideeffects_dc2,  // lsu attribute is side_effects
@@ -95,12 +94,12 @@ module lsu_bus_intf
     input logic flush_dc5,           // flush
     input logic dec_tlu_cancel_e4,   // cancel the bus load in dc4 and reset the freeze
 
-    output logic            lsu_freeze_dc3,            // load goes to external and asserts freeze
-    output logic            lsu_busreq_dc5,            // bus request is in dc5
-    output logic            lsu_bus_buffer_pend_any,   // bus buffer has a pending bus entry
-    output logic            lsu_bus_buffer_full_any,   // write buffer is full
-    output logic            lsu_bus_buffer_empty_any,  // write buffer is empty
-    output logic [XLEN-1:0] bus_read_data_dc3,         // the bus return data
+    output logic lsu_freeze_dc3,  // load goes to external and asserts freeze
+    output logic lsu_busreq_dc5,  // bus request is in dc5
+    output logic lsu_bus_buffer_pend_any,  // bus buffer has a pending bus entry
+    output logic lsu_bus_buffer_full_any,  // write buffer is full
+    output logic lsu_bus_buffer_empty_any,  // write buffer is empty
+    output logic [DCCM_DATA_WIDTH-1:0] bus_read_data_dc3,  // the bus return data
 
     output logic        ld_bus_error_dc3,      // bus error in dc3
     output logic [31:0] ld_bus_error_addr_dc3, // address of the bus error
@@ -118,7 +117,7 @@ module lsu_bus_intf
     output logic                                lsu_nonblock_load_data_valid,    // the non block is valid - sending information back to the cam
     output logic lsu_nonblock_load_data_error,  // non block load has an error
     output logic [`RV_LSU_NUM_NBLOAD_WIDTH-1:0] lsu_nonblock_load_data_tag,      // the tag of the non block load sending the data/error
-    output logic [XLEN-1:0] lsu_nonblock_load_data,  // Data of the non block load
+    output logic [DCCM_DATA_WIDTH-1:0] lsu_nonblock_load_data,  // Data of the non block load
 
     // PMU events
     output logic lsu_pmu_bus_trxn,
@@ -176,6 +175,7 @@ module lsu_bus_intf
 
 );
 
+  `include "global.h"
 
   logic ld_freeze_dc3;
 
@@ -183,16 +183,19 @@ module lsu_bus_intf
   logic ldst_dual_dc1, ldst_dual_dc2, ldst_dual_dc3, ldst_dual_dc4, ldst_dual_dc5;
   logic lsu_busreq_dc3, lsu_busreq_dc4;
 
-  logic [7:0] ldst_byteen_dc2, ldst_byteen_dc3, ldst_byteen_dc4, ldst_byteen_dc5;
-  logic [15:0] ldst_byteen_ext_dc2, ldst_byteen_ext_dc3, ldst_byteen_ext_dc4, ldst_byteen_ext_dc5;
-  logic [3:0] ldst_byteen_hi_dc2, ldst_byteen_hi_dc3, ldst_byteen_hi_dc4, ldst_byteen_hi_dc5;
-  logic [3:0] ldst_byteen_lo_dc2, ldst_byteen_lo_dc3, ldst_byteen_lo_dc4, ldst_byteen_lo_dc5;
+  logic [DCCM_BYTE_WIDTH-1:0] ldst_byteen_dc2, ldst_byteen_dc3, ldst_byteen_dc4, ldst_byteen_dc5;
+  logic [DCCM_BYTE_WIDTH*2-1:0]
+      ldst_byteen_ext_dc2, ldst_byteen_ext_dc3, ldst_byteen_ext_dc4, ldst_byteen_ext_dc5;
+  logic [DCCM_BYTE_WIDTH-1:0]
+      ldst_byteen_hi_dc2, ldst_byteen_hi_dc3, ldst_byteen_hi_dc4, ldst_byteen_hi_dc5;
+  logic [DCCM_BYTE_WIDTH-1:0]
+      ldst_byteen_lo_dc2, ldst_byteen_lo_dc3, ldst_byteen_lo_dc4, ldst_byteen_lo_dc5;
   logic is_sideeffects_dc4, is_sideeffects_dc5;
 
 
-  logic [XLEN-1:0] store_data_ext_dc3, store_data_ext_dc4, store_data_ext_dc5;
-  logic [XLEN/2-1:0] store_data_hi_dc3, store_data_hi_dc4, store_data_hi_dc5;
-  logic [XLEN/2-1:0] store_data_lo_dc3, store_data_lo_dc4, store_data_lo_dc5;
+  logic [DCCM_DATA_WIDTH*2-1:0] store_data_ext_dc3, store_data_ext_dc4, store_data_ext_dc5;
+  logic [DCCM_DATA_WIDTH-1:0] store_data_hi_dc3, store_data_hi_dc4, store_data_hi_dc5;
+  logic [DCCM_DATA_WIDTH-1:0] store_data_lo_dc3, store_data_lo_dc4, store_data_lo_dc5;
 
   logic addr_match_dw_lo_dc5_dc4, addr_match_dw_lo_dc5_dc3, addr_match_dw_lo_dc5_dc2;
   logic addr_match_word_lo_dc5_dc4, addr_match_word_lo_dc5_dc3, addr_match_word_lo_dc5_dc2;
@@ -202,63 +205,67 @@ module lsu_bus_intf
   logic ld_addr_dc4hit_lo_lo, ld_addr_dc4hit_hi_lo, ld_addr_dc4hit_lo_hi, ld_addr_dc4hit_hi_hi;
   logic ld_addr_dc5hit_lo_lo, ld_addr_dc5hit_hi_lo, ld_addr_dc5hit_lo_hi, ld_addr_dc5hit_hi_hi;
 
-  logic [3:0]
+  /* Check Here */
+  logic [DCCM_BYTE_WIDTH:0]
       ld_byte_dc3hit_lo_lo, ld_byte_dc3hit_hi_lo, ld_byte_dc3hit_lo_hi, ld_byte_dc3hit_hi_hi;
-  logic [3:0]
+  logic [DCCM_BYTE_WIDTH-1:0]
       ld_byte_dc4hit_lo_lo, ld_byte_dc4hit_hi_lo, ld_byte_dc4hit_lo_hi, ld_byte_dc4hit_hi_hi;
-  logic [3:0]
+  logic [DCCM_BYTE_WIDTH-1:0]
       ld_byte_dc5hit_lo_lo, ld_byte_dc5hit_hi_lo, ld_byte_dc5hit_lo_hi, ld_byte_dc5hit_hi_hi;
 
-  logic [3:0] ld_byte_hit_lo, ld_byte_dc3hit_lo, ld_byte_dc4hit_lo, ld_byte_dc5hit_lo;
-  logic [3:0] ld_byte_hit_hi, ld_byte_dc3hit_hi, ld_byte_dc4hit_hi, ld_byte_dc5hit_hi;
+  logic [DCCM_BYTE_WIDTH-1:0]
+      ld_byte_hit_lo, ld_byte_dc3hit_lo, ld_byte_dc4hit_lo, ld_byte_dc5hit_lo;
+  logic [DCCM_BYTE_WIDTH-1:0]
+      ld_byte_hit_hi, ld_byte_dc3hit_hi, ld_byte_dc4hit_hi, ld_byte_dc5hit_hi;
 
-  logic [XLEN/2-1:0] ld_fwddata_dc3pipe_lo, ld_fwddata_dc4pipe_lo, ld_fwddata_dc5pipe_lo;
-  logic [XLEN/2-1:0] ld_fwddata_dc3pipe_hi, ld_fwddata_dc4pipe_hi, ld_fwddata_dc5pipe_hi;
+  logic [DCCM_DATA_WIDTH-1:0] ld_fwddata_dc3pipe_lo, ld_fwddata_dc4pipe_lo, ld_fwddata_dc5pipe_lo;
+  logic [DCCM_DATA_WIDTH-1:0] ld_fwddata_dc3pipe_hi, ld_fwddata_dc4pipe_hi, ld_fwddata_dc5pipe_hi;
 
-  logic [3:0] ld_byte_hit_buf_lo, ld_byte_hit_buf_hi;
-  logic [31:0] ld_fwddata_buf_lo, ld_fwddata_buf_hi;
+  logic [DCCM_BYTE_WIDTH-1:0] ld_byte_hit_buf_lo, ld_byte_hit_buf_hi;
+  logic [DCCM_DATA_WIDTH-1:0] ld_fwddata_buf_lo, ld_fwddata_buf_hi;
 
-  //logic ld_hit_rdbuf_hi, ld_hit_rdbuf_lo;
-  //logic [XLEN/2-1:0] ld_fwddata_rdbuf_hi, ld_fwddata_rdbuf_lo;
+  logic ld_hit_rdbuf_hi, ld_hit_rdbuf_lo;
+  logic [DCCM_DATA_WIDTH-1:0] ld_fwddata_rdbuf_hi, ld_fwddata_rdbuf_lo;
 
-  logic [XLEN/2-1:0] ld_fwddata_lo, ld_fwddata_hi;
-  logic [XLEN-1:0] ld_fwddata_dc2, ld_fwddata_dc3;
-  logic [XLEN-1:0] ld_bus_data_dc3;
+  logic [DCCM_DATA_WIDTH*2-1:0] ld_fwddata_lo, ld_fwddata_hi;
+  logic [DCCM_DATA_WIDTH-1:0] ld_fwddata_dc2, ld_fwddata_dc3;
+  logic [DCCM_DATA_WIDTH-1:0] ld_bus_data_dc3;
 
   logic ld_full_hit_hi_dc2, ld_full_hit_lo_dc2;
   logic ld_hit_dc2, ld_full_hit_dc2, ld_full_hit_dc3;
-  logic                 is_aligned_dc5;
+  logic                                       is_aligned_dc5;
 
-  //logic [2*XLEN-1:XLEN] ld_fwddata_dc2_nc;
+  logic [DCCM_DATA_WIDTH*2-1:DCCM_DATA_WIDTH] ld_fwddata_dc2_nc;
 
-  logic                 lsu_write_buffer_empty_any;
+  logic                                       lsu_write_buffer_empty_any;
   assign lsu_write_buffer_empty_any = 1'b1;
 
-  assign ldst_byteen_dc2 = ({8{lsu_pkt_dc2.by}}   & 8'b00000001) |
-                                 ({8{lsu_pkt_dc2.half}} & 8'b00000011) |
-                                 ({8{lsu_pkt_dc2.word}} & 8'b00001111) |
-                                 ({8{lsu_pkt_dc2.dword}} & 8'b11111111);
+  assign ldst_byteen_dc2[DCCM_BYTE_WIDTH-1:0] = 
+                                 ({8{lsu_pkt_dc2.by}}   & 8'b0000_0001) |
+                                 ({8{lsu_pkt_dc2.half}} & 8'b0000_0011) |
+                                 ({8{lsu_pkt_dc2.word}} & 8'b0000_1111) |
+                                 ({8{lsu_pkt_dc2.dword}} & 8'b1111_1111);
 
   assign ldst_dual_dc1 = (lsu_addr_dc1[2] != end_addr_dc1[2]);
   assign lsu_freeze_dc3 = ld_freeze_dc3 & ~(flush_dc4 | flush_dc5);
 
-  // Determine if the packet is word aligned
-  assign is_aligned_dc5 = (lsu_pkt_dc5.dword & (
-  lsu_addr_dc5[2:0] == 3'b0
-  )) | (lsu_pkt_dc5.word & (lsu_addr_dc5[1:0] == 2'b0)) | (
-      lsu_pkt_dc5.half & (lsu_addr_dc5[0] == 1'b0));
+  // Determine if the packet is double word aligned
+  assign is_aligned_dc5  = 
+                           (lsu_pkt_dc5.dword & (lsu_addr_dc5[2:0] == 3'b0)) |
+                           (lsu_pkt_dc5.word & (lsu_addr_dc5[1:0] == 2'b0)) |
+                            (lsu_pkt_dc5.half & (lsu_addr_dc5[0] == 1'b0));
 
   // Read/Write Buffer
   lsu_bus_buffer bus_buffer (.*);
 
   // Logic to determine if dc5 store can be coalesced or not with younger stores. Bypass ibuf if cannot colaesced
-  assign addr_match_dw_lo_dc5_dc4 = (lsu_addr_dc5[31:3] == lsu_addr_dc4[31:3]);
-  assign addr_match_dw_lo_dc5_dc3 = (lsu_addr_dc5[31:3] == lsu_addr_dc3[31:3]);
-  assign addr_match_dw_lo_dc5_dc2 = (lsu_addr_dc5[31:3] == lsu_addr_dc2[31:3]);
+  assign addr_match_dw_lo_dc5_dc4 = (lsu_addr_dc5[31:4] == lsu_addr_dc4[31:4]);
+  assign addr_match_dw_lo_dc5_dc3 = (lsu_addr_dc5[31:4] == lsu_addr_dc3[31:4]);
+  assign addr_match_dw_lo_dc5_dc2 = (lsu_addr_dc5[31:4] == lsu_addr_dc2[31:4]);
 
-  assign addr_match_word_lo_dc5_dc4 = addr_match_dw_lo_dc5_dc4 & ~(lsu_addr_dc5[2]^lsu_addr_dc4[2]);
-  assign addr_match_word_lo_dc5_dc3 = addr_match_dw_lo_dc5_dc3 & ~(lsu_addr_dc5[2]^lsu_addr_dc3[2]);
-  assign addr_match_word_lo_dc5_dc2 = addr_match_dw_lo_dc5_dc2 & ~(lsu_addr_dc5[2]^lsu_addr_dc2[2]);
+  assign addr_match_word_lo_dc5_dc4 = addr_match_dw_lo_dc5_dc4 & ~(lsu_addr_dc5[3]^lsu_addr_dc4[3]);
+  assign addr_match_word_lo_dc5_dc3 = addr_match_dw_lo_dc5_dc3 & ~(lsu_addr_dc5[3]^lsu_addr_dc3[3]);
+  assign addr_match_word_lo_dc5_dc2 = addr_match_dw_lo_dc5_dc2 & ~(lsu_addr_dc5[3]^lsu_addr_dc2[3]);
 
   assign no_word_merge_dc5  = lsu_busreq_dc5 & ~ldst_dual_dc5 &
                                ((lsu_busreq_dc4 & (lsu_pkt_dc4.load | ~addr_match_word_lo_dc5_dc4)) |
@@ -271,47 +278,75 @@ module lsu_bus_intf
                                  (lsu_busreq_dc2 & ~lsu_busreq_dc3 & ~lsu_busreq_dc4 & (lsu_pkt_dc2.load | ~addr_match_dw_lo_dc5_dc2)));
 
   // Create Hi/Lo signals
-  assign ldst_byteen_ext_dc2[15:0] = {8'b0, ldst_byteen_dc2[7:0]} << lsu_addr_dc2[2:0];
-  assign ldst_byteen_ext_dc3[15:0] = {8'b0, ldst_byteen_dc3[7:0]} << lsu_addr_dc3[2:0];
-  assign ldst_byteen_ext_dc4[15:0] = {8'b0, ldst_byteen_dc4[7:0]} << lsu_addr_dc4[2:0];
-  assign ldst_byteen_ext_dc5[15:0] = {8'b0, ldst_byteen_dc5[7:0]} << lsu_addr_dc5[2:0];
+  assign ldst_byteen_ext_dc2[DCCM_BYTE_WIDTH*2-1:0] = {
+        8'b0, ldst_byteen_dc2[DCCM_BYTE_WIDTH-1:0]
+      } << lsu_addr_dc2[$clog2(
+          DCCM_BYTE_WIDTH
+      )-1:0];
+  assign ldst_byteen_ext_dc3[DCCM_BYTE_WIDTH*2-1:0] = {
+        8'b0, ldst_byteen_dc3[DCCM_BYTE_WIDTH-1:0]
+      } << lsu_addr_dc3[$clog2(
+          DCCM_BYTE_WIDTH
+      )-1:0];
+  assign ldst_byteen_ext_dc4[DCCM_BYTE_WIDTH*2-1:0] = {
+        8'b0, ldst_byteen_dc4[DCCM_BYTE_WIDTH-1:0]
+      } << lsu_addr_dc4[$clog2(
+          DCCM_BYTE_WIDTH
+      )-1:0];
+  assign ldst_byteen_ext_dc5[DCCM_BYTE_WIDTH*2-1:0] = {
+        8'b0, ldst_byteen_dc5[DCCM_BYTE_WIDTH-1:0]
+      } << lsu_addr_dc5[$clog2(
+          DCCM_BYTE_WIDTH
+      )-1:0];
 
-  assign store_data_ext_dc3[63:0] = {store_data_dc3} << {lsu_addr_dc3[1:0], 3'b0};
-  assign store_data_ext_dc4[63:0] = {store_data_dc4} << {lsu_addr_dc4[1:0], 3'b0};
-  assign store_data_ext_dc5[63:0] = {store_data_dc5} << {lsu_addr_dc5[1:0], 3'b0};
+  assign store_data_ext_dc3[DCCM_DATA_WIDTH*2-1:0] = {
+    64'b0, store_data_dc3[DCCM_DATA_WIDTH-1:0]
+  } << {
+    lsu_addr_dc3[$clog2(DCCM_BYTE_WIDTH)-1:0], 3'b0
+  };
+  assign store_data_ext_dc4[DCCM_DATA_WIDTH*2-1:0] = {
+    64'b0, store_data_dc4[DCCM_DATA_WIDTH-1:0]
+  } << {
+    lsu_addr_dc4[$clog2(DCCM_BYTE_WIDTH)-1:0], 3'b0
+  };
+  assign store_data_ext_dc5[DCCM_DATA_WIDTH*2-1:0] = {
+    64'b0, store_data_dc5[DCCM_DATA_WIDTH-1:0]
+  } << {
+    lsu_addr_dc5[$clog2(DCCM_BYTE_WIDTH)-1:0], 3'b0
+  };
 
-  assign ldst_byteen_hi_dc2[3:0] = ldst_byteen_ext_dc2[7:4];
-  assign ldst_byteen_lo_dc2[3:0] = ldst_byteen_ext_dc2[3:0];
-  assign ldst_byteen_hi_dc3[3:0] = ldst_byteen_ext_dc3[7:4];
-  assign ldst_byteen_lo_dc3[3:0] = ldst_byteen_ext_dc3[3:0];
-  assign ldst_byteen_hi_dc4[3:0] = ldst_byteen_ext_dc4[7:4];
-  assign ldst_byteen_lo_dc4[3:0] = ldst_byteen_ext_dc4[3:0];
-  assign ldst_byteen_hi_dc5[3:0] = ldst_byteen_ext_dc5[7:4];
-  assign ldst_byteen_lo_dc5[3:0] = ldst_byteen_ext_dc5[3:0];
+  assign ldst_byteen_hi_dc2[DCCM_BYTE_WIDTH-1:0] = ldst_byteen_ext_dc2[DCCM_BYTE_WIDTH*2-1:DCCM_BYTE_WIDTH];
+  assign ldst_byteen_lo_dc2[DCCM_BYTE_WIDTH-1:0] = ldst_byteen_ext_dc2[DCCM_BYTE_WIDTH-1:0];
+  assign ldst_byteen_hi_dc3[DCCM_BYTE_WIDTH-1:0] = ldst_byteen_ext_dc3[DCCM_BYTE_WIDTH*2-1:DCCM_BYTE_WIDTH];
+  assign ldst_byteen_lo_dc3[DCCM_BYTE_WIDTH-1:0] = ldst_byteen_ext_dc3[DCCM_BYTE_WIDTH-1:0];
+  assign ldst_byteen_hi_dc4[DCCM_BYTE_WIDTH-1:0] = ldst_byteen_ext_dc4[DCCM_BYTE_WIDTH*2-1:DCCM_BYTE_WIDTH];
+  assign ldst_byteen_lo_dc4[DCCM_BYTE_WIDTH-1:0] = ldst_byteen_ext_dc4[DCCM_BYTE_WIDTH-1:0];
+  assign ldst_byteen_hi_dc5[DCCM_BYTE_WIDTH-1:0] = ldst_byteen_ext_dc5[DCCM_BYTE_WIDTH*2-1:DCCM_BYTE_WIDTH];
+  assign ldst_byteen_lo_dc5[DCCM_BYTE_WIDTH-1:0] = ldst_byteen_ext_dc5[DCCM_BYTE_WIDTH-1:0];
 
-  assign store_data_hi_dc3[31:0] = store_data_ext_dc3[63:32];
-  assign store_data_lo_dc3[31:0] = store_data_ext_dc3[31:0];
-  assign store_data_hi_dc4[31:0] = store_data_ext_dc4[63:32];
-  assign store_data_lo_dc4[31:0] = store_data_ext_dc4[31:0];
-  assign store_data_hi_dc5[31:0] = store_data_ext_dc5[63:32];
-  assign store_data_lo_dc5[31:0] = store_data_ext_dc5[31:0];
+  assign store_data_hi_dc3[DCCM_DATA_WIDTH-1:0] = store_data_ext_dc3[DCCM_DATA_WIDTH*2-1:DCCM_DATA_WIDTH];
+  assign store_data_lo_dc3[DCCM_DATA_WIDTH-1:0] = store_data_ext_dc3[DCCM_DATA_WIDTH-1:0];
+  assign store_data_hi_dc4[DCCM_DATA_WIDTH-1:0] = store_data_ext_dc4[DCCM_DATA_WIDTH*2-1:DCCM_DATA_WIDTH];
+  assign store_data_lo_dc4[DCCM_DATA_WIDTH-1:0] = store_data_ext_dc4[DCCM_DATA_WIDTH-1:0];
+  assign store_data_hi_dc5[DCCM_DATA_WIDTH-1:0] = store_data_ext_dc5[DCCM_DATA_WIDTH*2-1:DCCM_DATA_WIDTH];
+  assign store_data_lo_dc5[DCCM_DATA_WIDTH-1:0] = store_data_ext_dc5[DCCM_DATA_WIDTH-1:0];
 
-  assign ld_addr_dc3hit_lo_lo = (lsu_addr_dc2[31:2] == lsu_addr_dc3[31:2]) & lsu_pkt_dc3.valid & lsu_pkt_dc3.store & lsu_busreq_dc2;
-  assign ld_addr_dc3hit_lo_hi = (end_addr_dc2[31:2] == lsu_addr_dc3[31:2]) & lsu_pkt_dc3.valid & lsu_pkt_dc3.store & lsu_busreq_dc2;
-  assign ld_addr_dc3hit_hi_lo = (lsu_addr_dc2[31:2] == end_addr_dc3[31:2]) & lsu_pkt_dc3.valid & lsu_pkt_dc3.store & lsu_busreq_dc2;
-  assign ld_addr_dc3hit_hi_hi = (end_addr_dc2[31:2] == end_addr_dc3[31:2]) & lsu_pkt_dc3.valid & lsu_pkt_dc3.store & lsu_busreq_dc2;
+  assign ld_addr_dc3hit_lo_lo = (lsu_addr_dc2[31:3] == lsu_addr_dc3[31:3]) & lsu_pkt_dc3.valid & lsu_pkt_dc3.store & lsu_busreq_dc2;
+  assign ld_addr_dc3hit_lo_hi = (end_addr_dc2[31:3] == lsu_addr_dc3[31:3]) & lsu_pkt_dc3.valid & lsu_pkt_dc3.store & lsu_busreq_dc2;
+  assign ld_addr_dc3hit_hi_lo = (lsu_addr_dc2[31:3] == end_addr_dc3[31:3]) & lsu_pkt_dc3.valid & lsu_pkt_dc3.store & lsu_busreq_dc2;
+  assign ld_addr_dc3hit_hi_hi = (end_addr_dc2[31:3] == end_addr_dc3[31:3]) & lsu_pkt_dc3.valid & lsu_pkt_dc3.store & lsu_busreq_dc2;
 
-  assign ld_addr_dc4hit_lo_lo = (lsu_addr_dc2[31:2] == lsu_addr_dc4[31:2]) & lsu_pkt_dc4.valid & lsu_pkt_dc4.store & lsu_busreq_dc2;
-  assign ld_addr_dc4hit_lo_hi = (end_addr_dc2[31:2] == lsu_addr_dc4[31:2]) & lsu_pkt_dc4.valid & lsu_pkt_dc4.store & lsu_busreq_dc2;
-  assign ld_addr_dc4hit_hi_lo = (lsu_addr_dc2[31:2] == end_addr_dc4[31:2]) & lsu_pkt_dc4.valid & lsu_pkt_dc4.store & lsu_busreq_dc2;
-  assign ld_addr_dc4hit_hi_hi = (end_addr_dc2[31:2] == end_addr_dc4[31:2]) & lsu_pkt_dc4.valid & lsu_pkt_dc4.store & lsu_busreq_dc2;
+  assign ld_addr_dc4hit_lo_lo = (lsu_addr_dc2[31:3] == lsu_addr_dc4[31:3]) & lsu_pkt_dc4.valid & lsu_pkt_dc4.store & lsu_busreq_dc2;
+  assign ld_addr_dc4hit_lo_hi = (end_addr_dc2[31:3] == lsu_addr_dc4[31:3]) & lsu_pkt_dc4.valid & lsu_pkt_dc4.store & lsu_busreq_dc2;
+  assign ld_addr_dc4hit_hi_lo = (lsu_addr_dc2[31:3] == end_addr_dc4[31:3]) & lsu_pkt_dc4.valid & lsu_pkt_dc4.store & lsu_busreq_dc2;
+  assign ld_addr_dc4hit_hi_hi = (end_addr_dc2[31:3] == end_addr_dc4[31:3]) & lsu_pkt_dc4.valid & lsu_pkt_dc4.store & lsu_busreq_dc2;
 
-  assign ld_addr_dc5hit_lo_lo = (lsu_addr_dc2[31:2] == lsu_addr_dc5[31:2]) & lsu_pkt_dc5.valid & lsu_pkt_dc5.store & lsu_busreq_dc2;
-  assign ld_addr_dc5hit_lo_hi = (end_addr_dc2[31:2] == lsu_addr_dc5[31:2]) & lsu_pkt_dc5.valid & lsu_pkt_dc5.store & lsu_busreq_dc2;
-  assign ld_addr_dc5hit_hi_lo = (lsu_addr_dc2[31:2] == end_addr_dc5[31:2]) & lsu_pkt_dc5.valid & lsu_pkt_dc5.store & lsu_busreq_dc2;
-  assign ld_addr_dc5hit_hi_hi = (end_addr_dc2[31:2] == end_addr_dc5[31:2]) & lsu_pkt_dc5.valid & lsu_pkt_dc5.store & lsu_busreq_dc2;
+  assign ld_addr_dc5hit_lo_lo = (lsu_addr_dc2[31:3] == lsu_addr_dc5[31:3]) & lsu_pkt_dc5.valid & lsu_pkt_dc5.store & lsu_busreq_dc2;
+  assign ld_addr_dc5hit_lo_hi = (end_addr_dc2[31:3] == lsu_addr_dc5[31:3]) & lsu_pkt_dc5.valid & lsu_pkt_dc5.store & lsu_busreq_dc2;
+  assign ld_addr_dc5hit_hi_lo = (lsu_addr_dc2[31:3] == end_addr_dc5[31:3]) & lsu_pkt_dc5.valid & lsu_pkt_dc5.store & lsu_busreq_dc2;
+  assign ld_addr_dc5hit_hi_hi = (end_addr_dc2[31:3] == end_addr_dc5[31:3]) & lsu_pkt_dc5.valid & lsu_pkt_dc5.store & lsu_busreq_dc2;
 
-  for (genvar i = 0; i < 4; i++) begin
+  for (genvar i = 0; i < DCCM_BYTE_WIDTH; i++) begin
     assign ld_byte_dc3hit_lo_lo[i] = ld_addr_dc3hit_lo_lo & ldst_byteen_lo_dc3[i] & ldst_byteen_lo_dc2[i];
     assign ld_byte_dc3hit_lo_hi[i] = ld_addr_dc3hit_lo_hi & ldst_byteen_lo_dc3[i] & ldst_byteen_hi_dc2[i];
     assign ld_byte_dc3hit_hi_lo[i] = ld_addr_dc3hit_hi_lo & ldst_byteen_hi_dc3[i] & ldst_byteen_lo_dc2[i];
@@ -346,37 +381,37 @@ module lsu_bus_intf
     assign ld_byte_dc4hit_hi[i] = ld_byte_dc4hit_lo_hi[i] | ld_byte_dc4hit_hi_hi[i];
     assign ld_byte_dc5hit_hi[i] = ld_byte_dc5hit_lo_hi[i] | ld_byte_dc5hit_hi_hi[i];
 
-    assign ld_fwddata_dc3pipe_lo[(8*i)+7:(8*i)] = ({8{ld_byte_dc3hit_lo_lo[i]}} & store_data_lo_dc3[(8*i)+7:(8*i)]) |
-                                                    ({8{ld_byte_dc3hit_hi_lo[i]}} & store_data_hi_dc3[(8*i)+7:(8*i)]);
-    assign ld_fwddata_dc4pipe_lo[(8*i)+7:(8*i)] = ({8{ld_byte_dc4hit_lo_lo[i]}} & store_data_lo_dc4[(8*i)+7:(8*i)]) |
-                                                    ({8{ld_byte_dc4hit_hi_lo[i]}} & store_data_hi_dc4[(8*i)+7:(8*i)]);
-    assign ld_fwddata_dc5pipe_lo[(8*i)+7:(8*i)] = ({8{ld_byte_dc5hit_lo_lo[i]}} & store_data_lo_dc5[(8*i)+7:(8*i)]) |
-                                                    ({8{ld_byte_dc5hit_hi_lo[i]}} & store_data_hi_dc5[(8*i)+7:(8*i)]);
+    assign ld_fwddata_dc3pipe_lo[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = ({2*DCCM_BYTE_WIDTH{ld_byte_dc3hit_lo_lo[i]}} & store_data_lo_dc3[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]) |
+                                                    ({2*DCCM_BYTE_WIDTH{ld_byte_dc3hit_hi_lo[i]}} & store_data_hi_dc3[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]);
+    assign ld_fwddata_dc4pipe_lo[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = ({2*DCCM_BYTE_WIDTH{ld_byte_dc4hit_lo_lo[i]}} & store_data_lo_dc4[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]) |
+                                                    ({2*DCCM_BYTE_WIDTH{ld_byte_dc4hit_hi_lo[i]}} & store_data_hi_dc4[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]);
+    assign ld_fwddata_dc5pipe_lo[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = ({2*DCCM_BYTE_WIDTH{ld_byte_dc5hit_lo_lo[i]}} & store_data_lo_dc5[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]) |
+                                                    ({2*DCCM_BYTE_WIDTH{ld_byte_dc5hit_hi_lo[i]}} & store_data_hi_dc5[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]);
 
-    assign ld_fwddata_dc3pipe_hi[(8*i)+7:(8*i)] = ({8{ld_byte_dc3hit_lo_hi[i]}} & store_data_lo_dc3[(8*i)+7:(8*i)]) |
-                                                    ({8{ld_byte_dc3hit_hi_hi[i]}} & store_data_hi_dc3[(8*i)+7:(8*i)]);
-    assign ld_fwddata_dc4pipe_hi[(8*i)+7:(8*i)] = ({8{ld_byte_dc4hit_lo_hi[i]}} & store_data_lo_dc4[(8*i)+7:(8*i)]) |
-                                                    ({8{ld_byte_dc4hit_hi_hi[i]}} & store_data_hi_dc4[(8*i)+7:(8*i)]);
-    assign ld_fwddata_dc5pipe_hi[(8*i)+7:(8*i)] = ({8{ld_byte_dc5hit_lo_hi[i]}} & store_data_lo_dc5[(8*i)+7:(8*i)]) |
-                                                    ({8{ld_byte_dc5hit_hi_hi[i]}} & store_data_hi_dc5[(8*i)+7:(8*i)]);
+    assign ld_fwddata_dc3pipe_hi[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = ({2*DCCM_BYTE_WIDTH{ld_byte_dc3hit_lo_hi[i]}} & store_data_lo_dc3[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]) |
+                                                    ({2*DCCM_BYTE_WIDTH{ld_byte_dc3hit_hi_hi[i]}} & store_data_hi_dc3[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]);
+    assign ld_fwddata_dc4pipe_hi[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = ({2*DCCM_BYTE_WIDTH{ld_byte_dc4hit_lo_hi[i]}} & store_data_lo_dc4[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]) |
+                                                    ({2*DCCM_BYTE_WIDTH{ld_byte_dc4hit_hi_hi[i]}} & store_data_hi_dc4[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]);
+    assign ld_fwddata_dc5pipe_hi[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = ({2*DCCM_BYTE_WIDTH{ld_byte_dc5hit_lo_hi[i]}} & store_data_lo_dc5[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]) |
+                                                    ({2*DCCM_BYTE_WIDTH{ld_byte_dc5hit_hi_hi[i]}} & store_data_hi_dc5[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]);
 
     // Final muxing between dc3/dc4/dc5
-    assign ld_fwddata_lo[(8*i)+7:(8*i)] = ld_byte_dc3hit_lo[i]    ? ld_fwddata_dc3pipe_lo[(8*i)+7:(8*i)] :
-                                            ld_byte_dc4hit_lo[i]    ? ld_fwddata_dc4pipe_lo[(8*i)+7:(8*i)] :
-                                            ld_byte_dc5hit_lo[i]    ? ld_fwddata_dc5pipe_lo[(8*i)+7:(8*i)] :
-                                                                      ld_fwddata_buf_lo[(8*i)+7:(8*i)];
+    assign ld_fwddata_lo[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = ld_byte_dc3hit_lo[i]    ? ld_fwddata_dc3pipe_lo[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] :
+                                            ld_byte_dc4hit_lo[i]    ? ld_fwddata_dc4pipe_lo[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] :
+                                            ld_byte_dc5hit_lo[i]    ? ld_fwddata_dc5pipe_lo[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] :
+                                                                      ld_fwddata_buf_lo[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)];
 
-    assign ld_fwddata_hi[(8*i)+7:(8*i)] = ld_byte_dc3hit_hi[i]    ? ld_fwddata_dc3pipe_hi[(8*i)+7:(8*i)] :
-                                            ld_byte_dc4hit_hi[i]    ? ld_fwddata_dc4pipe_hi[(8*i)+7:(8*i)] :
-                                            ld_byte_dc5hit_hi[i]    ? ld_fwddata_dc5pipe_hi[(8*i)+7:(8*i)] :
-                                                                      ld_fwddata_buf_hi[(8*i)+7:(8*i)];
+    assign ld_fwddata_hi[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = ld_byte_dc3hit_hi[i]    ? ld_fwddata_dc3pipe_hi[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] :
+                                            ld_byte_dc4hit_hi[i]    ? ld_fwddata_dc4pipe_hi[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] :
+                                            ld_byte_dc5hit_hi[i]    ? ld_fwddata_dc5pipe_hi[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] :
+                                                                      ld_fwddata_buf_hi[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)];
 
   end
 
   always_comb begin
     ld_full_hit_lo_dc2 = 1'b1;
     ld_full_hit_hi_dc2 = 1'b1;
-    for (int i = 0; i < 4; i++) begin
+    for (int i = 0; i < DCCM_BYTE_WIDTH; i++) begin
       ld_full_hit_lo_dc2 &= (ld_byte_hit_lo[i] | ~ldst_byteen_lo_dc2[i]);
       ld_full_hit_hi_dc2 &= (ld_byte_hit_hi[i] | ~ldst_byteen_hi_dc2[i]);
     end
@@ -388,10 +423,12 @@ module lsu_bus_intf
   // This will be high if all the bytes of load hit the stores in pipe/write buffer (dc3/dc4/dc5/wrbuf)
   assign ld_full_hit_dc2 = ld_full_hit_lo_dc2 & ld_full_hit_hi_dc2 & lsu_busreq_dc2 & lsu_pkt_dc2.load & ~is_sideeffects_dc2;
 
-  assign {ld_fwddata_dc2[63:32], ld_fwddata_dc2[31:0]} = {
-    ld_fwddata_hi[31:0], ld_fwddata_lo[31:0]
-  } >> (8 * lsu_addr_dc2[1:0]);
-  assign bus_read_data_dc3 = ld_full_hit_dc3 ? ld_fwddata_dc3 : ld_bus_data_dc3;
+  assign {ld_fwddata_dc2_nc[DCCM_DATA_WIDTH*2-1:DCCM_DATA_WIDTH], ld_fwddata_dc2[DCCM_DATA_WIDTH-1:0]} = {
+        ld_fwddata_hi[DCCM_DATA_WIDTH-1:0], ld_fwddata_lo[DCCM_DATA_WIDTH-1:0]
+      } >> (8 * lsu_addr_dc2[$clog2(
+          DCCM_BYTE_WIDTH
+      )-1:0]);
+  assign bus_read_data_dc3[DCCM_DATA_WIDTH-1:0] = ld_full_hit_dc3 ? ld_fwddata_dc3[DCCM_DATA_WIDTH-1:0] : ld_bus_data_dc3[DCCM_DATA_WIDTH-1:0];
 
   // Fifo flops
 
@@ -434,9 +471,9 @@ module lsu_bus_intf
       .rawclk(clk),
       .*
   );
-  rvdff_fpga #(XLEN/8) lsu_byten_dc3ff (
-      .din(ldst_byteen_dc2),
-      .dout(ldst_byteen_dc3),
+  rvdff_fpga #(DCCM_BYTE_WIDTH) lsu_byten_dc3ff (
+      .din(ldst_byteen_dc2[DCCM_BYTE_WIDTH-1:0]),
+      .dout(ldst_byteen_dc3[DCCM_BYTE_WIDTH-1:0]),
       .clk(lsu_freeze_c1_dc3_clk),
       .clken(lsu_freeze_c1_dc3_clken),
       .rawclk(clk),
@@ -444,10 +481,10 @@ module lsu_bus_intf
   );
 
   rvdff #(
-      .WIDTH(XLEN)
+      .WIDTH(DCCM_DATA_WIDTH)
   ) lsu_fwddata_dc3ff (
-      .din (ld_fwddata_dc2[XLEN-1:0]),
-      .dout(ld_fwddata_dc3[XLEN-1:0]),
+      .din (ld_fwddata_dc2[DCCM_DATA_WIDTH-1:0]),
+      .dout(ld_fwddata_dc3[DCCM_DATA_WIDTH-1:0]),
       .clk (lsu_c1_dc3_clk),
       .*
   );
@@ -485,16 +522,16 @@ module lsu_bus_intf
       .*
   );
 
-  rvdff #(XLEN/8) lsu_byten_dc4ff (
+  rvdff #(DCCM_BYTE_WIDTH) lsu_byten_dc4ff (
       .*,
-      .din (ldst_byteen_dc3),
-      .dout(ldst_byteen_dc4),
+      .din (ldst_byteen_dc3[DCCM_BYTE_WIDTH-1:0]),
+      .dout(ldst_byteen_dc4[DCCM_BYTE_WIDTH-1:0]),
       .clk (lsu_c1_dc4_clk)
   );
-  rvdff #(XLEN/8) lsu_byten_dc5ff (
+  rvdff #(DCCM_BYTE_WIDTH) lsu_byten_dc5ff (
       .*,
-      .din (ldst_byteen_dc4),
-      .dout(ldst_byteen_dc5),
+      .din (ldst_byteen_dc4[DCCM_BYTE_WIDTH-1:0]),
+      .dout(ldst_byteen_dc5[DCCM_BYTE_WIDTH-1:0]),
       .clk (lsu_c1_dc5_clk)
   );
 

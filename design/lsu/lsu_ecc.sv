@@ -40,23 +40,23 @@ module lsu_ecc
    input logic        addr_in_dccm_dc3,                   // address in dccm
    input logic [`RV_DCCM_BITS-1:0]       lsu_addr_dc3,    // start address
    input logic [`RV_DCCM_BITS-1:0]       end_addr_dc3,    // end address
-   input logic [XLEN-1:0]                    store_data_dc3,  // store data
-   input logic [XLEN-1:0] stbuf_data_any,
+   input logic [DCCM_DATA_WIDTH*2-1:0]                    store_data_dc3,  // store data
+   input logic [`RV_DCCM_DATA_WIDTH-1:0] stbuf_data_any,
 
-   input logic [XLEN/2-1:0] stbuf_fwddata_hi_dc3,  // data forward from the store buffer
-   input logic [XLEN/2-1:0] stbuf_fwddata_lo_dc3,  // data forward from the store buffer
-   input logic [XLEN/16-1:0] stbuf_fwdbyteen_hi_dc3,// which bytes from the store buffer are on
-   input logic [XLEN/16-1:0] stbuf_fwdbyteen_lo_dc3,// which bytes from the store buffer are on
+   input logic [`RV_DCCM_DATA_WIDTH-1:0] stbuf_fwddata_hi_dc3,  // data forward from the store buffer
+   input logic [`RV_DCCM_DATA_WIDTH-1:0] stbuf_fwddata_lo_dc3,  // data forward from the store buffer
+   input logic [`RV_DCCM_BYTE_WIDTH-1:0] stbuf_fwdbyteen_hi_dc3,// which bytes from the store buffer are on
+   input logic [`RV_DCCM_BYTE_WIDTH-1:0] stbuf_fwdbyteen_lo_dc3,// which bytes from the store buffer are on
 
-   input logic [XLEN/2-1:0] dccm_data_hi_dc3,     // raw data from mem
-   input logic [XLEN/2-1:0] dccm_data_lo_dc3,     // raw data from mem
+   input logic [`RV_DCCM_DATA_WIDTH-1:0] dccm_data_hi_dc3,     // raw data from mem
+   input logic [`RV_DCCM_DATA_WIDTH-1:0] dccm_data_lo_dc3,     // raw data from mem
    input logic [`RV_DCCM_ECC_WIDTH-1:0]  dccm_data_ecc_hi_dc3, // ecc read out from mem
    input logic [`RV_DCCM_ECC_WIDTH-1:0]  dccm_data_ecc_lo_dc3, // ecc read out from mem
 
    input logic                           dec_tlu_core_ecc_disable,  // disables the ecc computation and error flagging
 
-   output logic [XLEN/2-1:0] store_ecc_datafn_hi_dc3,  // final store data either from stbuf or SEC DCCM readout
-   output logic [XLEN/2-1:0] store_ecc_datafn_lo_dc3,
+   output logic [`RV_DCCM_DATA_WIDTH-1:0] store_ecc_datafn_hi_dc3,  // final store data either from stbuf or SEC DCCM readout
+   output logic [`RV_DCCM_DATA_WIDTH-1:0] store_ecc_datafn_lo_dc3,
 
    output logic [`RV_DCCM_ECC_WIDTH-1:0] stbuf_ecc_any,
    output logic        single_ecc_error_hi_dc3,                   // sec detected
@@ -67,7 +67,7 @@ module lsu_ecc
    input logic         scan_mode
  );
 
-`include "global.svh"
+`include "global.h"
 
    `ifdef RV_DCCM_ENABLE
       localparam DCCM_ENABLE = 1'b1;
@@ -86,7 +86,7 @@ module lsu_ecc
    logic        is_ldst_hi_dc3, is_ldst_lo_dc3;
    logic [7:0]  ldst_byteen_dc3;
    logic [7:0]  store_byteen_dc3;
-   logic [7:0]  store_byteen_ext_dc3;
+   logic [DCCM_BYTE_WIDTH*2-1:0]  store_byteen_ext_dc3;
    logic [DCCM_BYTE_WIDTH-1:0]  store_byteen_hi_dc3, store_byteen_lo_dc3;
 
    logic [163:0] store_data_ext_dc3;
@@ -94,7 +94,7 @@ module lsu_ecc
    logic [6:0]                  ecc_out_hi_nc, ecc_out_lo_nc;
 
 
-   assign ldst_dual_dc3 = (lsu_addr_dc3[2] != end_addr_dc3[2]);
+   assign ldst_dual_dc3 = (lsu_addr_dc3[3] != end_addr_dc3[3]);
    assign is_ldst_dc3 = lsu_pkt_dc3.valid & (lsu_pkt_dc3.load | lsu_pkt_dc3.store) & addr_in_dccm_dc3 & lsu_dccm_rden_dc3;
    assign is_ldst_lo_dc3 = is_ldst_dc3 & ~dec_tlu_core_ecc_disable;
    assign is_ldst_hi_dc3 = is_ldst_dc3 & ldst_dual_dc3 & ~dec_tlu_core_ecc_disable;
@@ -103,20 +103,21 @@ module lsu_ecc
                                  ({8{lsu_pkt_dc3.half}} & 8'b0000_0011) |
                                  ({8{lsu_pkt_dc3.word}} & 8'b0000_1111) |
                                  ({8{lsu_pkt_dc3.dword}} & 8'b1111_1111);
+
    assign store_byteen_dc3[7:0] = ldst_byteen_dc3[7:0] & {8{lsu_pkt_dc3.store}};
 
-   assign store_byteen_ext_dc3[7:0] = store_byteen_dc3[7:0] << lsu_addr_dc3[1:0];
-   assign store_byteen_hi_dc3[DCCM_BYTE_WIDTH/2-1:0] = store_byteen_ext_dc3[7:4];
-   assign store_byteen_lo_dc3[DCCM_BYTE_WIDTH/2-1:0] = store_byteen_ext_dc3[3:0];
+   assign store_byteen_ext_dc3[DCCM_BYTE_WIDTH*2-1:0] = store_byteen_dc3[7:0] << lsu_addr_dc3[$clog2(DCCM_BYTE_WIDTH)-1:0];
+   assign store_byteen_hi_dc3[DCCM_BYTE_WIDTH-1:0] = store_byteen_ext_dc3[7:4];
+   assign store_byteen_lo_dc3[DCCM_BYTE_WIDTH-1:0] = store_byteen_ext_dc3[3:0];
 
-   assign store_data_ext_dc3[63:0] = store_data_dc3[63:0] << {lsu_addr_dc3[1:0], 3'b000};
-   assign store_data_hi_dc3[DCCM_DATA_WIDTH/2-1:0]  = store_data_ext_dc3[63:32];
-   assign store_data_lo_dc3[DCCM_DATA_WIDTH/2-1:0]  = store_data_ext_dc3[31:0];
+   assign store_data_ext_dc3[DCCM_DATA_WIDTH*2-1:0] = store_data_dc3[DCCM_DATA_WIDTH*2-1:0] << {lsu_addr_dc3[$clog2(DCCM_BYTE_WIDTH)-1:0], 3'b000};
+   assign store_data_hi_dc3[DCCM_DATA_WIDTH-1:0]  = store_data_ext_dc3[DCCM_DATA_WIDTH*2-1:DCCM_DATA_WIDTH];
+   assign store_data_lo_dc3[DCCM_DATA_WIDTH-1:0]  = store_data_ext_dc3[DCCM_DATA_WIDTH-1:0];
 
 
    // Merge store data and sec data
    // This is used for loads as well for ecc error case. store_byteen will be 0 for loads
-   for (genvar i=0; i<DCCM_BYTE_WIDTH/2; i++) begin
+   for (genvar i=0; i<DCCM_BYTE_WIDTH; i++) begin
       assign store_ecc_datafn_hi_dc3[(8*i)+7:(8*i)] = store_byteen_hi_dc3[i] ? store_data_hi_dc3[(8*i)+7:(8*i)] :
                                                                                (stbuf_fwdbyteen_hi_dc3[i] ? stbuf_fwddata_hi_dc3[(8*i)+7:(8*i)] : sec_data_hi_dc3[(8*i)+7:(8*i)]);
       assign store_ecc_datafn_lo_dc3[(8*i)+7:(8*i)] = store_byteen_lo_dc3[i] ? store_data_lo_dc3[(8*i)+7:(8*i)] :
@@ -129,10 +130,10 @@ module lsu_ecc
          // Inputs
          .en(is_ldst_hi_dc3),
          .sed_ded (1'b0),    // 1 : means only detection
-         .din(dccm_data_hi_dc3[DCCM_DATA_WIDTH/2-1:0]),
+         .din(dccm_data_hi_dc3[DCCM_DATA_WIDTH-1:0]),
          .ecc_in(dccm_data_ecc_hi_dc3[DCCM_ECC_WIDTH-1:0]),
          // Outputs
-         .dout(sec_data_hi_dc3[DCCM_DATA_WIDTH/2-1:0]),
+         .dout(sec_data_hi_dc3[DCCM_DATA_WIDTH-1:0]),
          .ecc_out (ecc_out_hi_nc[6:0]),
          .single_ecc_error(single_ecc_error_hi_dc3),
          .double_ecc_error(double_ecc_error_hi_dc3),
@@ -143,10 +144,10 @@ module lsu_ecc
          // Inputs
          .en(is_ldst_lo_dc3),
          .sed_ded (1'b0),    // 1 : means only detection
-         .din(dccm_data_lo_dc3[DCCM_DATA_WIDTH/2-1:0] ),
+         .din(dccm_data_lo_dc3[DCCM_DATA_WIDTH-1:0] ),
          .ecc_in(dccm_data_ecc_lo_dc3[DCCM_ECC_WIDTH-1:0]),
          // Outputs
-         .dout(sec_data_lo_dc3[DCCM_DATA_WIDTH/2-1:0]),
+         .dout(sec_data_lo_dc3[DCCM_DATA_WIDTH-1:0]),
          .ecc_out (ecc_out_lo_nc[6:0]),
          .single_ecc_error(single_ecc_error_lo_dc3),
          .double_ecc_error(double_ecc_error_lo_dc3),
@@ -156,7 +157,7 @@ module lsu_ecc
       // Generate the ECC bits for store buffer drain
       rvecc_encode lsu_ecc_encode (
          //Inputs
-         .din(stbuf_data_any[DCCM_DATA_WIDTH/2-1:0]),
+         .din(stbuf_data_any[DCCM_DATA_WIDTH-1:0]),
          //Outputs
          .ecc_out(stbuf_ecc_any[DCCM_ECC_WIDTH-1:0]),
          .*
