@@ -82,8 +82,8 @@ module lsu_bus_intf
 
     input logic [DCCM_DATA_WIDTH*2-1:0] store_data_dc2,  // store data flowing down the pipe
     input logic [DCCM_DATA_WIDTH*2-1:0] store_data_dc3,  // store data flowing down the pipe
-    input logic [    DCCM_DATA_WIDTH:0] store_data_dc4,  // store data flowing down the pipe
-    input logic [    DCCM_DATA_WIDTH:0] store_data_dc5,  // store data flowing down the pipe
+    input logic [  DCCM_DATA_WIDTH-1:0] store_data_dc4,  // store data flowing down the pipe
+    input logic [  DCCM_DATA_WIDTH-1:0] store_data_dc5,  // store data flowing down the pipe
 
     input logic lsu_commit_dc5,      // lsu instruction in dc5 commits
     input logic is_sideeffects_dc2,  // lsu attribute is side_effects
@@ -141,7 +141,7 @@ module lsu_bus_intf
 
     output logic        lsu_axi_wvalid,
     input  logic        lsu_axi_wready,
-    output logic [63:0] lsu_axi_wdata,
+    output logic [127:0] lsu_axi_wdata,
     output logic [ 7:0] lsu_axi_wstrb,
     output logic        lsu_axi_wlast,
 
@@ -167,7 +167,7 @@ module lsu_bus_intf
     input  logic                       lsu_axi_rvalid,
     output logic                       lsu_axi_rready,
     input  logic [`RV_LSU_BUS_TAG-1:0] lsu_axi_rid,
-    input  logic [               63:0] lsu_axi_rdata,
+    input  logic [               127:0] lsu_axi_rdata,
     input  logic [                1:0] lsu_axi_rresp,
     input  logic                       lsu_axi_rlast,
 
@@ -175,7 +175,7 @@ module lsu_bus_intf
 
 );
 
-  `include "global.h"
+  `include "global.svh"
 
   logic ld_freeze_dc3;
 
@@ -206,7 +206,7 @@ module lsu_bus_intf
   logic ld_addr_dc5hit_lo_lo, ld_addr_dc5hit_hi_lo, ld_addr_dc5hit_lo_hi, ld_addr_dc5hit_hi_hi;
 
   /* Check Here */
-  logic [DCCM_BYTE_WIDTH:0]
+  logic [DCCM_BYTE_WIDTH-1:0]
       ld_byte_dc3hit_lo_lo, ld_byte_dc3hit_hi_lo, ld_byte_dc3hit_lo_hi, ld_byte_dc3hit_hi_hi;
   logic [DCCM_BYTE_WIDTH-1:0]
       ld_byte_dc4hit_lo_lo, ld_byte_dc4hit_hi_lo, ld_byte_dc4hit_lo_hi, ld_byte_dc4hit_hi_hi;
@@ -224,10 +224,10 @@ module lsu_bus_intf
   logic [DCCM_BYTE_WIDTH-1:0] ld_byte_hit_buf_lo, ld_byte_hit_buf_hi;
   logic [DCCM_DATA_WIDTH-1:0] ld_fwddata_buf_lo, ld_fwddata_buf_hi;
 
-  logic ld_hit_rdbuf_hi, ld_hit_rdbuf_lo;
-  logic [DCCM_DATA_WIDTH-1:0] ld_fwddata_rdbuf_hi, ld_fwddata_rdbuf_lo;
+  //logic ld_hit_rdbuf_hi, ld_hit_rdbuf_lo;
+  //logic [DCCM_DATA_WIDTH-1:0] ld_fwddata_rdbuf_hi, ld_fwddata_rdbuf_lo;
 
-  logic [DCCM_DATA_WIDTH*2-1:0] ld_fwddata_lo, ld_fwddata_hi;
+  logic [DCCM_DATA_WIDTH-1:0] ld_fwddata_lo, ld_fwddata_hi;
   logic [DCCM_DATA_WIDTH-1:0] ld_fwddata_dc2, ld_fwddata_dc3;
   logic [DCCM_DATA_WIDTH-1:0] ld_bus_data_dc3;
 
@@ -381,30 +381,30 @@ module lsu_bus_intf
     assign ld_byte_dc4hit_hi[i] = ld_byte_dc4hit_lo_hi[i] | ld_byte_dc4hit_hi_hi[i];
     assign ld_byte_dc5hit_hi[i] = ld_byte_dc5hit_lo_hi[i] | ld_byte_dc5hit_hi_hi[i];
 
-    assign ld_fwddata_dc3pipe_lo[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = ({2*DCCM_BYTE_WIDTH{ld_byte_dc3hit_lo_lo[i]}} & store_data_lo_dc3[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]) |
-                                                    ({2*DCCM_BYTE_WIDTH{ld_byte_dc3hit_hi_lo[i]}} & store_data_hi_dc3[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]);
-    assign ld_fwddata_dc4pipe_lo[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = ({2*DCCM_BYTE_WIDTH{ld_byte_dc4hit_lo_lo[i]}} & store_data_lo_dc4[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]) |
-                                                    ({2*DCCM_BYTE_WIDTH{ld_byte_dc4hit_hi_lo[i]}} & store_data_hi_dc4[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]);
-    assign ld_fwddata_dc5pipe_lo[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = ({2*DCCM_BYTE_WIDTH{ld_byte_dc5hit_lo_lo[i]}} & store_data_lo_dc5[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]) |
-                                                    ({2*DCCM_BYTE_WIDTH{ld_byte_dc5hit_hi_lo[i]}} & store_data_hi_dc5[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]);
+    assign ld_fwddata_dc3pipe_lo[(8*i)+7:(8*i)] = ({8{ld_byte_dc3hit_lo_lo[i]}} & store_data_lo_dc3[(8*i)+7:(8*i)]) |
+                                                    ({8{ld_byte_dc3hit_hi_lo[i]}} & store_data_hi_dc3[(8*i)+7:(8*i)]);
+    assign ld_fwddata_dc4pipe_lo[(8*i)+7:(8*i)] = ({8{ld_byte_dc4hit_lo_lo[i]}} & store_data_lo_dc4[(8*i)+7:(8*i)]) |
+                                                    ({8{ld_byte_dc4hit_hi_lo[i]}} & store_data_hi_dc4[(8*i)+7:(8*i)]);
+    assign ld_fwddata_dc5pipe_lo[(8*i)+7:(8*i)] = ({8{ld_byte_dc5hit_lo_lo[i]}} & store_data_lo_dc5[(8*i)+7:(8*i)]) |
+                                                    ({8{ld_byte_dc5hit_hi_lo[i]}} & store_data_hi_dc5[(8*i)+7:(8*i)]);
 
-    assign ld_fwddata_dc3pipe_hi[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = ({2*DCCM_BYTE_WIDTH{ld_byte_dc3hit_lo_hi[i]}} & store_data_lo_dc3[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]) |
-                                                    ({2*DCCM_BYTE_WIDTH{ld_byte_dc3hit_hi_hi[i]}} & store_data_hi_dc3[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]);
-    assign ld_fwddata_dc4pipe_hi[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = ({2*DCCM_BYTE_WIDTH{ld_byte_dc4hit_lo_hi[i]}} & store_data_lo_dc4[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]) |
-                                                    ({2*DCCM_BYTE_WIDTH{ld_byte_dc4hit_hi_hi[i]}} & store_data_hi_dc4[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]);
-    assign ld_fwddata_dc5pipe_hi[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = ({2*DCCM_BYTE_WIDTH{ld_byte_dc5hit_lo_hi[i]}} & store_data_lo_dc5[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]) |
-                                                    ({2*DCCM_BYTE_WIDTH{ld_byte_dc5hit_hi_hi[i]}} & store_data_hi_dc5[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)]);
+    assign ld_fwddata_dc3pipe_hi[(8*i)+7:(8*i)] = ({8{ld_byte_dc3hit_lo_hi[i]}} & store_data_lo_dc3[(8*i)+7:(8*i)]) |
+                                                    ({8{ld_byte_dc3hit_hi_hi[i]}} & store_data_hi_dc3[(8*i)+7:(8*i)]);
+    assign ld_fwddata_dc4pipe_hi[(8*i)+7:(8*i)] = ({8{ld_byte_dc4hit_lo_hi[i]}} & store_data_lo_dc4[(8*i)+7:(8*i)]) |
+                                                    ({8{ld_byte_dc4hit_hi_hi[i]}} & store_data_hi_dc4[(8*i)+7:(8*i)]);
+    assign ld_fwddata_dc5pipe_hi[(8*i)+7:(8*i)] = ({8{ld_byte_dc5hit_lo_hi[i]}} & store_data_lo_dc5[(8*i)+7:(8*i)]) |
+                                                    ({8{ld_byte_dc5hit_hi_hi[i]}} & store_data_hi_dc5[(8*i)+7:(8*i)]);
 
     // Final muxing between dc3/dc4/dc5
-    assign ld_fwddata_lo[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = ld_byte_dc3hit_lo[i]    ? ld_fwddata_dc3pipe_lo[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] :
-                                            ld_byte_dc4hit_lo[i]    ? ld_fwddata_dc4pipe_lo[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] :
-                                            ld_byte_dc5hit_lo[i]    ? ld_fwddata_dc5pipe_lo[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] :
-                                                                      ld_fwddata_buf_lo[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)];
+    assign ld_fwddata_lo[(8*i)+7:(8*i)] = ld_byte_dc3hit_lo[i]    ? ld_fwddata_dc3pipe_lo[(8*i)+7:(8*i)] :
+                                            ld_byte_dc4hit_lo[i]    ? ld_fwddata_dc4pipe_lo[(8*i)+7:(8*i)] :
+                                            ld_byte_dc5hit_lo[i]    ? ld_fwddata_dc5pipe_lo[(8*i)+7:(8*i)] :
+                                                                      ld_fwddata_buf_lo[(8*i)+7:(8*i)];
 
-    assign ld_fwddata_hi[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = ld_byte_dc3hit_hi[i]    ? ld_fwddata_dc3pipe_hi[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] :
-                                            ld_byte_dc4hit_hi[i]    ? ld_fwddata_dc4pipe_hi[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] :
-                                            ld_byte_dc5hit_hi[i]    ? ld_fwddata_dc5pipe_hi[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] :
-                                                                      ld_fwddata_buf_hi[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)];
+    assign ld_fwddata_hi[(8*i)+7:(8*i)] = ld_byte_dc3hit_hi[i]    ? ld_fwddata_dc3pipe_hi[(8*i)+7:(8*i)] :
+                                            ld_byte_dc4hit_hi[i]    ? ld_fwddata_dc4pipe_hi[(8*i)+7:(8*i)] :
+                                            ld_byte_dc5hit_hi[i]    ? ld_fwddata_dc5pipe_hi[(8*i)+7:(8*i)] :
+                                                                      ld_fwddata_buf_hi[(8*i)+7:(8*i)];
 
   end
 
@@ -425,9 +425,9 @@ module lsu_bus_intf
 
   assign {ld_fwddata_dc2_nc[DCCM_DATA_WIDTH*2-1:DCCM_DATA_WIDTH], ld_fwddata_dc2[DCCM_DATA_WIDTH-1:0]} = {
         ld_fwddata_hi[DCCM_DATA_WIDTH-1:0], ld_fwddata_lo[DCCM_DATA_WIDTH-1:0]
-      } >> (8 * lsu_addr_dc2[$clog2(
+      } >> (lsu_addr_dc2[$clog2(
           DCCM_BYTE_WIDTH
-      )-1:0]);
+      )-1:0] << 3);
   assign bus_read_data_dc3[DCCM_DATA_WIDTH-1:0] = ld_full_hit_dc3 ? ld_fwddata_dc3[DCCM_DATA_WIDTH-1:0] : ld_bus_data_dc3[DCCM_DATA_WIDTH-1:0];
 
   // Fifo flops

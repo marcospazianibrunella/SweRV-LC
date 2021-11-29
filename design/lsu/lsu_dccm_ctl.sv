@@ -101,7 +101,7 @@ module lsu_dccm_ctl
     input logic scan_mode  // scan mode
 );
 
-  `include "global.h"
+  `include "global.svh"
 
 `ifdef RV_DCCM_ENABLE
   localparam DCCM_ENABLE = 1'b1;
@@ -117,10 +117,10 @@ module lsu_dccm_ctl
   logic [DCCM_ECC_WIDTH-1:0] dccm_data_ecc_hi_dc2, dccm_data_ecc_lo_dc2;
   logic [DCCM_DATA_WIDTH*2-1:0] dccm_dout_dc3, dccm_corr_dout_dc3;
   logic [DCCM_DATA_WIDTH*2-1:0] stbuf_fwddata_dc3;
-  logic [  DCCM_BYTE_WIDTH-1:0] stbuf_fwdbyteen_dc3;
+  logic [  DCCM_BYTE_WIDTH*2-1:0] stbuf_fwdbyteen_dc3;
   logic [DCCM_DATA_WIDTH*2-1:0] lsu_rdata_dc3, lsu_rdata_corr_dc3;
-  logic [63:0] picm_rd_data_dc3;
-  logic [31:0] picm_rd_data_lo_dc3;
+  logic [DCCM_DATA_WIDTH*2-1:0] picm_rd_data_dc3;
+  logic [DCCM_DATA_WIDTH-1:0] picm_rd_data_lo_dc3;
   logic [`RV_DCCM_DATA_WIDTH*2-1:`RV_DCCM_DATA_WIDTH]
       lsu_ld_data_dc3_nc, lsu_ld_data_corr_dc3_nc;
 
@@ -129,12 +129,12 @@ module lsu_dccm_ctl
   assign dccm_dma_rdata[DCCM_DATA_WIDTH*2-1:0] = lsu_pkt_dc3.dword ? lsu_rdata_corr_dc3[DCCM_DATA_WIDTH*2-1:0] : {2{lsu_rdata_corr_dc3[`RV_DCCM_DATA_WIDTH-1:0]}}; // Need to replicate the data for non-dw access since ecc correction is done only in lower word
 
 
-  assign {lsu_ld_data_dc3_nc[DCCM_DATA_WIDTH*2-1:DCCM_DATA_WIDTH],      lsu_ld_data_dc3[DCCM_DATA_WIDTH-1:0]}      = lsu_rdata_dc3[DCCM_DATA_WIDTH*2-1:0] >> 8*lsu_addr_dc3[$clog2(
+  assign {lsu_ld_data_dc3_nc[DCCM_DATA_WIDTH*2-1:DCCM_DATA_WIDTH],      lsu_ld_data_dc3[DCCM_DATA_WIDTH-1:0]}      = lsu_rdata_dc3[DCCM_DATA_WIDTH*2-1:0] >> (lsu_addr_dc3[$clog2(
       DCCM_BYTE_WIDTH
-  )-1:0];
-  assign {lsu_ld_data_corr_dc3_nc[DCCM_DATA_WIDTH*2-1:DCCM_DATA_WIDTH], lsu_ld_data_corr_dc3[DCCM_DATA_WIDTH-1:0]} = lsu_rdata_corr_dc3[DCCM_DATA_WIDTH*2-1:0] >> 8*lsu_addr_dc3[$clog2(
+  )-1:0] << 3);
+  assign {lsu_ld_data_corr_dc3_nc[DCCM_DATA_WIDTH*2-1:DCCM_DATA_WIDTH], lsu_ld_data_corr_dc3[DCCM_DATA_WIDTH-1:0]} = lsu_rdata_corr_dc3[DCCM_DATA_WIDTH*2-1:0] >> (lsu_addr_dc3[$clog2(
       DCCM_BYTE_WIDTH
-  )-1:0];
+  )-1:0] << 3);
 
   assign dccm_dout_dc3[DCCM_DATA_WIDTH*2-1:0] = {
     dccm_data_hi_dc3[DCCM_DATA_WIDTH-1:0], dccm_data_lo_dc3[DCCM_DATA_WIDTH-1:0]

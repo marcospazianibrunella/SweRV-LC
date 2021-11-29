@@ -42,7 +42,7 @@ module lsu_trigger
   logic [                3:0]                      lsu_trigger_data_match;
   logic [DCCM_DATA_WIDTH-1:0]                      store_data_trigger_dc3;
 
-  assign store_data_trigger_dc3[31:0] = {
+  assign store_data_trigger_dc3 = {
     ({32{lsu_pkt_dc3.dword}} & store_data_dc3[63:32]),
     ({16{(lsu_pkt_dc3.dword | lsu_pkt_dc3.word)}} & store_data_dc3[31:16]),
     ({8{(lsu_pkt_dc3.dword | lsu_pkt_dc3.word | lsu_pkt_dc3.half)}} & store_data_dc3[15:8]),
@@ -57,7 +57,9 @@ module lsu_trigger
         ;
 
 
-    rvmaskandmatch trigger_match (
+    rvmaskandmatch #(
+        .WIDTH(DCCM_DATA_WIDTH)
+    ) trigger_match (
         .mask  (trigger_pkt_any[i].tdata2[DCCM_DATA_WIDTH-1:0]),
         .data  (lsu_match_data[i][DCCM_DATA_WIDTH-1:0]),
         .masken(trigger_pkt_any[i].match),

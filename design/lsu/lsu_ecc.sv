@@ -67,7 +67,7 @@ module lsu_ecc
    input logic         scan_mode
  );
 
-`include "global.h"
+`include "global.svh"
 
    `ifdef RV_DCCM_ENABLE
       localparam DCCM_ENABLE = 1'b1;
@@ -91,7 +91,7 @@ module lsu_ecc
 
    logic [163:0] store_data_ext_dc3;
    logic [DCCM_DATA_WIDTH-1:0]  store_data_hi_dc3, store_data_lo_dc3;
-   logic [6:0]                  ecc_out_hi_nc, ecc_out_lo_nc;
+   logic [7:0]                  ecc_out_hi_nc, ecc_out_lo_nc;
 
 
    assign ldst_dual_dc3 = (lsu_addr_dc3[3] != end_addr_dc3[3]);
@@ -134,7 +134,7 @@ module lsu_ecc
          .ecc_in(dccm_data_ecc_hi_dc3[DCCM_ECC_WIDTH-1:0]),
          // Outputs
          .dout(sec_data_hi_dc3[DCCM_DATA_WIDTH-1:0]),
-         .ecc_out (ecc_out_hi_nc[6:0]),
+         .ecc_out (ecc_out_hi_nc[7:0]),
          .single_ecc_error(single_ecc_error_hi_dc3),
          .double_ecc_error(double_ecc_error_hi_dc3),
          .*
@@ -148,7 +148,7 @@ module lsu_ecc
          .ecc_in(dccm_data_ecc_lo_dc3[DCCM_ECC_WIDTH-1:0]),
          // Outputs
          .dout(sec_data_lo_dc3[DCCM_DATA_WIDTH-1:0]),
-         .ecc_out (ecc_out_lo_nc[6:0]),
+         .ecc_out (ecc_out_lo_nc[7:0]),
          .single_ecc_error(single_ecc_error_lo_dc3),
          .double_ecc_error(double_ecc_error_lo_dc3),
          .*

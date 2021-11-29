@@ -80,11 +80,11 @@ module lsu_lsc_ctl
    input logic [11:0]  dec_lsu_offset_d,
 
    input  logic [31:0] picm_mask_data_dc3,
-   input  logic [DCCM_DATA_WIDRTH-1:0] lsu_ld_data_dc3,
-   input  logic [DCCM_DATA_WIDRTH-1:0] lsu_ld_data_corr_dc3,
-   input  logic [DCCM_DATA_WIDRTH-1:0]  bus_read_data_dc3,
-   output logic [DCCM_DATA_WIDRTH-1:0] lsu_result_dc3,
-   output logic [DCCM_DATA_WIDRTH-1:0] lsu_result_corr_dc4,   // This is the ECC corrected data going to RF
+   input  logic [DCCM_DATA_WIDTH-1:0] lsu_ld_data_dc3,
+   input  logic [DCCM_DATA_WIDTH-1:0] lsu_ld_data_corr_dc3,
+   input  logic [DCCM_DATA_WIDTH-1:0]  bus_read_data_dc3,
+   output logic [DCCM_DATA_WIDTH-1:0] lsu_result_dc3,
+   output logic [DCCM_DATA_WIDTH-1:0] lsu_result_corr_dc4,   // This is the ECC corrected data going to RF
    // lsu address down the pipe
    output logic [31:0] lsu_addr_dc1,
    output logic [31:0] lsu_addr_dc2,
@@ -128,7 +128,7 @@ module lsu_lsc_ctl
    input logic [31:0] dma_mem_addr,
    input logic [2:0]  dma_mem_sz,
    input logic        dma_mem_write,
-   input logic [63:0] dma_mem_wdata,
+   input logic [127:0] dma_mem_wdata,
 
    // Store buffer related signals
    output lsu_pkt_t    lsu_pkt_dc1,
@@ -141,13 +141,13 @@ module lsu_lsc_ctl
 
    );
 
-`include "global.h"
+`include "global.svh"
 
    logic [31:0]        full_addr_dc1;
-   logic [31:0]        full_end_addr_dc1;
-   logic [31:0]        lsu_rs1_d;
+   logic [`RV_XLEN-1:0]        full_end_addr_dc1;
+   logic [`RV_XLEN-1:0]        lsu_rs1_d;
    logic [11:0]        lsu_offset_d;
-   logic [31:0]        rs1_dc1;
+   logic [`RV_XLEN-1:0]        rs1_dc1;
    logic [11:0]        offset_dc1;
    logic [12:0]        end_addr_offset_dc1;
    logic [DCCM_DATA_WIDTH-1:0]        lsu_ld_datafn_dc3;
@@ -180,14 +180,14 @@ module lsu_lsc_ctl
    rvdffe #(DCCM_DATA_WIDTH) rs1ff (.*, .din(lsu_rs1_d[DCCM_DATA_WIDTH-1:0]), .dout(rs1_dc1_raw[DCCM_DATA_WIDTH-1:0]), .en(lsu_freeze_c1_dc1_clken));
    rvdffe #(12) offsetff (.*, .din(lsu_offset_d[11:0]), .dout(offset_dc1[11:0]), .en(lsu_freeze_c1_dc1_clken));
 
-   assign rs1_dc1[31:0] = (lsu_pkt_dc1.load_ldst_bypass_c1) ? lsu_result_dc3[31:0] : rs1_dc1_raw[31:0];
+   assign rs1_dc1 = (lsu_pkt_dc1.load_ldst_bypass_c1) ? lsu_result_dc3 : rs1_dc1_raw;
 
 
    // generate the ls address
    // need to refine this is memory is only 128KB
    rvlsadder   lsadder  (.rs1(rs1_dc1[DCCM_DATA_WIDTH-1:0]),
                        .offset(offset_dc1[11:0]),
-                       .dout(full_addr_dc1[DCCM_DATA_WIDTH-1:0])
+                       .dout(full_addr_dc1[31:0])
                        );
 
    // Module to generate the memory map of the address
@@ -261,8 +261,8 @@ module lsu_lsc_ctl
    rvdff #($bits(lsu_pkt_t)-1) lsu_pkt_dc4ff (.*, .din(lsu_pkt_dc4_in[$bits(lsu_pkt_t)-1:1]), .dout(lsu_pkt_dc4[$bits(lsu_pkt_t)-1:1]), .clk(lsu_c1_dc4_clk));
    rvdff #($bits(lsu_pkt_t)-1) lsu_pkt_dc5ff (.*, .din(lsu_pkt_dc5_in[$bits(lsu_pkt_t)-1:1]), .dout(lsu_pkt_dc5[$bits(lsu_pkt_t)-1:1]), .clk(lsu_c1_dc5_clk));
 
-   assign lsu_ld_datafn_dc3[31:0] = addr_external_dc3 ? bus_read_data_dc3[31:0] : lsu_ld_data_dc3[31:0];
-   assign lsu_ld_datafn_corr_dc3[31:0] = addr_external_dc3 ? bus_read_data_dc3[31:0] : lsu_ld_data_corr_dc3[31:0];
+   assign lsu_ld_datafn_dc3 = addr_external_dc3 ? bus_read_data_dc3 : lsu_ld_data_dc3;
+   assign lsu_ld_datafn_corr_dc3 = addr_external_dc3 ? bus_read_data_dc3 : lsu_ld_data_corr_dc3;
 
    // this result must look at prior stores and merge them in
    assign lsu_result_dc3[DCCM_DATA_WIDTH-1:0] = 
@@ -285,7 +285,7 @@ module lsu_lsc_ctl
                                       ({64{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.half}} & {{48{  lsu_ld_datafn_corr_dc3[15]}},lsu_ld_datafn_corr_dc3[15:0]}) |
                                       ({64{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.word}} & {{48{  lsu_ld_datafn_corr_dc3[31]}},lsu_ld_datafn_corr_dc3[31:0]}) |
                                       
-                                      ({64{lsu_pkt_dc3.word}} &                       lsu_ld_datafn_corr_dc3[DCCM_DATA_WIDTH-1:0]);
+                                      ({64{lsu_pkt_dc3.dword}} &                       lsu_ld_datafn_corr_dc3[DCCM_DATA_WIDTH-1:0]);
 
 
    // absence load/store all 0's
@@ -294,7 +294,7 @@ module lsu_lsc_ctl
    // Interrupt as a flush source allows the WB to occur
    assign lsu_commit_dc5 = lsu_pkt_dc5.valid & (lsu_pkt_dc5.store | lsu_pkt_dc5.load) & ~flush_dc5 & ~lsu_pkt_dc5.dma;
 
-   assign dma_mem_wdata_shifted[DCCM_DATA_WIDTH*2-1:0] = dma_mem_wdata[DCCM_DATA_WIDTH*2-1:0] >> {dma_mem_addr[3:0], 4'b0000};   // Shift the dma data to lower bits to make it consistent to lsu stores
+   assign dma_mem_wdata_shifted[DCCM_DATA_WIDTH*2-1:0] = dma_mem_wdata[DCCM_DATA_WIDTH*2-1:0] >> {dma_mem_addr[3:0], 3'b000};   // Shift the dma data to lower bits to make it consistent to lsu stores
    assign store_data_d[DCCM_DATA_WIDTH*2-1:0] = dma_dccm_req ? dma_mem_wdata_shifted[DCCM_DATA_WIDTH*2-1:0] : {64'b0,exu_lsu_rs2_d[63:0]};
 
    assign store_data_dc2_in[DCCM_DATA_WIDTH*2-1:DCCM_DATA_WIDTH] = store_data_dc1[DCCM_DATA_WIDTH*2-1:DCCM_DATA_WIDTH];
@@ -309,7 +309,7 @@ module lsu_lsc_ctl
                                  (lsu_pkt_dc2.store_data_bypass_e4_c2[0]) ? i0_result_e4_eff[DCCM_DATA_WIDTH-1:0] : store_data_pre_dc2[DCCM_DATA_WIDTH-1:0];
 
    assign store_data_dc3[DCCM_DATA_WIDTH*2-1:DCCM_DATA_WIDTH] = store_data_pre_dc3[DCCM_DATA_WIDTH*2-1:DCCM_DATA_WIDTH];
-   assign store_data_dc3[DCCM_DATA_WIDTH-1:0] = ({32'b0 ,picm_mask_data_dc3[DCCM_DATA_WIDTH-1:0]} | {64{~addr_in_pic_dc3}}) &
+   assign store_data_dc3[DCCM_DATA_WIDTH-1:0] = ({32'b0 ,picm_mask_data_dc3[31:0]} | {64{~addr_in_pic_dc3}}) &
                                  ((lsu_pkt_dc3.store_data_bypass_e4_c3[1]) ? i1_result_e4_eff[DCCM_DATA_WIDTH-1:0] :
                                   (lsu_pkt_dc3.store_data_bypass_e4_c3[0]) ? i0_result_e4_eff[DCCM_DATA_WIDTH-1:0] : store_data_pre_dc3[DCCM_DATA_WIDTH-1:0]);
 

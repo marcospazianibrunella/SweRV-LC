@@ -55,7 +55,7 @@ module lsu
     input logic            dec_i0_lsu_decode_d,  // lsu is in i0
     input logic     [31:0] dec_tlu_mrac_ff,      // CSR for memory region control
 
-    output logic [`RV_XLEN:0] lsu_result_dc3,  // lsu load data
+    output logic [`RV_XLEN-1:0] lsu_result_dc3,  // lsu load data
     output logic lsu_single_ecc_error_incr,  // Increment the counter for Single ECC error
     output logic [`RV_XLEN-1:0]                     lsu_result_corr_dc4, // This is the ECC corrected data going to RF
     output logic lsu_freeze_dc3,  // lsu freeze due to load to external
@@ -127,7 +127,7 @@ module lsu
 
     output logic        lsu_axi_wvalid,
     input  logic        lsu_axi_wready,
-    output logic [63:0] lsu_axi_wdata,
+    output logic [127:0] lsu_axi_wdata,
     output logic [ 7:0] lsu_axi_wstrb,
     output logic        lsu_axi_wlast,
 
@@ -153,7 +153,7 @@ module lsu
     input  logic                       lsu_axi_rvalid,
     output logic                       lsu_axi_rready,
     input  logic [`RV_LSU_BUS_TAG-1:0] lsu_axi_rid,
-    input  logic [               63:0] lsu_axi_rdata,
+    input  logic [               127:0] lsu_axi_rdata,
     input  logic [                1:0] lsu_axi_rresp,
     input  logic                       lsu_axi_rlast,
 
@@ -180,7 +180,7 @@ module lsu
 );
 
 
-  `include "global.h"
+  `include "global.svh"
 
   logic                  lsu_dccm_rden_dc3;
   logic [`RV_XLEN*2-1:0] store_data_dc2;
@@ -357,7 +357,7 @@ module lsu
   );
 
   lsu_trigger trigger (
-      .store_data_dc3(store_data_dc3[31:0]),
+      .store_data_dc3(store_data_dc3[`RV_XLEN-1:0]),
       .*
   );
 

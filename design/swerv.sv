@@ -141,7 +141,7 @@ module swerv
 
     output logic        lsu_axi_wvalid,
     input  logic        lsu_axi_wready,
-    output logic [63:0] lsu_axi_wdata,
+    output logic [127:0] lsu_axi_wdata,
     output logic [ 7:0] lsu_axi_wstrb,
     output logic        lsu_axi_wlast,
 
@@ -167,7 +167,7 @@ module swerv
     input  logic                       lsu_axi_rvalid,
     output logic                       lsu_axi_rready,
     input  logic [`RV_LSU_BUS_TAG-1:0] lsu_axi_rid,
-    input  logic [               63:0] lsu_axi_rdata,
+    input  logic [               127:0] lsu_axi_rdata,
     input  logic [                1:0] lsu_axi_rresp,
     input  logic                       lsu_axi_rlast,
 
@@ -824,6 +824,7 @@ module swerv
   logic dccm_dma_rvalid;
   logic dccm_dma_ecc_error;
   logic [63:0] dccm_dma_rdata;
+  logic [63:0] dccm_dma_rdata_nc;
   logic iccm_dma_rvalid;
   logic iccm_dma_ecc_error;
   logic [63:0] iccm_dma_rdata;
@@ -1007,6 +1008,8 @@ module swerv
   lsu lsu (
       .clk_override(dec_tlu_lsu_clk_override),
       .rst_l(core_rst_l),
+      .dma_mem_wdata({64'h0, dma_mem_wdata}),
+      .dccm_dma_rdata({dccm_dma_rdata_nc, dccm_dma_rdata}),
       .*
   );
 

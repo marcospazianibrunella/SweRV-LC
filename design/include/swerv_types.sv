@@ -318,7 +318,7 @@ typedef struct packed {
                         logic        load;
                         logic        execute;
                         logic        m;
-                        logic [31:0] tdata2;
+                        logic [63:0] tdata2;
             } trigger_pkt_t;
 
 

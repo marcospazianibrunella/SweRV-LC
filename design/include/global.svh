@@ -15,19 +15,16 @@
 
 `include "common_defines.vh"
 
-localparam XLEN = 64;
+localparam XLEN = `RV_XLEN;
 
 localparam TOTAL_INT = `RV_PIC_TOTAL_INT_PLUS1;
 
 localparam DCCM_BITS = `RV_DCCM_BITS;
 localparam DCCM_BANK_BITS = `RV_DCCM_BANK_BITS;
 localparam DCCM_NUM_BANKS = `RV_DCCM_NUM_BANKS;
-//localparam DCCM_DATA_WIDTH = `RV_DCCM_DATA_WIDTH;
-localparam DCCM_DATA_WIDTH = 64;
-//localparam DCCM_FDATA_WIDTH = `RV_DCCM_FDATA_WIDTH;
-localparam DCCM_FDATA_WIDTH = 71;
-//localparam DCCM_BYTE_WIDTH = `RV_DCCM_BYTE_WIDTH;
-localparam DCCM_BYTE_WIDTH = 8;
+localparam DCCM_DATA_WIDTH = `RV_DCCM_DATA_WIDTH;
+localparam DCCM_FDATA_WIDTH = `RV_DCCM_FDATA_WIDTH;
+localparam DCCM_BYTE_WIDTH = `RV_DCCM_BYTE_WIDTH;
 localparam DCCM_ECC_WIDTH = `RV_DCCM_ECC_WIDTH;
 
 localparam LSU_RDBUF_DEPTH = `RV_LSU_NUM_NBLOAD;

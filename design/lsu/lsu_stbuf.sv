@@ -109,7 +109,7 @@ module lsu_stbuf
 
 );
 
-`include "global.h"
+`include "global.svh"
 
    localparam DEPTH = LSU_STBUF_DEPTH;
    localparam DATA_WIDTH = DCCM_DATA_WIDTH;
@@ -307,10 +307,10 @@ module lsu_stbuf
       assign stbuf_fwdbyteen_lo_hi[i] = stbuf_ldmatch_lo_hi & store_byteen_hi_dc3[i] & ldst_stbuf_reqvld_dc3 & dual_stbuf_write_dc3;
       assign stbuf_fwdbyteen_lo_lo[i] = stbuf_ldmatch_lo_lo & store_byteen_lo_dc3[i] & ldst_stbuf_reqvld_dc3;
 
-      assign stbuf_fwddata_hi_hi[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = {2*DCCM_BYTE_WIDTH{stbuf_fwdbyteen_hi_hi[i]}} & store_ecc_datafn_hi_dc3[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)];
-      assign stbuf_fwddata_hi_lo[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = {2*DCCM_BYTE_WIDTH{stbuf_fwdbyteen_hi_lo[i]}} & store_ecc_datafn_lo_dc3[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)];
-      assign stbuf_fwddata_lo_hi[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = {2*DCCM_BYTE_WIDTH{stbuf_fwdbyteen_lo_hi[i]}} & store_ecc_datafn_hi_dc3[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)];
-      assign stbuf_fwddata_lo_lo[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)] = {2*DCCM_BYTE_WIDTH{stbuf_fwdbyteen_lo_lo[i]}} & store_ecc_datafn_lo_dc3[(2*DCCM_BYTE_WIDTH*i)+7:(2*DCCM_BYTE_WIDTH*i)];
+      assign stbuf_fwddata_hi_hi[(8*i)+7:(8*i)] = {8{stbuf_fwdbyteen_hi_hi[i]}} & store_ecc_datafn_hi_dc3[(8*i)+7:(8*i)];
+      assign stbuf_fwddata_hi_lo[(8*i)+7:(8*i)] = {8{stbuf_fwdbyteen_hi_lo[i]}} & store_ecc_datafn_lo_dc3[(8*i)+7:(8*i)];
+      assign stbuf_fwddata_lo_hi[(8*i)+7:(8*i)] = {8{stbuf_fwdbyteen_lo_hi[i]}} & store_ecc_datafn_hi_dc3[(8*i)+7:(8*i)];
+      assign stbuf_fwddata_lo_lo[(8*i)+7:(8*i)] = {8{stbuf_fwdbyteen_lo_lo[i]}} & store_ecc_datafn_lo_dc3[(8*i)+7:(8*i)];
    end
 
 
@@ -335,8 +335,8 @@ module lsu_stbuf
 
    for (genvar i=0; i<DEPTH; i++) begin
       for (genvar j=0; j<BYTE_WIDTH; j++) begin
-         assign stbuf_fwddatavec_hi[i][(2*DCCM_BYTE_WIDTH*j)+7:(2*DCCM_BYTE_WIDTH*j)] = {2*DCCM_BYTE_WIDTH{stbuf_fwdbyteenvec_hi[i][j]}} & stbuf_data[i][(2*DCCM_BYTE_WIDTH*j)+7:(2*DCCM_BYTE_WIDTH*j)];
-         assign stbuf_fwddatavec_lo[i][(2*DCCM_BYTE_WIDTH*j)+7:(2*DCCM_BYTE_WIDTH*j)] = {2*DCCM_BYTE_WIDTH{stbuf_fwdbyteenvec_lo[i][j]}} & stbuf_data[i][(2*DCCM_BYTE_WIDTH*j)+7:(2*DCCM_BYTE_WIDTH*j)];
+         assign stbuf_fwddatavec_hi[i][(8*j)+7:(8*j)] = {8{stbuf_fwdbyteenvec_hi[i][j]}} & stbuf_data[i][(8*j)+7:(8*j)];
+         assign stbuf_fwddatavec_lo[i][(8*j)+7:(8*j)] = {8{stbuf_fwdbyteenvec_lo[i][j]}} & stbuf_data[i][(8*j)+7:(8*j)];
       end
    end
 

@@ -1,11 +1,8 @@
-`timescale 1ns / 1ps
-
 module tb_lsu
   import swerv_types::*;
 ;
 
-  `include "global.svh"
-
+ `include "global.svh"
   /* input */ logic [XLEN-1:0] i0_result_e4_eff = 0;  // I0 e4 result for e4 -> dc3 store forwarding
   /* input */ logic [XLEN-1:0] i1_result_e4_eff = 0;  // I1 e4 result for e4 -> dc3 store forwarding
   /* input */ logic [XLEN-1:0] i0_result_e2 = 0;  // I0 e2 result for e2 -> dc2 store forwarding
@@ -34,7 +31,7 @@ module tb_lsu
 
   /* output */ logic [XLEN-1:0] lsu_result_dc3;  // lsu load data
   /* output */ logic lsu_single_ecc_error_incr;  // Increment the counter for Single ECC error
-  /* output */ logic [XLEN-1:0]                     lsu_result_corr_dc4; // This is the ECC corrected data going to RF
+  /* output */ logic [XLEN-1:0] lsu_result_corr_dc4;  // This is the ECC corrected data going to RF
   /* output */ logic lsu_freeze_dc3;  // lsu freeze due to load to external
   /* output */ logic lsu_load_stall_any;  // This is for blocking loads in the decode
   /* output */ logic lsu_store_stall_any;  // This is for blocking stores in the decode
@@ -75,10 +72,10 @@ module tb_lsu
   /* output */ logic [`RV_DCCM_BITS-1:0]        dccm_wr_addr;    // DCCM write address (write can happen to one bank only)
   /* output */ logic [`RV_DCCM_BITS-1:0] dccm_rd_addr_lo;  // DCCM read address low bank
   /* output */ logic [`RV_DCCM_BITS-1:0]        dccm_rd_addr_hi; // DCCM read address hi bank (hi and low same if aligned read)
-  /* output */ logic [DCCM_FDATA_WIDTH-1:0] dccm_wr_data;    // DCCM write data (this is always aligned)
+  /* output */ logic [`RV_DCCM_FDATA_WIDTH-1:0] dccm_wr_data;    // DCCM write data (this is always aligned)
 
-  /* input */ logic [`RV_DCCM_FDATA_WIDTH-1:0] dccm_rd_data_lo = 0;  // DCCM read data low bank
-  /* input */ logic [`RV_DCCM_FDATA_WIDTH-1:0] dccm_rd_data_hi = 0;  // DCCM read data hi bank
+  /* input */ logic [`RV_DCCM_FDATA_WIDTH-1:0] dccm_rd_data_lo;  // DCCM read data low bank
+  /* input */ logic [`RV_DCCM_FDATA_WIDTH-1:0] dccm_rd_data_hi;  // DCCM read data hi bank
 
   // PIC ports
   /* output */ logic picm_wren;  // PIC memory write enable
@@ -104,7 +101,7 @@ module tb_lsu
 
   /* output */ logic lsu_axi_wvalid;
   /* input */ logic lsu_axi_wready = 0;
-  /* output */ logic [63:0] lsu_axi_wdata;
+  /* output */ logic [127:0] lsu_axi_wdata;
   /* output */ logic [7:0] lsu_axi_wstrb;
   /* output */ logic lsu_axi_wlast;
 
@@ -130,7 +127,7 @@ module tb_lsu
   /* input */ logic lsu_axi_rvalid = 0;
   /* output */ logic lsu_axi_rready;
   /* input */ logic [`RV_LSU_BUS_TAG-1:0] lsu_axi_rid = 0;
-  /* input */ logic [63:0] lsu_axi_rdata = 0;
+  /* input */ logic [127:0] lsu_axi_rdata = 0;
   /* input */ logic [1:0] lsu_axi_rresp = 0;
   /* input */ logic lsu_axi_rlast = 0;
 
@@ -141,26 +138,51 @@ module tb_lsu
   /* input */ logic [31:0] dma_mem_addr = 0;  // DMA address
   /* input */ logic [2:0] dma_mem_sz = 0;  // DMA access size
   /* input */ logic dma_mem_write = 0;  // DMA access is a write
-  /* input */ logic [63:0] dma_mem_wdata = 0;  // DMA write data
+  /* input */ logic [DCCM_DATA_WIDTH*2-1:0] dma_mem_wdata = 0;  // DMA write data
 
   /* output */ logic dccm_dma_rvalid;  // lsu data valid for DMA dccm read
   /* output */ logic dccm_dma_ecc_error;  // DMA load had ecc error
-  /* output */ logic [63:0] dccm_dma_rdata;  // lsu data for DMA dccm read
+  /* output */ logic [DCCM_DATA_WIDTH*2 -1:0] dccm_dma_rdata;  // lsu data for DMA dccm read
   /* output */ logic dccm_ready;  // lsu ready for DMA access
 
   /* input */ logic clk_override = 0;  // Disable clock gating
   /* input */ logic scan_mode = 0;  // scan
   /* input */ logic clk = 0;
-  /* input */ logic free_clk ;
+  /* input */ logic free_clk;
   /* input */ logic rst_l = 0;
 
+  /* Fake DCCM Signals */
+  logic [7:0] ecc_out_lo;
+  logic [7:0] ecc_out_hi;
+
+  logic [63:0] dccm_rd_data_lo_i;
+  logic [63:0] dccm_rd_data_hi_i;
+
+  logic [31:0][63:0] dccm;
+
+
   lsu DUT_i (.*);
+
+  rvecc_encode ECC_ENDODER_lo_i (
+      .din(dccm_rd_data_lo_i),
+      .ecc_out(ecc_out_lo)
+  );
+
+  rvecc_encode ECC_ENDODER_lhi_i (
+      .din(dccm_rd_data_hi_i),
+      .ecc_out(ecc_out_hi)
+  );
 
   /* Clock Generation */
   always #5 clk = ~clk;
   assign free_clk = clk;
 
   initial begin
+
+    /* Init DCCM */
+    for (integer i = 0; i < 32; i++) begin
+      dccm[i] = $random;
+    end
 
     @(posedge clk);
     @(posedge clk);
@@ -169,11 +191,39 @@ module tb_lsu
     /* Deaasert Reset */
     rst_l = 1;
     @(posedge clk);
+    lsu_axi_awready = 1;
+    lsu_axi_wready  = 1;
+    lsu_axi_arready = 1;
     @(posedge clk);
+    exu_lsu_rs1_d = 32'hf0040001;
+    lsu_p.load = 1;
+    lsu_p.word = 1;
+    lsu_p.valid = 1;
+    @(posedge clk);
+    exu_lsu_rs1_d = 0;
+    lsu_p.load = 0;
+    lsu_p.word = 0;
+    lsu_p.valid = 0;
 
     /* Simulation Trailer */
     for (integer i = 0; i < 20; i++) @(posedge clk);
     $finish;
   end
+
+  /* DCCM Stub */
+  always @(posedge clk) begin
+
+    dccm_rd_data_lo_i = 0;
+    dccm_rd_data_hi_i = 0;
+
+    if (dccm_rden) begin
+      dccm_rd_data_lo_i = dccm[dccm_rd_addr_lo[6:2]];
+      dccm_rd_data_hi_i = dccm[dccm_rd_addr_hi[6:2]];
+    end
+  end
+
+  assign dccm_rd_data_lo = {ecc_out_lo, dccm_rd_data_lo_i};
+  assign dccm_rd_data_hi = {ecc_out_hi, dccm_rd_data_hi_i};
+
 
 endmodule

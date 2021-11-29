@@ -19,6 +19,7 @@
 
 // synthesis translate_off
 `define IN_SIM
+`include "global.svh"
 // synthesis translate_on
 
 `ifndef IN_SIM
@@ -264,7 +265,7 @@ module rvlsadder #(parameter XLEN = 64)
     input logic [XLEN-1:0] rs1,
     input logic [11:0] offset,
 
-    output logic [XLEN-1:0] dout
+    output logic [31:0] dout
     );
 
    logic                cout;
@@ -281,9 +282,9 @@ module rvlsadder #(parameter XLEN = 64)
 
    assign sign = offset[11];
 
-   assign dout[XLEN-1:12] = ({XLEN-12{  sign ^~  cout}} &     rs1[XLEN-1:12]) |
-                        ({XLEN-12{ ~sign &   cout}}  & rs1_inc[XLEN-1:12]) |
-                        ({XLEN-12{  sign &  ~cout}}  & rs1_dec[XLEN-1:12]);
+   assign dout[31:12] = ({20{  sign ^~  cout}} &      rs1[31:12]) |
+                        ({20{ ~sign &   cout}}  & rs1_inc[31:12]) |
+                        ({20{  sign &  ~cout}}  & rs1_dec[31:12]);
 
 endmodule // rvlsadder
 
@@ -501,7 +502,7 @@ module rvecc_encode  (
                       input [63:0] din,
                       output [7:0] ecc_out
                       );
-logic [5:0] ecc_out_temp;
+logic [6:0] ecc_out_temp;
 
    assign ecc_out_temp[0] = din[0]^din[1]^din[3]^din[4]^din[6]^din[8]^din[10]^din[11]^din[13]^din[15]^din[17]^din[19]^din[21]^din[23]^din[25]^din[26]^din[28]^din[30]
                             ^din[32]^din[34]^din[36]^din[38]^din[40]^din[42]^din[44]^din[46]^din[48]^din[50]^din[52]^din[54]^din[56]^din[57]^din[59]^din[61]^din[63];
@@ -515,14 +516,13 @@ logic [5:0] ecc_out_temp;
    assign ecc_out_temp[3] = din[4]^din[5]^din[6]^din[7]^din[8]^din[9]^din[10]^din[18]^din[19]^din[20]^din[21]^din[22]^din[23]^din[24]^din[25]
                             ^din[33]^din[34]^din[35]^din[36]^din[37]^din[38]^din[39]^din[40]^din[49]^din[50]^din[51]^din[52]^din[53]^din[54]^din[55]^din[56];
 
-   assign ecc_out_temp[4] = din[11]^din[12]^din[13]^din[14]^din[15]^din[16]^din[17]^din[18]^din[19]^din[20]^din[21]^din[22]^din[23]^din[24]^din[25]
-                            ^din[41]^din[42]^din[43]^din[44]^din[45]^din[46]^din[47]^din[48]^din[49]^din[50]^din[51]^din[52]^din[53]^din[54]^din[55]^din[56];
+   assign ecc_out_temp[4] = (^din[25:11]) ^ (^din[56:41]);
 
    assign ecc_out_temp[5] = ^din[56:26];
    
    assign ecc_out_temp[6] = ^din[63:57];
 
-   assign ecc_out[7:0] = {(^din[63:0])^(^ecc_out_temp[6:0]),ecc_out_temp[6:0]};
+   assign ecc_out[7:0] = {((^din[63:0])^(^ecc_out_temp[6:0])),ecc_out_temp[6:0]};
 
 endmodule // rvecc_encode
 
@@ -563,14 +563,14 @@ module rvecc_decode  (
    assign ecc_check[6] = ecc_in[6]^(^din[63:57]);
 
    // This is the parity bit
-   assign ecc_check[7] = ((^din[63:0])^(^ecc_in[6:0])) & ~sed_ded;
+   assign ecc_check[7] = ((^din[63:0])^(^ecc_in[7:0])) & ~sed_ded;
 
    assign single_ecc_error = en & (ecc_check[7:0] != 0) & ecc_check[7];   // this will never be on for sed_ded
    assign double_ecc_error = en & (ecc_check[7:0] != 0) & ~ecc_check[7];  // all errors in the sed_ded case will be recorded as DE
 
    //// Generate the mask for error correctiong
-   for (genvar i=1; i<72; i++) begin
-      assign error_mask[i-1] = (ecc_check[6:0] == i);
+   for (genvar i=1; i<73; i++) begin
+      assign error_mask[i-1] = (ecc_check[7:0] == i);
    end
 
    // Generate the corrected data
