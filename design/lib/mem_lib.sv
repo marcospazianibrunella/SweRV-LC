@@ -17,6 +17,7 @@
 //=================================== START OF CCM  =======================================================================
 //============= Possible sram sizes for a 39 bit wide memory ( 4 bytes + 7 bits ECC ) =====================================
 //-------------------------------------------------------------------------------------------------------------------------
+
 module ram_32768x39
   ( input logic CLK,
     input logic [14:0] ADR,
@@ -157,6 +158,29 @@ module ram_2048x39
 
 
 endmodule // ram_2048x39
+
+module ram_2048x72
+  ( input logic CLK,
+    input logic [10:0] ADR,
+    input logic [71:0] D,
+
+    output logic [71:0] Q,
+    input logic WE );
+
+   // behavior to be replaced by actual SRAM in VLE
+
+   reg [71:0]   ram_core [2047:0];
+
+   always @(posedge CLK) begin
+      if (WE) begin// for active high WE - must be specified by user
+         ram_core[ADR] <= D; Q <= 'x; end else
+           Q <= ram_core[ADR];
+   end
+
+
+
+
+endmodule // ram_2048x72
 
 module ram_1536x39     // need this for the 48KB DCCM option
   ( input logic CLK,

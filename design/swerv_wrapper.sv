@@ -61,7 +61,7 @@ module swerv_wrapper (
 
     output logic        lsu_axi_wvalid,
     input  logic        lsu_axi_wready,
-    output logic [63:0] lsu_axi_wdata,
+    output logic [127:0] lsu_axi_wdata,
     output logic [ 7:0] lsu_axi_wstrb,
     output logic        lsu_axi_wlast,
 
@@ -87,7 +87,7 @@ module swerv_wrapper (
     input  logic                       lsu_axi_rvalid,
     output logic                       lsu_axi_rready,
     input  logic [`RV_LSU_BUS_TAG-1:0] lsu_axi_rid,
-    input  logic [               63:0] lsu_axi_rdata,
+    input  logic [               127:0] lsu_axi_rdata,
     input  logic [                1:0] lsu_axi_rresp,
     input  logic                       lsu_axi_rlast,
 

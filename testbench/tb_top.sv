@@ -14,8 +14,6 @@
 // limitations under the License.
 //
 
-`include "global.svh"
-
 `ifdef VERILATOR
 module tb_top ( input bit core_clk);
 `else

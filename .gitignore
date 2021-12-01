@@ -12,10 +12,10 @@ snapshots/
 workspace/
 workspace/work
 # These are derived files
-configs/common_defines.vh
-configs/pd_defines.vh
-configs/perl_configs.pl
-configs/whisper.json
+#configs/common_defines.vh
+#configs/pd_defines.vh
+#configs/perl_configs.pl
+#configs/whisper.json
 verif/diags/env/defines.h
 design/include/pic_map_auto.h
 design/include/pic_ctrl_verilator_unroll.sv
