@@ -2,12 +2,9 @@
 .definition
 
 add =     [0000000..........000.....0110011]
-addw =    [0000000..........000.....0111011]
 addi =    [.................000.....0010011]
-addiw =   [.................000.....0011011]
 
 sub =     [0100000..........000.....0110011]
-subw =    [0100000..........000.....0111011]
 
 and =     [0000000..........111.....0110011]
 andi =    [.................111.....0010011]
@@ -19,19 +16,13 @@ xor =     [0000000..........100.....0110011]
 xori =    [.................100.....0010011]
 
 sll =     [0000000..........001.....0110011]
-sllw =    [0000000..........001.....0111011]
 slli =    [0000000..........001.....0010011]
-slliw =   [0000000..........001.....0011011]
 
 sra =     [0100000..........101.....0110011]
-sraw =    [0100000..........101.....0111011]
 srai =    [0100000..........101.....0010011]
-sraiw =   [0100000..........101.....0011011]
 
 srl  =    [0000000..........101.....0110011]
-srlw =    [0000000..........101.....0111011]
 srli =    [0000000..........101.....0010011]
-srliw =   [0000000..........101.....0011011]
 
 lui =     [.........................0110111]
 auipc=    [.........................0010111]
@@ -54,16 +45,13 @@ jalr =    [.................000.....1100111]
 lb =      [.................000.....0000011]
 lh =      [.................001.....0000011]
 lw =      [.................010.....0000011]
-ld =      [.................011.....0000011]
 
 sb =      [.................000.....0100011]
 sh =      [.................001.....0100011]
 sw =      [.................010.....0100011]
-sd =      [.................011.....0100011]
 
 lbu =     [.................100.....0000011]
 lhu =     [.................101.....0000011]
-lwu =     [.................110.....0000011]
 
 fence =   [0000........00000000000000001111]
 fence.i = [00000000000000000001000000001111]
@@ -171,7 +159,6 @@ rv32i = {
 
 rv32i = {
       alu
-      alu_half
       rs1
       rs2
       imm12
@@ -201,7 +188,6 @@ rv32i = {
       by
       half
       word
-      dword
       csr_read
       csr_clr
       csr_set
@@ -236,12 +222,9 @@ rv32i[rem]    =  { div rs1 rs2 rd        presync postsync rem}
 rv32i[remu]    = { div rs1 rs2 rd unsign presync postsync rem}
 
 rv32i[add]   = { alu rs1 rs2   rd add pm_alu }
-rv32i[addw]   = { alu alu_half rs1 rs2   rd add pm_alu }
 rv32i[addi]  = { alu rs1 imm12 rd add pm_alu }
-rv32i[addiw]  = { alu alu_half rs1 imm12 rd add pm_alu }
 
 rv32i[sub]  =  { alu rs1 rs2   rd sub pm_alu }
-rv32i[subw]  =  { alu alu_half rs1 rs2   rd sub pm_alu }
 
 rv32i[and]   = { alu rs1 rs2   rd land pm_alu }
 rv32i[andi]  = { alu rs1 imm12 rd land pm_alu }
@@ -253,19 +236,13 @@ rv32i[xor]  =  { alu rs1 rs2   rd lxor pm_alu }
 rv32i[xori]  = { alu rs1 imm12 rd lxor pm_alu }
 
 rv32i[sll]  =  { alu rs1 rs2    rd sll pm_alu }
-rv32i[sllw]  =  { alu alu_half rs1 rs2    rd sll pm_alu }
 rv32i[slli]  = { alu rs1 shimm5 rd sll pm_alu }
-rv32i[slliw]  = { alu alu_half rs1 shimm5 rd sll pm_alu }
 
 rv32i[sra]  =  { alu rs1 rs2    rd sra pm_alu }
-rv32i[sraw]  =  { alu alu_half rs1 rs2    rd sra pm_alu }
 rv32i[srai]  = { alu rs1 shimm5 rd sra pm_alu }
-rv32i[sraiw]  = { alu alu_half rs1 shimm5 rd sra pm_alu }
 
 rv32i[srl]  =  { alu rs1 rs2    rd srl pm_alu }
-rv32i[srlw]  =  { alu alu_half rs1 rs2    rd srl pm_alu }
 rv32i[srli]  = { alu rs1 shimm5 rd srl pm_alu }
-rv32i[srliw]  = { alu alu_half rs1 shimm5 rd srl pm_alu }
 
 rv32i[lui]    =  { alu imm20    rd lor pm_alu }
 rv32i[auipc]  =  { alu imm20 pc rd add pm_alu }
@@ -289,15 +266,12 @@ rv32i[jalr] =    { alu rs1   rd imm12 jal }
 rv32i[lb] =      { lsu load rs1 rd by    }
 rv32i[lh] =      { lsu load rs1 rd half  }
 rv32i[lw] =      { lsu load rs1 rd word  }
-rv32i[ld] =      { lsu load rs1 rd dword  }
 rv32i[lbu] =     { lsu load rs1 rd by   unsign  }
 rv32i[lhu] =     { lsu load rs1 rd half unsign  }
-rv32i[lwu] =     { lsu load rs1 rd word unsign  }
 
 rv32i[sb] =      { lsu store rs1 rs2 by   }
 rv32i[sh] =      { lsu store rs1 rs2 half }
 rv32i[sw] =      { lsu store rs1 rs2 word }
-rv32i[sd] =      { lsu store rs1 rs2 dword }
 
 
 rv32i[fence] =   { alu lor fence presync}
@@ -345,4 +319,3 @@ rv32i[csrwi]       =         { alu rd     csr_write csr_imm   }
 
 
 .end
-

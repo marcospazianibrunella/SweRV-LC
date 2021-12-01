@@ -191,6 +191,7 @@ typedef struct packed {
 
 typedef struct packed {
                        logic valid;
+                       logic alu_half;
                        logic land;
                        logic lor;
                        logic lxor;
@@ -243,6 +244,7 @@ typedef struct packed {
 
 typedef struct packed {
                        logic alu;
+                       logic alu_half;
                        logic rs1;
                        logic rs2;
                        logic imm12;
@@ -272,6 +274,7 @@ typedef struct packed {
                        logic by;
                        logic half;
                        logic word;
+                       logic dword;
                        logic csr_read;
                        logic csr_clr;
                        logic csr_set;

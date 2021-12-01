@@ -1516,7 +1516,8 @@ module ifu_mem_ctl
 
   rvecc_encode iccm_ecc_encode1 (
       .din({32'h0, dma_mem_wdata[63:32]}),
-      .ecc_out({dma_mem_ecc[1],dma_mem_ecc[13:7]})
+      .ecc_out({dma_mem_ecc_nc[1],dma_mem_ecc[13:7]})
+      
   );
 
   assign iccm_wr_data[38:0]  =  (iccm_correct_ecc & ~(ifc_dma_access_q_ok & dma_iccm_req)) ?  iccm_ecc_corr_data_ff[38:0] :
