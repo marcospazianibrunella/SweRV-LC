@@ -125,11 +125,11 @@ module lsu
     output logic [                2:0] lsu_axi_awprot,
     output logic [                3:0] lsu_axi_awqos,
 
-    output logic        lsu_axi_wvalid,
-    input  logic        lsu_axi_wready,
+    output logic         lsu_axi_wvalid,
+    input  logic         lsu_axi_wready,
     output logic [127:0] lsu_axi_wdata,
-    output logic [ 7:0] lsu_axi_wstrb,
-    output logic        lsu_axi_wlast,
+    output logic [ 15:0] lsu_axi_wstrb,
+    output logic         lsu_axi_wlast,
 
     input  logic                       lsu_axi_bvalid,
     output logic                       lsu_axi_bready,
@@ -153,7 +153,7 @@ module lsu
     input  logic                       lsu_axi_rvalid,
     output logic                       lsu_axi_rready,
     input  logic [`RV_LSU_BUS_TAG-1:0] lsu_axi_rid,
-    input  logic [               127:0] lsu_axi_rdata,
+    input  logic [              127:0] lsu_axi_rdata,
     input  logic [                1:0] lsu_axi_rresp,
     input  logic                       lsu_axi_rlast,
 

@@ -69,11 +69,11 @@ module swerv
     output logic [1:0] dec_tlu_perfcnt3,
 
     // DCCM ports
-    output logic                            dccm_wren,
-    output logic                            dccm_rden,
-    output logic [       `RV_DCCM_BITS-1:0] dccm_wr_addr,
-    output logic [       `RV_DCCM_BITS-1:0] dccm_rd_addr_lo,
-    output logic [       `RV_DCCM_BITS-1:0] dccm_rd_addr_hi,
+    output logic                        dccm_wren,
+    output logic                        dccm_rden,
+    output logic [   `RV_DCCM_BITS-1:0] dccm_wr_addr,
+    output logic [   `RV_DCCM_BITS-1:0] dccm_rd_addr_lo,
+    output logic [   `RV_DCCM_BITS-1:0] dccm_rd_addr_hi,
     output logic [DCCM_FDATA_WIDTH-1:0] dccm_wr_data,
 
     input logic [`RV_DCCM_FDATA_WIDTH-1:0] dccm_rd_data_lo,
@@ -139,11 +139,11 @@ module swerv
     output logic [                2:0] lsu_axi_awprot,
     output logic [                3:0] lsu_axi_awqos,
 
-    output logic        lsu_axi_wvalid,
-    input  logic        lsu_axi_wready,
+    output logic         lsu_axi_wvalid,
+    input  logic         lsu_axi_wready,
     output logic [127:0] lsu_axi_wdata,
-    output logic [ 7:0] lsu_axi_wstrb,
-    output logic        lsu_axi_wlast,
+    output logic [ 15:0] lsu_axi_wstrb,
+    output logic         lsu_axi_wlast,
 
     input  logic                       lsu_axi_bvalid,
     output logic                       lsu_axi_bready,
@@ -167,7 +167,7 @@ module swerv
     input  logic                       lsu_axi_rvalid,
     output logic                       lsu_axi_rready,
     input  logic [`RV_LSU_BUS_TAG-1:0] lsu_axi_rid,
-    input  logic [               127:0] lsu_axi_rdata,
+    input  logic [              127:0] lsu_axi_rdata,
     input  logic [                1:0] lsu_axi_rresp,
     input  logic                       lsu_axi_rlast,
 
@@ -186,11 +186,11 @@ module swerv
     output logic [                2:0] ifu_axi_awprot,
     output logic [                3:0] ifu_axi_awqos,
 
-    output logic        ifu_axi_wvalid,
-    input  logic        ifu_axi_wready,
-    output logic [63:0] ifu_axi_wdata,
-    output logic [ 7:0] ifu_axi_wstrb,
-    output logic        ifu_axi_wlast,
+    output logic         ifu_axi_wvalid,
+    input  logic         ifu_axi_wready,
+    output logic [127:0] ifu_axi_wdata,
+    output logic [ 15:0] ifu_axi_wstrb,
+    output logic         ifu_axi_wlast,
 
     input  logic                       ifu_axi_bvalid,
     output logic                       ifu_axi_bready,
@@ -214,7 +214,7 @@ module swerv
     input  logic                       ifu_axi_rvalid,
     output logic                       ifu_axi_rready,
     input  logic [`RV_IFU_BUS_TAG-1:0] ifu_axi_rid,
-    input  logic [               63:0] ifu_axi_rdata,
+    input  logic [              127:0] ifu_axi_rdata,
     input  logic [                1:0] ifu_axi_rresp,
     input  logic                       ifu_axi_rlast,
 
@@ -233,11 +233,11 @@ module swerv
     output logic [               2:0] sb_axi_awprot,
     output logic [               3:0] sb_axi_awqos,
 
-    output logic        sb_axi_wvalid,
-    input  logic        sb_axi_wready,
-    output logic [63:0] sb_axi_wdata,
-    output logic [ 7:0] sb_axi_wstrb,
-    output logic        sb_axi_wlast,
+    output logic         sb_axi_wvalid,
+    input  logic         sb_axi_wready,
+    output logic [127:0] sb_axi_wdata,
+    output logic [ 15:0] sb_axi_wstrb,
+    output logic         sb_axi_wlast,
 
     input  logic                      sb_axi_bvalid,
     output logic                      sb_axi_bready,
@@ -261,7 +261,7 @@ module swerv
     input  logic                      sb_axi_rvalid,
     output logic                      sb_axi_rready,
     input  logic [`RV_SB_BUS_TAG-1:0] sb_axi_rid,
-    input  logic [              63:0] sb_axi_rdata,
+    input  logic [             127:0] sb_axi_rdata,
     input  logic [               1:0] sb_axi_rresp,
     input  logic                      sb_axi_rlast,
 
@@ -277,11 +277,11 @@ module swerv
     input  logic [                1:0] dma_axi_awburst,
 
 
-    input  logic        dma_axi_wvalid,
-    output logic        dma_axi_wready,
-    input  logic [63:0] dma_axi_wdata,
-    input  logic [ 7:0] dma_axi_wstrb,
-    input  logic        dma_axi_wlast,
+    input  logic         dma_axi_wvalid,
+    output logic         dma_axi_wready,
+    input  logic [127:0] dma_axi_wdata,
+    input  logic [ 15:0] dma_axi_wstrb,
+    input  logic         dma_axi_wlast,
 
     output logic                       dma_axi_bvalid,
     input  logic                       dma_axi_bready,
@@ -301,7 +301,7 @@ module swerv
     output logic                       dma_axi_rvalid,
     input  logic                       dma_axi_rready,
     output logic [`RV_DMA_BUS_TAG-1:0] dma_axi_rid,
-    output logic [               63:0] dma_axi_rdata,
+    output logic [              127:0] dma_axi_rdata,
     output logic [                1:0] dma_axi_rresp,
     output logic                       dma_axi_rlast,
 
@@ -620,18 +620,18 @@ module swerv
   trigger_pkt_t [      3:0] trigger_pkt_any;
   logic           [3:0]     lsu_trigger_match_dc3;
   logic dec_ib3_valid_d, dec_ib2_valid_d;
-  logic        dec_ib1_valid_eff_d;
-  logic        dec_ib0_valid_eff_d;
+  logic            dec_ib1_valid_eff_d;
+  logic            dec_ib0_valid_eff_d;
 
 
   logic [XLEN-1:0] dec_i0_immed_d;
   logic [XLEN-1:0] dec_i1_immed_d;
 
-  logic [12:1] dec_i0_br_immed_d;
-  logic [12:1] dec_i1_br_immed_d;
+  logic [    12:1] dec_i0_br_immed_d;
+  logic [    12:1] dec_i1_br_immed_d;
 
-  logic        dec_i0_select_pc_d;
-  logic        dec_i1_select_pc_d;
+  logic            dec_i0_select_pc_d;
+  logic            dec_i1_select_pc_d;
 
   logic [31:1] dec_i0_pc_d, dec_i1_pc_d;
   logic      dec_i0_rs1_bypass_en_d;
@@ -741,17 +741,17 @@ module swerv
 
   logic         [             31:1 ] pred_correct_npc_e2;
 
-  logic         [             XLEN-1:0 ] exu_i0_result_e4;
-  logic         [             XLEN-1:0 ] exu_i1_result_e4;
+  logic         [         XLEN-1:0 ] exu_i0_result_e4;
+  logic         [         XLEN-1:0 ] exu_i1_result_e4;
 
   logic                              dec_i0_rs1_bypass_en_e3;
   logic                              dec_i0_rs2_bypass_en_e3;
   logic                              dec_i1_rs1_bypass_en_e3;
   logic                              dec_i1_rs2_bypass_en_e3;
-  logic         [             XLEN-1:0 ] i0_rs1_bypass_data_e3;
-  logic         [             XLEN-1:0 ] i0_rs2_bypass_data_e3;
-  logic         [             XLEN-1:0 ] i1_rs1_bypass_data_e3;
-  logic         [             XLEN-1:0 ] i1_rs2_bypass_data_e3;
+  logic         [         XLEN-1:0 ] i0_rs1_bypass_data_e3;
+  logic         [         XLEN-1:0 ] i0_rs2_bypass_data_e3;
+  logic         [         XLEN-1:0 ] i1_rs1_bypass_data_e3;
+  logic         [         XLEN-1:0 ] i1_rs2_bypass_data_e3;
   logic                              dec_i0_sec_decode_e3;
   logic                              dec_i1_sec_decode_e3;
   logic         [             31:1 ] dec_i0_pc_e3;
@@ -761,10 +761,10 @@ module swerv
   logic                              dec_i0_rs2_bypass_en_e2;
   logic                              dec_i1_rs1_bypass_en_e2;
   logic                              dec_i1_rs2_bypass_en_e2;
-  logic         [             XLEN-1:0 ] i0_rs1_bypass_data_e2;
-  logic         [             XLEN-1:0 ] i0_rs2_bypass_data_e2;
-  logic         [             XLEN-1:0 ] i1_rs1_bypass_data_e2;
-  logic         [             XLEN-1:0 ] i1_rs2_bypass_data_e2;
+  logic         [         XLEN-1:0 ] i0_rs1_bypass_data_e2;
+  logic         [         XLEN-1:0 ] i0_rs2_bypass_data_e2;
+  logic         [         XLEN-1:0 ] i1_rs1_bypass_data_e2;
+  logic         [         XLEN-1:0 ] i1_rs2_bypass_data_e2;
 
   logic                              exu_i0_flush_lower_e4;  // to tlu for lower branch flushes
   logic                              exu_i1_flush_lower_e4;
@@ -819,12 +819,12 @@ module swerv
   logic [31:0] dma_mem_addr;
   logic [2:0] dma_mem_sz;
   logic dma_mem_write;
-  logic [63:0] dma_mem_wdata;
+  logic [127:0] dma_mem_wdata;
 
   logic dccm_dma_rvalid;
   logic dccm_dma_ecc_error;
-  logic [63:0] dccm_dma_rdata;
-  logic [63:0] dccm_dma_rdata_nc;
+  logic [127:0] dccm_dma_rdata;
+  logic [127:0] dccm_dma_rdata_nc;
   logic iccm_dma_rvalid;
   logic iccm_dma_ecc_error;
   logic [63:0] iccm_dma_rdata;
@@ -1008,8 +1008,8 @@ module swerv
   lsu lsu (
       .clk_override(dec_tlu_lsu_clk_override),
       .rst_l(core_rst_l),
-      .dma_mem_wdata({64'h0, dma_mem_wdata}),
-      .dccm_dma_rdata({dccm_dma_rdata_nc, dccm_dma_rdata}),
+      .dma_mem_wdata(dma_mem_wdata),
+      .dccm_dma_rdata(dccm_dma_rdata),
       .*
   );
 

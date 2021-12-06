@@ -59,11 +59,11 @@ module swerv_wrapper (
     output logic [                2:0] lsu_axi_awprot,
     output logic [                3:0] lsu_axi_awqos,
 
-    output logic        lsu_axi_wvalid,
-    input  logic        lsu_axi_wready,
+    output logic         lsu_axi_wvalid,
+    input  logic         lsu_axi_wready,
     output logic [127:0] lsu_axi_wdata,
-    output logic [ 7:0] lsu_axi_wstrb,
-    output logic        lsu_axi_wlast,
+    output logic [ 15:0] lsu_axi_wstrb,
+    output logic         lsu_axi_wlast,
 
     input  logic                       lsu_axi_bvalid,
     output logic                       lsu_axi_bready,
@@ -87,7 +87,7 @@ module swerv_wrapper (
     input  logic                       lsu_axi_rvalid,
     output logic                       lsu_axi_rready,
     input  logic [`RV_LSU_BUS_TAG-1:0] lsu_axi_rid,
-    input  logic [               127:0] lsu_axi_rdata,
+    input  logic [              127:0] lsu_axi_rdata,
     input  logic [                1:0] lsu_axi_rresp,
     input  logic                       lsu_axi_rlast,
 
@@ -106,11 +106,11 @@ module swerv_wrapper (
     output logic [                2:0] ifu_axi_awprot,
     output logic [                3:0] ifu_axi_awqos,
 
-    output logic        ifu_axi_wvalid,
-    input  logic        ifu_axi_wready,
-    output logic [63:0] ifu_axi_wdata,
-    output logic [ 7:0] ifu_axi_wstrb,
-    output logic        ifu_axi_wlast,
+    output logic         ifu_axi_wvalid,
+    input  logic         ifu_axi_wready,
+    output logic [127:0] ifu_axi_wdata,
+    output logic [ 15:0] ifu_axi_wstrb,
+    output logic         ifu_axi_wlast,
 
     input  logic                       ifu_axi_bvalid,
     output logic                       ifu_axi_bready,
@@ -134,7 +134,7 @@ module swerv_wrapper (
     input  logic                       ifu_axi_rvalid,
     output logic                       ifu_axi_rready,
     input  logic [`RV_IFU_BUS_TAG-1:0] ifu_axi_rid,
-    input  logic [               63:0] ifu_axi_rdata,
+    input  logic [              127:0] ifu_axi_rdata,
     input  logic [                1:0] ifu_axi_rresp,
     input  logic                       ifu_axi_rlast,
 
@@ -153,11 +153,11 @@ module swerv_wrapper (
     output logic [               2:0] sb_axi_awprot,
     output logic [               3:0] sb_axi_awqos,
 
-    output logic        sb_axi_wvalid,
-    input  logic        sb_axi_wready,
-    output logic [63:0] sb_axi_wdata,
-    output logic [ 7:0] sb_axi_wstrb,
-    output logic        sb_axi_wlast,
+    output logic         sb_axi_wvalid,
+    input  logic         sb_axi_wready,
+    output logic [127:0] sb_axi_wdata,
+    output logic [ 15:0] sb_axi_wstrb,
+    output logic         sb_axi_wlast,
 
     input  logic                      sb_axi_bvalid,
     output logic                      sb_axi_bready,
@@ -181,7 +181,7 @@ module swerv_wrapper (
     input  logic                      sb_axi_rvalid,
     output logic                      sb_axi_rready,
     input  logic [`RV_SB_BUS_TAG-1:0] sb_axi_rid,
-    input  logic [              63:0] sb_axi_rdata,
+    input  logic [             127:0] sb_axi_rdata,
     input  logic [               1:0] sb_axi_rresp,
     input  logic                      sb_axi_rlast,
 
@@ -199,8 +199,8 @@ module swerv_wrapper (
 
     input  logic        dma_axi_wvalid,
     output logic        dma_axi_wready,
-    input  logic [63:0] dma_axi_wdata,
-    input  logic [ 7:0] dma_axi_wstrb,
+    input  logic [127:0] dma_axi_wdata,
+    input  logic [ 15:0] dma_axi_wstrb,
     input  logic        dma_axi_wlast,
 
     output logic                       dma_axi_bvalid,
@@ -221,7 +221,7 @@ module swerv_wrapper (
     output logic                       dma_axi_rvalid,
     input  logic                       dma_axi_rready,
     output logic [`RV_DMA_BUS_TAG-1:0] dma_axi_rid,
-    output logic [               63:0] dma_axi_rdata,
+    output logic [               127:0] dma_axi_rdata,
     output logic [                1:0] dma_axi_rresp,
     output logic                       dma_axi_rlast,
 
@@ -295,7 +295,7 @@ module swerv_wrapper (
 
 
     //   input logic                   ext_int,
-    input logic                         timer_int,
+    input logic                       timer_int,
     input logic [`RV_PIC_TOTAL_INT:1] extintsrc_req,
 
     output logic [1:0] dec_tlu_perfcnt0,  // toggles when perf counter 0 has an event inc

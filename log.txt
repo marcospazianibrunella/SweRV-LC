@@ -1,355 +1,859 @@
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:676: Operator COND expects 64 bits on the Conditional True, but Conditional True's REPLICATE generates 32 bits.
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:425: Selection index out of range: 63:32 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+    ld_fwddata_buf_lo[63:32] = {
+                     ^
+                   ... Use "/* verilator lint_off SELRANGE */" and lint_on around source to disable this message.
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:426: Selection index out of range: 7:7 outside 3:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      {8{ld_byte_ibuf_hit_lo[7]}},
+                            ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:427: Selection index out of range: 6:6 outside 3:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      {8{ld_byte_ibuf_hit_lo[6]}},
+                            ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:428: Selection index out of range: 5:5 outside 3:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      {8{ld_byte_ibuf_hit_lo[5]}},
+                            ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:429: Selection index out of range: 4:4 outside 3:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      {8{ld_byte_ibuf_hit_lo[4]}}
+                            ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:430: Selection index out of range: 63:32 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+    } & ibuf_data[63:32];
+                 ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:438: Selection index out of range: 63:32 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+    ld_fwddata_buf_hi[63:32] = {
+                     ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:439: Selection index out of range: 7:7 outside 3:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      {8{ld_byte_ibuf_hit_hi[7]}},
+                            ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:440: Selection index out of range: 6:6 outside 3:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      {8{ld_byte_ibuf_hit_hi[6]}},
+                            ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:441: Selection index out of range: 5:5 outside 3:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      {8{ld_byte_ibuf_hit_hi[5]}},
+                            ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:442: Selection index out of range: 4:4 outside 3:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      {8{ld_byte_ibuf_hit_hi[4]}}
+                            ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:443: Selection index out of range: 63:32 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+    } & ibuf_data[63:32];
+                 ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:450: Selection index out of range: 39:32 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      ld_fwddata_buf_lo[39:32] |= {8{ld_byte_hitvecfn_lo[4][i]}} & buf_data[i][39:32];
+                       ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:450: Selection index out of range: 39:32 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      ld_fwddata_buf_lo[39:32] |= {8{ld_byte_hitvecfn_lo[4][i]}} & buf_data[i][39:32];
+                                                                              ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:451: Selection index out of range: 47:40 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      ld_fwddata_buf_lo[47:40] |= {8{ld_byte_hitvecfn_lo[5][i]}} & buf_data[i][47:40];
+                       ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:451: Selection index out of range: 47:40 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      ld_fwddata_buf_lo[47:40] |= {8{ld_byte_hitvecfn_lo[5][i]}} & buf_data[i][47:40];
+                                                                              ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:452: Selection index out of range: 55:48 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      ld_fwddata_buf_lo[55:48] |= {8{ld_byte_hitvecfn_lo[6][i]}} & buf_data[i][55:48];
+                       ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:452: Selection index out of range: 55:48 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      ld_fwddata_buf_lo[55:48] |= {8{ld_byte_hitvecfn_lo[6][i]}} & buf_data[i][55:48];
+                                                                              ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:453: Selection index out of range: 63:56 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      ld_fwddata_buf_lo[63:56] |= {8{ld_byte_hitvecfn_lo[7][i]}} & buf_data[i][63:56];
+                       ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:453: Selection index out of range: 63:56 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      ld_fwddata_buf_lo[63:56] |= {8{ld_byte_hitvecfn_lo[7][i]}} & buf_data[i][63:56];
+                                                                              ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:459: Selection index out of range: 39:32 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      ld_fwddata_buf_hi[39:32] |= {8{ld_byte_hitvecfn_hi[4][i]}} & buf_data[i][39:31];
+                       ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:459: Selection index out of range: 39:31 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      ld_fwddata_buf_hi[39:32] |= {8{ld_byte_hitvecfn_hi[4][i]}} & buf_data[i][39:31];
+                                                                              ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:459: Operator OR expects 9 bits on the LHS, but LHS's SEL generates 8 bits.
                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
-  assign obuf_data0_in[63:0] = ibuf_buf_byp ? (lsu_addr_dc5[3] ? {
-                                                               ^
-                ... Use "/* verilator lint_off WIDTH */" and lint_on around source to disable this message.
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:676: Operator COND expects 64 bits on the Conditional False, but Conditional False's REPLICATE generates 32 bits.
+      ld_fwddata_buf_hi[39:32] |= {8{ld_byte_hitvecfn_hi[4][i]}} & buf_data[i][39:31];
+                               ^~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:459: Operator AND expects 9 bits on the LHS, but LHS's REPLICATE generates 8 bits.
                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
-  assign obuf_data0_in[63:0] = ibuf_buf_byp ? (lsu_addr_dc5[3] ? {
+      ld_fwddata_buf_hi[39:32] |= {8{ld_byte_hitvecfn_hi[4][i]}} & buf_data[i][39:31];
+                                                                 ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:459: Operator ASSIGN expects 8 bits on the Assign RHS, but Assign RHS's OR generates 9 bits.
+                                                                                           : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      ld_fwddata_buf_hi[39:32] |= {8{ld_byte_hitvecfn_hi[4][i]}} & buf_data[i][39:31];
+                               ^~
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:460: Selection index out of range: 47:40 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      ld_fwddata_buf_hi[47:40] |= {8{ld_byte_hitvecfn_hi[5][i]}} & buf_data[i][47:40];
+                       ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:460: Selection index out of range: 47:40 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      ld_fwddata_buf_hi[47:40] |= {8{ld_byte_hitvecfn_hi[5][i]}} & buf_data[i][47:40];
+                                                                              ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:461: Selection index out of range: 55:48 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      ld_fwddata_buf_hi[55:48] |= {8{ld_byte_hitvecfn_hi[6][i]}} & buf_data[i][55:48];
+                       ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:461: Selection index out of range: 55:48 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      ld_fwddata_buf_hi[55:48] |= {8{ld_byte_hitvecfn_hi[6][i]}} & buf_data[i][55:48];
+                                                                              ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:462: Selection index out of range: 63:56 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      ld_fwddata_buf_hi[63:56] |= {8{ld_byte_hitvecfn_hi[7][i]}} & buf_data[i][63:56];
+                       ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:462: Selection index out of range: 63:56 outside 31:0
+                                                                                              : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+      ld_fwddata_buf_hi[63:56] |= {8{ld_byte_hitvecfn_hi[7][i]}} & buf_data[i][63:56];
+                                                                              ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:477: Operator ASSIGNW expects 4 bits on the Assign RHS, but Assign RHS's OR generates 8 bits.
+                                                                                           : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  assign ldst_byteen_dc5[DCCM_BYTE_WIDTH-1:0] = 
+                                              ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:490: Operator SHIFTL expects 64 bits on the LHS, but LHS's REPLICATE generates 63 bits.
+                                                                                           : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  } << {
+    ^~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1353: Operator ASSIGNW expects 32 bits on the Assign RHS, but Assign RHS's SHIFTR generates 64 bits.
+                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  assign lsu_nonblock_data_unalgn = lsu_nonblock_data_unalgn_wide >> (lsu_nonblock_addr_offset[$clog2(
+                                  ^
+%Error: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1373: Extracting 33 bits from only 32 bit number
+                                                                                    : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+    {32{lsu_nonblock_data_unalgn[31]}}, lsu_nonblock_data_unalgn[32:0]
+                                                                ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1373: Selection index out of range: 32:0 outside 31:0
+                                                                                               : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+    {32{lsu_nonblock_data_unalgn[31]}}, lsu_nonblock_data_unalgn[32:0]
+                                                                ^
+%Error: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1374: Extracting 64 bits from only 32 bit number
+                                                                                    : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  }) | ({64{(lsu_nonblock_sz[2:0] == 3'b100)}} & lsu_nonblock_data_unalgn[63:0]);
+                                                                         ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1374: Selection index out of range: 63:0 outside 31:0
+                                                                                               : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  }) | ({64{(lsu_nonblock_sz[2:0] == 3'b100)}} & lsu_nonblock_data_unalgn[63:0]);
+                                                                         ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1362: Operator AND expects 65 bits on the LHS, but LHS's REPLICATE generates 64 bits.
+                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  assign lsu_nonblock_load_data = ({64{lsu_nonblock_unsign & (lsu_nonblock_sz[2:0] == 3'b000)}} & {
+                                                                                                ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1362: Operator AND expects 65 bits on the RHS, but RHS's REPLICATE generates 64 bits.
+                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  assign lsu_nonblock_load_data = ({64{lsu_nonblock_unsign & (lsu_nonblock_sz[2:0] == 3'b000)}} & {
+                                                                                                ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1364: Operator AND expects 65 bits on the LHS, but LHS's REPLICATE generates 64 bits.
+                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  }) | ({64{lsu_nonblock_unsign & (lsu_nonblock_sz[2:0] == 3'b001)}} & {
+                                                                     ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1364: Operator AND expects 65 bits on the RHS, but RHS's REPLICATE generates 64 bits.
+                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  }) | ({64{lsu_nonblock_unsign & (lsu_nonblock_sz[2:0] == 3'b001)}} & {
+                                                                     ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1366: Operator AND expects 65 bits on the LHS, but LHS's REPLICATE generates 64 bits.
+                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  }) | ({64{lsu_nonblock_unsign & (lsu_nonblock_sz[2:0] == 3'b010)}} & {
+                                                                     ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1366: Operator AND expects 65 bits on the RHS, but RHS's REPLICATE generates 64 bits.
+                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  }) | ({64{lsu_nonblock_unsign & (lsu_nonblock_sz[2:0] == 3'b010)}} & {
+                                                                     ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1368: Operator AND expects 65 bits on the LHS, but LHS's REPLICATE generates 64 bits.
+                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  }) | ({64{~lsu_nonblock_unsign & (lsu_nonblock_sz[2:0] == 3'b000)}} & {
+                                                                      ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1368: Operator AND expects 65 bits on the RHS, but RHS's REPLICATE generates 64 bits.
+                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  }) | ({64{~lsu_nonblock_unsign & (lsu_nonblock_sz[2:0] == 3'b000)}} & {
+                                                                      ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1370: Operator AND expects 65 bits on the LHS, but LHS's REPLICATE generates 64 bits.
+                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  }) | ({64{~lsu_nonblock_unsign & (lsu_nonblock_sz[2:0] == 3'b001)}} & {
+                                                                      ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1370: Operator AND expects 65 bits on the RHS, but RHS's REPLICATE generates 64 bits.
+                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  }) | ({64{~lsu_nonblock_unsign & (lsu_nonblock_sz[2:0] == 3'b001)}} & {
+                                                                      ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1372: Operator AND expects 65 bits on the LHS, but LHS's REPLICATE generates 64 bits.
+                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  }) | ({64{~lsu_nonblock_unsign & (lsu_nonblock_sz[2:0] == 3'b010)}} & {
+                                                                      ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1374: Operator AND expects 65 bits on the LHS, but LHS's REPLICATE generates 64 bits.
+                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  }) | ({64{(lsu_nonblock_sz[2:0] == 3'b100)}} & lsu_nonblock_data_unalgn[63:0]);
+                                               ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1374: Operator AND expects 65 bits on the RHS, but RHS's SEL generates 64 bits.
+                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  }) | ({64{(lsu_nonblock_sz[2:0] == 3'b100)}} & lsu_nonblock_data_unalgn[63:0]);
+                                               ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1362: Operator ASSIGNW expects 32 bits on the Assign RHS, but Assign RHS's OR generates 65 bits.
+                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  assign lsu_nonblock_load_data = ({64{lsu_nonblock_unsign & (lsu_nonblock_sz[2:0] == 3'b000)}} & {
+                                ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1420: Operator ASSIGNW expects 64 bits on the Assign RHS, but Assign RHS's VARREF 'lsu_axi_rdata_q' generates 128 bits.
+                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  assign bus_rsp_rdata = lsu_axi_rdata_q;
+                       ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1436: Operator AND expects 16 bits on the LHS, but LHS's VARREF 'obuf_byteen' generates 8 bits.
+                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  assign lsu_axi_wstrb = obuf_byteen & {16{obuf_write}};
+                                     ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1437: Operator ASSIGNW expects 128 bits on the Assign RHS, but Assign RHS's VARREF 'obuf_data' generates 64 bits.
+                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
+  assign lsu_axi_wdata = obuf_data;
+                       ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_trigger.sv:46: Selection index out of range: 63:32 outside 31:0
+                                                                                          : ... In instance tb_top.rvtop.swerv.lsu.trigger
+    ({32{lsu_pkt_dc3.dword}} & store_data_dc3[63:32]),
+                                             ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_trigger.sv:45: Operator ASSIGNW expects 32 bits on the Assign RHS, but Assign RHS's REPLICATE generates 64 bits.
+                                                                                       : ... In instance tb_top.rvtop.swerv.lsu.trigger
+  assign store_data_trigger_dc3 = {
+                                ^
+%Error: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_trigger.sv:54: Extracting 64 bits from only 32 bit number
+                                                                               : ... In instance tb_top.rvtop.swerv.lsu.trigger
+    assign lsu_match_data[i][63:0] = ({64{~trigger_pkt_any[i].select}} & {
+                            ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_trigger.sv:54: Selection index out of range: 63:0 outside 31:0
+                                                                                          : ... In instance tb_top.rvtop.swerv.lsu.trigger
+    assign lsu_match_data[i][63:0] = ({64{~trigger_pkt_any[i].select}} & {
+                            ^
+%Error: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_trigger.sv:56: Extracting 64 bits from only 32 bit number
+                                                                               : ... In instance tb_top.rvtop.swerv.lsu.trigger
+    }) | ({64{trigger_pkt_any[i].select & trigger_pkt_any[i].store}} & store_data_trigger_dc3[63:0])
+                                                                                             ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_trigger.sv:56: Selection index out of range: 63:0 outside 31:0
+                                                                                          : ... In instance tb_top.rvtop.swerv.lsu.trigger
+    }) | ({64{trigger_pkt_any[i].select & trigger_pkt_any[i].store}} & store_data_trigger_dc3[63:0])
+                                                                                             ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_ecc.sv:133: Input port connection 'din' expects 64 bits on the pin connection, but pin connection's SEL generates 32 bits.
+                                                                                    : ... In instance tb_top.rvtop.swerv.lsu.ecc
+         .din(dccm_data_hi_dc3[DCCM_DATA_WIDTH-1:0]),
+          ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_ecc.sv:134: Input port connection 'ecc_in' expects 8 bits on the pin connection, but pin connection's SEL generates 7 bits.
+                                                                                    : ... In instance tb_top.rvtop.swerv.lsu.ecc
+         .ecc_in(dccm_data_ecc_hi_dc3[DCCM_ECC_WIDTH-1:0]),
+          ^~~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_ecc.sv:136: Output port connection 'dout' expects 64 bits on the pin connection, but pin connection's SEL generates 32 bits.
+                                                                                    : ... In instance tb_top.rvtop.swerv.lsu.ecc
+         .dout(sec_data_hi_dc3[DCCM_DATA_WIDTH-1:0]),
+          ^~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_ecc.sv:147: Input port connection 'din' expects 64 bits on the pin connection, but pin connection's SEL generates 32 bits.
+                                                                                    : ... In instance tb_top.rvtop.swerv.lsu.ecc
+         .din(dccm_data_lo_dc3[DCCM_DATA_WIDTH-1:0] ),
+          ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_ecc.sv:148: Input port connection 'ecc_in' expects 8 bits on the pin connection, but pin connection's SEL generates 7 bits.
+                                                                                    : ... In instance tb_top.rvtop.swerv.lsu.ecc
+         .ecc_in(dccm_data_ecc_lo_dc3[DCCM_ECC_WIDTH-1:0]),
+          ^~~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_ecc.sv:150: Output port connection 'dout' expects 64 bits on the pin connection, but pin connection's SEL generates 32 bits.
+                                                                                    : ... In instance tb_top.rvtop.swerv.lsu.ecc
+         .dout(sec_data_lo_dc3[DCCM_DATA_WIDTH-1:0]),
+          ^~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_ecc.sv:160: Input port connection 'din' expects 64 bits on the pin connection, but pin connection's SEL generates 32 bits.
+                                                                                    : ... In instance tb_top.rvtop.swerv.lsu.ecc
+         .din(stbuf_data_any[DCCM_DATA_WIDTH-1:0]),
+          ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_ecc.sv:162: Output port connection 'ecc_out' expects 8 bits on the pin connection, but pin connection's SEL generates 7 bits.
+                                                                                    : ... In instance tb_top.rvtop.swerv.lsu.ecc
+         .ecc_out(stbuf_ecc_any[DCCM_ECC_WIDTH-1:0]),
+          ^~~~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_intf.sv:243: Operator ASSIGNW expects 4 bits on the Assign RHS, but Assign RHS's OR generates 8 bits.
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.bus_intf
+  assign ldst_byteen_dc2[DCCM_BYTE_WIDTH-1:0] = 
+                                              ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_intf.sv:281: Operator ASSIGNW expects 8 bits on the Assign RHS, but Assign RHS's SHIFTL generates 12 bits.
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.bus_intf
+  assign ldst_byteen_ext_dc2[DCCM_BYTE_WIDTH*2-1:0] = {
+                                                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_intf.sv:286: Operator ASSIGNW expects 8 bits on the Assign RHS, but Assign RHS's SHIFTL generates 12 bits.
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.bus_intf
+  assign ldst_byteen_ext_dc3[DCCM_BYTE_WIDTH*2-1:0] = {
+                                                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_intf.sv:291: Operator ASSIGNW expects 8 bits on the Assign RHS, but Assign RHS's SHIFTL generates 12 bits.
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.bus_intf
+  assign ldst_byteen_ext_dc4[DCCM_BYTE_WIDTH*2-1:0] = {
+                                                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_intf.sv:296: Operator ASSIGNW expects 8 bits on the Assign RHS, but Assign RHS's SHIFTL generates 12 bits.
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.bus_intf
+  assign ldst_byteen_ext_dc5[DCCM_BYTE_WIDTH*2-1:0] = {
+                                                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_intf.sv:302: Operator ASSIGNW expects 64 bits on the Assign RHS, but Assign RHS's SHIFTL generates 96 bits.
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.bus_intf
+  assign store_data_ext_dc3[DCCM_DATA_WIDTH*2-1:0] = {
+                                                   ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_intf.sv:307: Operator ASSIGNW expects 64 bits on the Assign RHS, but Assign RHS's SHIFTL generates 96 bits.
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.bus_intf
+  assign store_data_ext_dc4[DCCM_DATA_WIDTH*2-1:0] = {
+                                                   ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_intf.sv:312: Operator ASSIGNW expects 64 bits on the Assign RHS, but Assign RHS's SHIFTL generates 96 bits.
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.bus_intf
+  assign store_data_ext_dc5[DCCM_DATA_WIDTH*2-1:0] = {
+                                                   ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_stbuf.sv:189: Operator ASSIGNW expects 8 bits on the Assign RHS, but Assign RHS's SHIFTL generates 16 bits.
+                                                                                      : ... In instance tb_top.rvtop.swerv.lsu.stbuf
+   assign store_byteen_ext_dc3[7:0] = {8'b0, ldst_byteen_dc3[7:0]} << lsu_addr_dc3[$clog2(DCCM_BYTE_WIDTH)-1:0];
+                                    ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_stbuf.sv:380: Selection index out of range: 39:32 outside 31:0
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.stbuf
+            stbuf_fwddata_hi_dc2[39:32] = stbuf_fwddatavec_hi[DEPTH_LOG2'(WrPtr[DEPTH_LOG2-1:0] + DEPTH_LOG2'(i))][7:0];
+                                ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_stbuf.sv:379: Selection index out of range: 4:4 outside 3:0
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.stbuf
+         if (stbuf_fwdbyteenvec_hi[DEPTH_LOG2'(WrPtr[DEPTH_LOG2-1:0] + DEPTH_LOG2'(i))][4]) begin
+                                                                                       ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_stbuf.sv:383: Selection index out of range: 39:32 outside 31:0
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.stbuf
+            stbuf_fwddata_lo_dc2[39:32] = stbuf_fwddatavec_lo[DEPTH_LOG2'(WrPtr[DEPTH_LOG2-1:0] + DEPTH_LOG2'(i))][7:0];
+                                ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_stbuf.sv:382: Selection index out of range: 4:4 outside 3:0
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.stbuf
+         if (stbuf_fwdbyteenvec_lo[DEPTH_LOG2'(WrPtr[DEPTH_LOG2-1:0] + DEPTH_LOG2'(i))][4]) begin
+                                                                                       ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_stbuf.sv:388: Selection index out of range: 47:40 outside 31:0
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.stbuf
+            stbuf_fwddata_hi_dc2[47:40] = stbuf_fwddatavec_hi[DEPTH_LOG2'(WrPtr[DEPTH_LOG2-1:0] + DEPTH_LOG2'(i))][15:8];
+                                ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_stbuf.sv:387: Selection index out of range: 5:5 outside 3:0
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.stbuf
+         if (stbuf_fwdbyteenvec_hi[DEPTH_LOG2'(WrPtr[DEPTH_LOG2-1:0] + DEPTH_LOG2'(i))][5]) begin
+                                                                                       ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_stbuf.sv:391: Selection index out of range: 47:40 outside 31:0
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.stbuf
+            stbuf_fwddata_lo_dc2[47:40] = stbuf_fwddatavec_lo[DEPTH_LOG2'(WrPtr[DEPTH_LOG2-1:0] + DEPTH_LOG2'(i))][15:8];
+                                ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_stbuf.sv:390: Selection index out of range: 5:5 outside 3:0
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.stbuf
+         if (stbuf_fwdbyteenvec_lo[DEPTH_LOG2'(WrPtr[DEPTH_LOG2-1:0] + DEPTH_LOG2'(i))][5]) begin
+                                                                                       ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_stbuf.sv:396: Selection index out of range: 55:48 outside 31:0
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.stbuf
+            stbuf_fwddata_hi_dc2[55:48] = stbuf_fwddatavec_hi[DEPTH_LOG2'(WrPtr[DEPTH_LOG2-1:0] + DEPTH_LOG2'(i))][23:16];
+                                ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_stbuf.sv:395: Selection index out of range: 6:6 outside 3:0
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.stbuf
+         if (stbuf_fwdbyteenvec_hi[DEPTH_LOG2'(WrPtr[DEPTH_LOG2-1:0] + DEPTH_LOG2'(i))][6]) begin
+                                                                                       ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_stbuf.sv:399: Selection index out of range: 55:48 outside 31:0
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.stbuf
+            stbuf_fwddata_lo_dc2[55:48] = stbuf_fwddatavec_lo[DEPTH_LOG2'(WrPtr[DEPTH_LOG2-1:0] + DEPTH_LOG2'(i))][23:16];
+                                ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_stbuf.sv:398: Selection index out of range: 6:6 outside 3:0
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.stbuf
+         if (stbuf_fwdbyteenvec_lo[DEPTH_LOG2'(WrPtr[DEPTH_LOG2-1:0] + DEPTH_LOG2'(i))][6]) begin
+                                                                                       ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_stbuf.sv:404: Selection index out of range: 63:56 outside 31:0
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.stbuf
+            stbuf_fwddata_hi_dc2[63:56] = stbuf_fwddatavec_hi[DEPTH_LOG2'(WrPtr[DEPTH_LOG2-1:0] + DEPTH_LOG2'(i))][31:24];
+                                ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_stbuf.sv:403: Selection index out of range: 7:7 outside 3:0
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.stbuf
+         if (stbuf_fwdbyteenvec_hi[DEPTH_LOG2'(WrPtr[DEPTH_LOG2-1:0] + DEPTH_LOG2'(i))][7]) begin
+                                                                                       ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_stbuf.sv:407: Selection index out of range: 63:56 outside 31:0
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.stbuf
+            stbuf_fwddata_lo_dc2[63:56] = stbuf_fwddatavec_lo[DEPTH_LOG2'(WrPtr[DEPTH_LOG2-1:0] + DEPTH_LOG2'(i))][31:24];
+                                ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_stbuf.sv:406: Selection index out of range: 7:7 outside 3:0
+                                                                                         : ... In instance tb_top.rvtop.swerv.lsu.stbuf
+         if (stbuf_fwdbyteenvec_lo[DEPTH_LOG2'(WrPtr[DEPTH_LOG2-1:0] + DEPTH_LOG2'(i))][7]) begin
+                                                                                       ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:177: Operator COND expects 64 bits on the Conditional False, but Conditional False's SEL generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+   assign lsu_rs1_d[DCCM_DATA_WIDTH-1:0] = dma_dccm_req ? {32'b0, dma_mem_addr[31:0]} : exu_lsu_rs1_d[DCCM_DATA_WIDTH-1:0];
+                                                        ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:177: Operator ASSIGNW expects 32 bits on the Assign RHS, but Assign RHS's COND generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+   assign lsu_rs1_d[DCCM_DATA_WIDTH-1:0] = dma_dccm_req ? {32'b0, dma_mem_addr[31:0]} : exu_lsu_rs1_d[DCCM_DATA_WIDTH-1:0];
+                                         ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:188: Input port connection 'rs1' expects 64 bits on the pin connection, but pin connection's SEL generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+   rvlsadder   lsadder  (.rs1(rs1_dc1[DCCM_DATA_WIDTH-1:0]),
+                          ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:277: Operator AND expects 64 bits on the RHS, but RHS's SEL generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+                                 ({64{lsu_pkt_dc3.dword}} &                       lsu_ld_datafn_dc3[DCCM_DATA_WIDTH-1:0]);
+                                                          ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:268: Operator ASSIGNW expects 32 bits on the Assign RHS, but Assign RHS's OR generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+   assign lsu_result_dc3[DCCM_DATA_WIDTH-1:0] = 
+                                              ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:280: Operator AND expects 80 bits on the LHS, but LHS's REPLICATE generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+                                      ({64{ lsu_pkt_dc3.unsign & lsu_pkt_dc3.by  }} & {56'b0,lsu_ld_datafn_corr_dc3[7:0]}) |
+                                                                                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:280: Operator AND expects 80 bits on the RHS, but RHS's REPLICATE generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+                                      ({64{ lsu_pkt_dc3.unsign & lsu_pkt_dc3.by  }} & {56'b0,lsu_ld_datafn_corr_dc3[7:0]}) |
+                                                                                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:281: Operator AND expects 80 bits on the LHS, but LHS's REPLICATE generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+                                      ({64{ lsu_pkt_dc3.unsign & lsu_pkt_dc3.half}} & {48'b0,lsu_ld_datafn_corr_dc3[15:0]}) |
+                                                                                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:281: Operator AND expects 80 bits on the RHS, but RHS's REPLICATE generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+                                      ({64{ lsu_pkt_dc3.unsign & lsu_pkt_dc3.half}} & {48'b0,lsu_ld_datafn_corr_dc3[15:0]}) |
+                                                                                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:282: Operator AND expects 80 bits on the LHS, but LHS's REPLICATE generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+                                      ({64{ lsu_pkt_dc3.unsign & lsu_pkt_dc3.word}} & {32'b0,lsu_ld_datafn_corr_dc3[31:0]}) |
+                                                                                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:282: Operator AND expects 80 bits on the RHS, but RHS's REPLICATE generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+                                      ({64{ lsu_pkt_dc3.unsign & lsu_pkt_dc3.word}} & {32'b0,lsu_ld_datafn_corr_dc3[31:0]}) |
+                                                                                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:284: Operator AND expects 80 bits on the LHS, but LHS's REPLICATE generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+                                      ({64{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.by  }} & {{56{  lsu_ld_datafn_corr_dc3[7]}}, lsu_ld_datafn_corr_dc3[7:0]}) |
+                                                                                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:284: Operator AND expects 80 bits on the RHS, but RHS's REPLICATE generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+                                      ({64{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.by  }} & {{56{  lsu_ld_datafn_corr_dc3[7]}}, lsu_ld_datafn_corr_dc3[7:0]}) |
+                                                                                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:285: Operator AND expects 80 bits on the LHS, but LHS's REPLICATE generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+                                      ({64{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.half}} & {{48{  lsu_ld_datafn_corr_dc3[15]}},lsu_ld_datafn_corr_dc3[15:0]}) |
+                                                                                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:285: Operator AND expects 80 bits on the RHS, but RHS's REPLICATE generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+                                      ({64{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.half}} & {{48{  lsu_ld_datafn_corr_dc3[15]}},lsu_ld_datafn_corr_dc3[15:0]}) |
+                                                                                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:286: Operator AND expects 80 bits on the LHS, but LHS's REPLICATE generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+                                      ({64{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.word}} & {{48{  lsu_ld_datafn_corr_dc3[31]}},lsu_ld_datafn_corr_dc3[31:0]}) |
+                                                                                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:288: Operator AND expects 80 bits on the LHS, but LHS's REPLICATE generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+                                      ({64{lsu_pkt_dc3.dword}} &                       lsu_ld_datafn_corr_dc3[DCCM_DATA_WIDTH-1:0]);
                                                                ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1035: Operator COND expects 64 bits on the Conditional True, but Conditional True's SEL generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
-          buf_data_in[i]   = (ibuf_drain_vld & (i == ibuf_tag)) ? ibuf_data_out[31:0] : store_data_lo_dc5[31:0];
-                                                                ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1035: Operator COND expects 64 bits on the Conditional False, but Conditional False's SEL generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
-          buf_data_in[i]   = (ibuf_drain_vld & (i == ibuf_tag)) ? ibuf_data_out[31:0] : store_data_lo_dc5[31:0];
-                                                                ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1199: Output port connection 'dout' expects 4 bits on the pin connection, but pin connection's SEL generates 8 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
-        .dout(buf_byteen[i]),
-         ^~~~
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1312: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
-  assign lsu_nonblock_load_data = ({32{lsu_nonblock_unsign & (lsu_nonblock_sz[1:0] == 2'b00)}} & {
-                                                                                               ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1312: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
-  assign lsu_nonblock_load_data = ({32{lsu_nonblock_unsign & (lsu_nonblock_sz[1:0] == 2'b00)}} & {
-                                                                                               ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1314: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
-  }) | ({32{lsu_nonblock_unsign & (lsu_nonblock_sz[1:0] == 2'b01)}} & {
-                                                                    ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1314: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
-  }) | ({32{lsu_nonblock_unsign & (lsu_nonblock_sz[1:0] == 2'b01)}} & {
-                                                                    ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1316: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
-  }) | ({32{~lsu_nonblock_unsign & (lsu_nonblock_sz[1:0] == 2'b00)}} & {
-                                                                     ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1316: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
-  }) | ({32{~lsu_nonblock_unsign & (lsu_nonblock_sz[1:0] == 2'b00)}} & {
-                                                                     ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1318: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
-  }) | ({32{~lsu_nonblock_unsign & (lsu_nonblock_sz[1:0] == 2'b01)}} & {
-                                                                     ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1318: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
-  }) | ({32{~lsu_nonblock_unsign & (lsu_nonblock_sz[1:0] == 2'b01)}} & {
-                                                                     ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1320: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
-  }) | ({32{(lsu_nonblock_sz[1:0] == 2'b10)}} & lsu_nonblock_data_unalgn[31:0]);
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:288: Operator AND expects 80 bits on the RHS, but RHS's SEL generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+                                      ({64{lsu_pkt_dc3.dword}} &                       lsu_ld_datafn_corr_dc3[DCCM_DATA_WIDTH-1:0]);
+                                                               ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:279: Operator ASSIGNW expects 32 bits on the Assign RHS, but Assign RHS's OR generates 80 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+   assign lsu_result_corr_dc3[DCCM_DATA_WIDTH-1:0] = 
+                                                   ^
+%Error: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:298: Extracting 64 bits from only 32 bit number
+                                                                                : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+   assign store_data_d[DCCM_DATA_WIDTH*2-1:0] = dma_dccm_req ? dma_mem_wdata_shifted[DCCM_DATA_WIDTH*2-1:0] : {64'b0,exu_lsu_rs2_d[63:0]};
+                                                                                                                                  ^
+%Warning-SELRANGE: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:298: Selection index out of range: 63:0 outside 31:0
+                                                                                           : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+   assign store_data_d[DCCM_DATA_WIDTH*2-1:0] = dma_dccm_req ? dma_mem_wdata_shifted[DCCM_DATA_WIDTH*2-1:0] : {64'b0,exu_lsu_rs2_d[63:0]};
+                                                                                                                                  ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:298: Operator COND expects 128 bits on the Conditional True, but Conditional True's SEL generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+   assign store_data_d[DCCM_DATA_WIDTH*2-1:0] = dma_dccm_req ? dma_mem_wdata_shifted[DCCM_DATA_WIDTH*2-1:0] : {64'b0,exu_lsu_rs2_d[63:0]};
+                                                             ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:298: Operator ASSIGNW expects 64 bits on the Assign RHS, but Assign RHS's COND generates 128 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+   assign store_data_d[DCCM_DATA_WIDTH*2-1:0] = dma_dccm_req ? dma_mem_wdata_shifted[DCCM_DATA_WIDTH*2-1:0] : {64'b0,exu_lsu_rs2_d[63:0]};
                                               ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_bus_buffer.sv:1320: Operator AND expects 64 bits on the RHS, but RHS's SEL generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.lsu.bus_intf.bus_buffer
-  }) | ({32{(lsu_nonblock_sz[1:0] == 2'b10)}} & lsu_nonblock_data_unalgn[31:0]);
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:313: Operator COND expects 64 bits on the Conditional True, but Conditional True's SEL generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+                                 ((lsu_pkt_dc3.store_data_bypass_e4_c3[1]) ? i1_result_e4_eff[DCCM_DATA_WIDTH-1:0] :
+                                                                           ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:314: Operator COND expects 64 bits on the Conditional True, but Conditional True's SEL generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+                                  (lsu_pkt_dc3.store_data_bypass_e4_c3[0]) ? i0_result_e4_eff[DCCM_DATA_WIDTH-1:0] : store_data_pre_dc3[DCCM_DATA_WIDTH-1:0]);
+                                                                           ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:314: Operator COND expects 64 bits on the Conditional False, but Conditional False's SEL generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+                                  (lsu_pkt_dc3.store_data_bypass_e4_c3[0]) ? i0_result_e4_eff[DCCM_DATA_WIDTH-1:0] : store_data_pre_dc3[DCCM_DATA_WIDTH-1:0]);
+                                                                           ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:312: Operator ASSIGNW expects 32 bits on the Assign RHS, but Assign RHS's AND generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
+   assign store_data_dc3[DCCM_DATA_WIDTH-1:0] = ({32'b0 ,picm_mask_data_dc3[31:0]} | {64{~addr_in_pic_dc3}}) &
                                               ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:331: Operator AND expects 96 bits on the LHS, but LHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  assign lsu_result_dc3 = ({XLEN{lsu_pkt_dc3.unsign & lsu_pkt_dc3.by}} & {
-                                                                       ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:331: Operator AND expects 96 bits on the RHS, but RHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  assign lsu_result_dc3 = ({XLEN{lsu_pkt_dc3.unsign & lsu_pkt_dc3.by}} & {
-                                                                       ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:333: Operator AND expects 96 bits on the LHS, but LHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{lsu_pkt_dc3.unsign & lsu_pkt_dc3.half}} & {
-                                                      ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:333: Operator AND expects 96 bits on the RHS, but RHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{lsu_pkt_dc3.unsign & lsu_pkt_dc3.half}} & {
-                                                      ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:335: Operator AND expects 96 bits on the LHS, but LHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.by}} & {
-                                                     ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:335: Operator AND expects 96 bits on the RHS, but RHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.by}} & {
-                                                     ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:337: Operator AND expects 96 bits on the LHS, but LHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.half}} & {
-                                                       ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:337: Operator AND expects 96 bits on the RHS, but RHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.half}} & {
-                                                       ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:339: Operator AND expects 96 bits on the LHS, but LHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{lsu_pkt_dc3.unsign & lsu_pkt_dc3.word}} & {
-                                                      ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:341: Operator AND expects 96 bits on the LHS, but LHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.word}} & {
-                                                       ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:343: Operator AND expects 96 bits on the LHS, but LHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{lsu_pkt_dc3.dword}} & {
-                                  ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:343: Operator AND expects 96 bits on the RHS, but RHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{lsu_pkt_dc3.dword}} & {
-                                  ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:331: Operator ASSIGNW expects 64 bits on the Assign RHS, but Assign RHS's OR generates 96 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  assign lsu_result_dc3 = ({XLEN{lsu_pkt_dc3.unsign & lsu_pkt_dc3.by}} & {
-                        ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:347: Operator AND expects 96 bits on the LHS, but LHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  assign lsu_result_corr_dc3 = ({XLEN{lsu_pkt_dc3.unsign & lsu_pkt_dc3.by}} & {
-                                                                            ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:347: Operator AND expects 96 bits on the RHS, but RHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  assign lsu_result_corr_dc3 = ({XLEN{lsu_pkt_dc3.unsign & lsu_pkt_dc3.by}} & {
-                                                                            ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:349: Operator AND expects 96 bits on the LHS, but LHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{lsu_pkt_dc3.unsign & lsu_pkt_dc3.half}} & {
-                                                      ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:349: Operator AND expects 96 bits on the RHS, but RHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{lsu_pkt_dc3.unsign & lsu_pkt_dc3.half}} & {
-                                                      ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:351: Operator AND expects 96 bits on the LHS, but LHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.by}} & {
-                                                     ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:351: Operator AND expects 96 bits on the RHS, but RHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.by}} & {
-                                                     ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:353: Operator AND expects 96 bits on the LHS, but LHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.half}} & {
-                                                       ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:353: Operator AND expects 96 bits on the RHS, but RHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.half}} & {
-                                                       ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:355: Operator AND expects 96 bits on the LHS, but LHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{lsu_pkt_dc3.unsign & lsu_pkt_dc3.word}} & {
-                                                      ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:357: Operator AND expects 96 bits on the LHS, but LHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.word}} & {
-                                                       ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:359: Operator AND expects 96 bits on the LHS, but LHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{lsu_pkt_dc3.dword}} & {
-                                  ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:359: Operator AND expects 96 bits on the RHS, but RHS's REPLICATE generates 64 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  }) | ({XLEN{lsu_pkt_dc3.dword}} & {
-                                  ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu_lsc_ctl.sv:347: Operator ASSIGNW expects 64 bits on the Assign RHS, but Assign RHS's OR generates 96 bits.
-                                                                                        : ... In instance tb_top.rvtop.swerv.lsu.lsu_lsc_ctl
-  assign lsu_result_corr_dc3 = ({XLEN{lsu_pkt_dc3.unsign & lsu_pkt_dc3.by}} & {
-                             ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:280: Operator NEQ expects 65 bits on the RHS, but RHS's REPLICATE generates 64 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:280: Operator NEQ expects 33 bits on the RHS, but RHS's REPLICATE generates 32 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
   assign shortq_enable = valid_ff_e1 & (m_ff != {XLEN{'0}}) & (shortq_raw[3:0] != 4'b0);
                                              ^~
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:333: Operator AND expects 66 bits on the LHS, but LHS's REPLICATE generates 65 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:333: Operator AND expects 34 bits on the LHS, but LHS's REPLICATE generates 33 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
   assign q_in = ({XLEN + 1{~run_state}} & {
                                         ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:333: Operator AND expects 66 bits on the RHS, but RHS's REPLICATE generates 65 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:333: Operator AND expects 34 bits on the RHS, but RHS's REPLICATE generates 33 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
   assign q_in = ({XLEN + 1{~run_state}} & {
                                         ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:335: Operator AND expects 66 bits on the LHS, but LHS's REPLICATE generates 65 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:335: Operator AND expects 34 bits on the LHS, but LHS's REPLICATE generates 33 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
   }) | ({XLEN + 1{run_state & (valid_ff_e1 | shortq_enable_ff)}} & ({
                                                                  ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:337: Operator SHIFTL expects 66 bits on the LHS, but LHS's REPLICATE generates 65 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:337: Operator SHIFTL expects 34 bits on the LHS, but LHS's REPLICATE generates 33 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
   } << shortq_shift_ff[5:0])) | ({XLEN + 1{run_state & ~(valid_ff_e1 | shortq_enable_ff)}} & {
     ^~
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:337: Operator AND expects 66 bits on the LHS, but LHS's REPLICATE generates 65 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:337: Operator AND expects 34 bits on the LHS, but LHS's REPLICATE generates 33 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
   } << shortq_shift_ff[5:0])) | ({XLEN + 1{run_state & ~(valid_ff_e1 | shortq_enable_ff)}} & {
                                                                                            ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:333: Operator ASSIGNW expects 65 bits on the Assign RHS, but Assign RHS's OR generates 66 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:333: Operator ASSIGNW expects 33 bits on the Assign RHS, but Assign RHS's OR generates 34 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
   assign q_in = ({XLEN + 1{~run_state}} & {
               ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:346: Operator COND expects 65 bits on the Conditional True, but Conditional True's VARREF 'dividend_comp' generates 64 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:346: Operator COND expects 33 bits on the Conditional True, but Conditional True's VARREF 'dividend_comp' generates 32 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
   assign dividend_eff = (sign_ff & dividend_neg_ff) ? dividend_comp : q_ff;
                                                     ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:346: Operator ASSIGNW expects 64 bits on the Assign RHS, but Assign RHS's COND generates 65 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:346: Operator ASSIGNW expects 32 bits on the Assign RHS, but Assign RHS's COND generates 33 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
   assign dividend_eff = (sign_ff & dividend_neg_ff) ? dividend_comp : q_ff;
                       ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:353: Operator AND expects 66 bits on the LHS, but LHS's REPLICATE generates 65 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:353: Operator AND expects 34 bits on the LHS, but LHS's REPLICATE generates 33 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
   assign a_eff             = ({XLEN+1{ rem_correct                    }} &  a_ff           ) |
                                                                          ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:353: Operator AND expects 66 bits on the RHS, but RHS's VARREF 'a_ff' generates 65 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:353: Operator AND expects 34 bits on the RHS, but RHS's VARREF 'a_ff' generates 33 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
   assign a_eff             = ({XLEN+1{ rem_correct                    }} &  a_ff           ) |
                                                                          ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:354: Operator AND expects 66 bits on the LHS, but LHS's REPLICATE generates 65 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:354: Operator AND expects 34 bits on the LHS, but LHS's REPLICATE generates 33 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
                                     ({XLEN+1{~rem_correct & ~shortq_enable_ff}} & {
                                                                                 ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:356: Operator AND expects 66 bits on the LHS, but LHS's REPLICATE generates 65 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:356: Operator AND expects 34 bits on the LHS, but LHS's REPLICATE generates 33 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
   }) | ({XLEN + 1{~rem_correct & shortq_enable_ff}} & a_eff_shift[2*XLEN:XLEN]);
                                                     ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:356: Operator AND expects 66 bits on the RHS, but RHS's SEL generates 65 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:356: Operator AND expects 34 bits on the RHS, but RHS's SEL generates 33 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
   }) | ({XLEN + 1{~rem_correct & shortq_enable_ff}} & a_eff_shift[2*XLEN:XLEN]);
                                                     ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:353: Operator ASSIGNW expects 65 bits on the Assign RHS, but Assign RHS's OR generates 66 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:353: Operator ASSIGNW expects 33 bits on the Assign RHS, but Assign RHS's OR generates 34 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
   assign a_eff             = ({XLEN+1{ rem_correct                    }} &  a_ff           ) |
                            ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:374: Operator COND expects 65 bits on the Conditional True, but Conditional True's VARREF 'q_ff_comp' generates 64 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:374: Operator COND expects 33 bits on the Conditional True, but Conditional True's VARREF 'q_ff_comp' generates 32 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
   assign q_ff_eff = (sign_ff & (dividend_neg_ff ^ divisor_neg_ff)) ? q_ff_comp : q_ff;
                                                                    ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:374: Operator ASSIGNW expects 64 bits on the Assign RHS, but Assign RHS's COND generates 65 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:374: Operator ASSIGNW expects 32 bits on the Assign RHS, but Assign RHS's COND generates 33 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
   assign q_ff_eff = (sign_ff & (dividend_neg_ff ^ divisor_neg_ff)) ? q_ff_comp : q_ff;
                   ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:376: Operator COND expects 65 bits on the Conditional True, but Conditional True's VARREF 'a_ff_comp' generates 64 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:376: Operator COND expects 33 bits on the Conditional True, but Conditional True's VARREF 'a_ff_comp' generates 32 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
   assign a_ff_eff = (sign_ff & dividend_neg_ff) ? a_ff_comp : a_ff;
                                                 ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:376: Operator ASSIGNW expects 64 bits on the Assign RHS, but Assign RHS's COND generates 65 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_div_ctl.sv:376: Operator ASSIGNW expects 32 bits on the Assign RHS, but Assign RHS's COND generates 33 bits.
                                                                                         : ... In instance tb_top.rvtop.swerv.exu.div_e1
   assign a_ff_eff = (sign_ff & dividend_neg_ff) ? a_ff_comp : a_ff;
                   ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_decode_ctl.sv:1352: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.dec.decode
-  assign i0_immed_d = ({XLEN{i0_dp.imm12}} & {
-                                           ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_decode_ctl.sv:1355: Operator AND expects 64 bits on the RHS, but RHS's SEL generates 6 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:171: Operator ADD expects 65 bits on the RHS, but RHS's REPLICATE generates 33 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  } + {
+    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:175: Operator ADD expects 65 bits on the LHS, but LHS's REPLICATE generates 33 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  } + {
+    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:175: Operator ADD expects 65 bits on the RHS, but RHS's REPLICATE generates 33 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  } + {
+    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:177: Operator ADD expects 65 bits on the RHS, but RHS's REPLICATE generates 33 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  } + {
+    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:167: Operator ASSIGNW expects 33 bits on the Assign RHS, but Assign RHS's COND generates 65 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  assign {cout, aout} = ap.alu_half ? {
+                      ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:201: Operator AND expects 64 bits on the LHS, but LHS's VARREF 'a_ff' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  }) | (a_ff & ~b_ff & {XLEN{logic_sel[2]}}) | (~a_ff & b_ff & {XLEN{logic_sel[1]}})
+             ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:201: Operator NOT expects 64 bits on the LHS, but LHS's VARREF 'b_ff' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  }) | (a_ff & ~b_ff & {XLEN{logic_sel[2]}}) | (~a_ff & b_ff & {XLEN{logic_sel[1]}})
+               ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:201: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  }) | (a_ff & ~b_ff & {XLEN{logic_sel[2]}}) | (~a_ff & b_ff & {XLEN{logic_sel[1]}})
+                     ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:201: Operator NOT expects 64 bits on the LHS, but LHS's VARREF 'a_ff' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  }) | (a_ff & ~b_ff & {XLEN{logic_sel[2]}}) | (~a_ff & b_ff & {XLEN{logic_sel[1]}})
+                                                ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:201: Operator AND expects 64 bits on the RHS, but RHS's VARREF 'b_ff' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  }) | (a_ff & ~b_ff & {XLEN{logic_sel[2]}}) | (~a_ff & b_ff & {XLEN{logic_sel[1]}})
+                                                      ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:201: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  }) | (a_ff & ~b_ff & {XLEN{logic_sel[2]}}) | (~a_ff & b_ff & {XLEN{logic_sel[1]}})
+                                                             ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:202: Operator AND expects 64 bits on the LHS, but LHS's VARREF 'a_ff' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+      : (a_ff & b_ff & {XLEN{logic_sel[3]}}) | (a_ff & ~b_ff & {XLEN{logic_sel[2]}}) | (
+              ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:202: Operator AND expects 64 bits on the RHS, but RHS's VARREF 'b_ff' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+      : (a_ff & b_ff & {XLEN{logic_sel[3]}}) | (a_ff & ~b_ff & {XLEN{logic_sel[2]}}) | (
+              ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:202: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+      : (a_ff & b_ff & {XLEN{logic_sel[3]}}) | (a_ff & ~b_ff & {XLEN{logic_sel[2]}}) | (
+                     ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:202: Operator AND expects 64 bits on the LHS, but LHS's VARREF 'a_ff' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+      : (a_ff & b_ff & {XLEN{logic_sel[3]}}) | (a_ff & ~b_ff & {XLEN{logic_sel[2]}}) | (
+                                                     ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:202: Operator NOT expects 64 bits on the LHS, but LHS's VARREF 'b_ff' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+      : (a_ff & b_ff & {XLEN{logic_sel[3]}}) | (a_ff & ~b_ff & {XLEN{logic_sel[2]}}) | (
+                                                       ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:202: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+      : (a_ff & b_ff & {XLEN{logic_sel[3]}}) | (a_ff & ~b_ff & {XLEN{logic_sel[2]}}) | (
+                                                             ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:203: Operator NOT expects 64 bits on the LHS, but LHS's VARREF 'a_ff' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+      ~a_ff & b_ff & {XLEN{logic_sel[1]}});
+      ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:203: Operator AND expects 64 bits on the RHS, but RHS's VARREF 'b_ff' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+      ~a_ff & b_ff & {XLEN{logic_sel[1]}});
+            ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:203: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+      ~a_ff & b_ff & {XLEN{logic_sel[1]}});
+                   ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:195: Operator ASSIGNW expects 32 bits on the Assign RHS, but Assign RHS's COND generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  assign lout = ap.alu_half ? ({
+              ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:207: Operator SHIFTR expects 64 bits on the LHS, but LHS's VARREF 'a_ff' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  assign ashift =ap.alu_half ? {32'h0, a_ff} >>> b_ff[4:0] : a_ff >>> b_ff[5:0];
+                                                                  ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:207: Operator ASSIGNW expects 32 bits on the Assign RHS, but Assign RHS's COND generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  assign ashift =ap.alu_half ? {32'h0, a_ff} >>> b_ff[4:0] : a_ff >>> b_ff[5:0];
+                ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:213: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  } << b_ff[4:0])) | ({XLEN{ap.srl}} & ({
+                                     ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:215: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  } >> b_ff[4:0])) | ({XLEN{ap.sra}} & ashift) : ({XLEN{ap.sll}} & (a_ff << b_ff[5:0])) |
+                                     ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:215: Operator AND expects 64 bits on the RHS, but RHS's VARREF 'ashift' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  } >> b_ff[4:0])) | ({XLEN{ap.sra}} & ashift) : ({XLEN{ap.sll}} & (a_ff << b_ff[5:0])) |
+                                     ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:215: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  } >> b_ff[4:0])) | ({XLEN{ap.sra}} & ashift) : ({XLEN{ap.sll}} & (a_ff << b_ff[5:0])) |
+                                                                 ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:215: Operator SHIFTL expects 64 bits on the LHS, but LHS's VARREF 'a_ff' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  } >> b_ff[4:0])) | ({XLEN{ap.sra}} & ashift) : ({XLEN{ap.sll}} & (a_ff << b_ff[5:0])) |
+                                                                         ^~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:216: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+      ({XLEN{ap.srl}} & (a_ff >> b_ff[5:0])) | ({XLEN{ap.sra}} & ashift);
+                      ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:216: Operator SHIFTR expects 64 bits on the LHS, but LHS's VARREF 'a_ff' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+      ({XLEN{ap.srl}} & (a_ff >> b_ff[5:0])) | ({XLEN{ap.sra}} & ashift);
+                              ^~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:216: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+      ({XLEN{ap.srl}} & (a_ff >> b_ff[5:0])) | ({XLEN{ap.sra}} & ashift);
+                                                               ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:216: Operator AND expects 64 bits on the RHS, but RHS's VARREF 'ashift' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+      ({XLEN{ap.srl}} & (a_ff >> b_ff[5:0])) | ({XLEN{ap.sra}} & ashift);
+                                                               ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:209: Operator ASSIGNW expects 32 bits on the Assign RHS, but Assign RHS's COND generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  assign sout = ap.alu_half ? ({
+              ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:235: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  assign out = ({XLEN{sel_logic}} & lout) |
+                                  ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:235: Operator AND expects 64 bits on the RHS, but RHS's VARREF 'lout' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  assign out = ({XLEN{sel_logic}} & lout) |
+                                  ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:236: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+                      ({XLEN{sel_shift}} & sout) |
+                                         ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:236: Operator AND expects 64 bits on the RHS, but RHS's VARREF 'sout' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+                      ({XLEN{sel_shift}} & sout) |
+                                         ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:237: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+                      ({XLEN{sel_adder}} & aout) |
+                                         ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:237: Operator AND expects 64 bits on the RHS, but RHS's VARREF 'aout' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+                      ({XLEN{sel_adder}} & aout) |
+                                         ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:238: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+                      ({XLEN{ap.jal | pp_ff.pcall | pp_ff.pja | pp_ff.pret}} & {
+                                                                             ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:238: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+                      ({XLEN{ap.jal | pp_ff.pcall | pp_ff.pja | pp_ff.pret}} & {
+                                                                             ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:241: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+      ({XLEN{ap.csr_write}} & ((ap.csr_imm) ? b_ff : a_ff)) |   
+                            ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:241: Operator COND expects 64 bits on the Conditional True, but Conditional True's VARREF 'b_ff' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+      ({XLEN{ap.csr_write}} & ((ap.csr_imm) ? b_ff : a_ff)) |   
+                                            ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:241: Operator COND expects 64 bits on the Conditional False, but Conditional False's VARREF 'a_ff' generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+      ({XLEN{ap.csr_write}} & ((ap.csr_imm) ? b_ff : a_ff)) |   
+                                            ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:244: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  }) & ({
+     ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu_alu_ctl.sv:235: Operator ASSIGNW expects 32 bits on the Assign RHS, but Assign RHS's OR generates 64 bits.
+                                                                                        : ... In instance tb_top.rvtop.swerv.exu.i1_alu_e4
+  assign out = ({XLEN{sel_logic}} & lout) |
+             ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_gpr_ctl.sv:77: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's CONST '64'h0' generates 64 bits.
+                                                                                       : ... In instance tb_top.rvtop.swerv.dec.arf
+      rd0[XLEN-1:0] = 64'b0;
+                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_gpr_ctl.sv:78: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's CONST '64'h0' generates 64 bits.
+                                                                                       : ... In instance tb_top.rvtop.swerv.dec.arf
+      rd1[XLEN-1:0] = 64'b0;
+                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_gpr_ctl.sv:79: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's CONST '64'h0' generates 64 bits.
+                                                                                       : ... In instance tb_top.rvtop.swerv.dec.arf
+      rd2[XLEN-1:0] = 64'b0;
+                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_gpr_ctl.sv:80: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's CONST '64'h0' generates 64 bits.
+                                                                                       : ... In instance tb_top.rvtop.swerv.dec.arf
+      rd3[XLEN-1:0] = 64'b0;
+                    ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_decode_ctl.sv:1357: Operator AND expects 32 bits on the RHS, but RHS's SEL generates 6 bits.
                                                                                             : ... In instance tb_top.rvtop.swerv.dec.decode
   ({XLEN{i0_dp.shimm5}} & i0[25:20]) | ({32{i0_jalimm20}} & {
                         ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_decode_ctl.sv:1355: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.dec.decode
-  ({XLEN{i0_dp.shimm5}} & i0[25:20]) | ({32{i0_jalimm20}} & {
-                                                          ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_decode_ctl.sv:1355: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.dec.decode
-  ({XLEN{i0_dp.shimm5}} & i0[25:20]) | ({32{i0_jalimm20}} & {
-                                                          ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_decode_ctl.sv:1357: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.dec.decode
-  }) | ({32{i0_uiimm20}} & {
-                         ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_decode_ctl.sv:1357: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.dec.decode
-  }) | ({32{i0_uiimm20}} & {
-                         ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_decode_ctl.sv:1359: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_decode_ctl.sv:1361: Operator AND expects 32 bits on the RHS, but RHS's SEL generates 5 bits.
                                                                                             : ... In instance tb_top.rvtop.swerv.dec.decode
   }) | ({32{i0_csr_write_only_d & i0_dp.csr_imm}} & i0[19:15])
                                                   ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_decode_ctl.sv:1359: Operator AND expects 64 bits on the RHS, but RHS's SEL generates 5 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.dec.decode
-  }) | ({32{i0_csr_write_only_d & i0_dp.csr_imm}} & i0[19:15])
-                                                  ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_decode_ctl.sv:1382: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.dec.decode
-  assign dec_i1_immed_d = ({XLEN{i1_dp.imm12}} & {
-                                               ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_decode_ctl.sv:1384: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_decode_ctl.sv:1386: Operator AND expects 32 bits on the RHS, but RHS's SEL generates 6 bits.
                                                                                             : ... In instance tb_top.rvtop.swerv.dec.decode
   }) | ({32{i1_dp.shimm5}} & i1[25:20]) | ({32{i1_jalimm20}} & {
                            ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_decode_ctl.sv:1384: Operator AND expects 64 bits on the RHS, but RHS's SEL generates 6 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.dec.decode
-  }) | ({32{i1_dp.shimm5}} & i1[25:20]) | ({32{i1_jalimm20}} & {
-                           ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_decode_ctl.sv:1384: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.dec.decode
-  }) | ({32{i1_dp.shimm5}} & i1[25:20]) | ({32{i1_jalimm20}} & {
-                                                             ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_decode_ctl.sv:1384: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.dec.decode
-  }) | ({32{i1_dp.shimm5}} & i1[25:20]) | ({32{i1_jalimm20}} & {
-                                                             ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_decode_ctl.sv:1386: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.dec.decode
-  }) | ({32{i1_uiimm20}} & {
-                         ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dec/dec_decode_ctl.sv:1386: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
-                                                                                            : ... In instance tb_top.rvtop.swerv.dec.decode
-  }) | ({32{i1_uiimm20}} & {
-                         ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu.sv:283: Input port connection 'dma_mem_wdata' expects 128 bits on the pin connection, but pin connection's VARREF 'dma_mem_wdata' generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.lsu
+  lsu_lsc_ctl lsu_lsc_ctl (.*);
+              ^~~~~~~~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu.sv:335: Output port connection 'dccm_data_ecc_hi_dc3' expects 7 bits on the pin connection, but pin connection's VARREF 'dccm_data_ecc_hi_dc3' generates 8 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.lsu
+  lsu_dccm_ctl dccm_ctl (
+               ^~~~~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu.sv:335: Output port connection 'dccm_data_ecc_lo_dc3' expects 7 bits on the pin connection, but pin connection's VARREF 'dccm_data_ecc_lo_dc3' generates 8 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.lsu
+  lsu_dccm_ctl dccm_ctl (
+               ^~~~~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu.sv:353: Input port connection 'dccm_data_ecc_hi_dc3' expects 7 bits on the pin connection, but pin connection's VARREF 'dccm_data_ecc_hi_dc3' generates 8 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.lsu
+  lsu_ecc ecc (
+          ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/lsu/lsu.sv:353: Input port connection 'dccm_data_ecc_lo_dc3' expects 7 bits on the pin connection, but pin connection's VARREF 'dccm_data_ecc_lo_dc3' generates 8 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.lsu
+  lsu_ecc ecc (
+          ^~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:280: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+   assign i0_rs1_d[XLEN-1:0] = ({XLEN{~dec_i0_rs1_bypass_en_d}} & ((dec_debug_wdata_rs1_d) ? {XLEN-32'h0, dbg_cmd_wrdata[31:0]} : gpr_i0_rs1_d[XLEN-1:0])) |
+                                                                ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:280: Operator COND expects 64 bits on the Conditional False, but Conditional False's SEL generates 32 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+   assign i0_rs1_d[XLEN-1:0] = ({XLEN{~dec_i0_rs1_bypass_en_d}} & ((dec_debug_wdata_rs1_d) ? {XLEN-32'h0, dbg_cmd_wrdata[31:0]} : gpr_i0_rs1_d[XLEN-1:0])) |
+                                                                                           ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:281: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                           ({XLEN{~dec_i0_rs1_bypass_en_d   & dec_i0_select_pc_d}} & { dec_i0_pc_d[31:1], 1'b0}) |     
+                                                                                   ^
 %Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:281: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
                                                                                 : ... In instance tb_top.rvtop.swerv.exu
                            ({XLEN{~dec_i0_rs1_bypass_en_d   & dec_i0_select_pc_d}} & { dec_i0_pc_d[31:1], 1'b0}) |     
                                                                                    ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:292: Operator AND expects 64 bits on the RHS, but RHS's REPLICATE generates 32 bits.
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:282: Operator AND expects 64 bits on the LHS, but LHS's REPLICATE generates 32 bits.
                                                                                 : ... In instance tb_top.rvtop.swerv.exu
-                                 ({XLEN{~dec_i1_rs1_bypass_en_d   & dec_i1_select_pc_d}} & { dec_i1_pc_d[31:1], 1'b0}) |   
-                                                                                         ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/mem.sv:106: Input port connection 'dccm_wr_data' expects 71 bits on the pin connection, but pin connection's VARREF 'dccm_wr_data' generates 39 bits.
-                                                                            : ... In instance tb_top.rvtop.mem
-      lsu_dccm_mem dccm (
-                   ^~~~
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/mem.sv:106: Output port connection 'dccm_rd_data_lo' expects 71 bits on the pin connection, but pin connection's VARREF 'dccm_rd_data_lo' generates 39 bits.
-                                                                            : ... In instance tb_top.rvtop.mem
-      lsu_dccm_mem dccm (
-                   ^~~~
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/mem.sv:106: Output port connection 'dccm_rd_data_hi' expects 71 bits on the pin connection, but pin connection's VARREF 'dccm_rd_data_hi' generates 39 bits.
-                                                                            : ... In instance tb_top.rvtop.mem
-      lsu_dccm_mem dccm (
-                   ^~~~
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv_wrapper.sv:405: Input port connection 'dccm_rd_data_lo' expects 39 bits on the pin connection, but pin connection's VARREF 'dccm_rd_data_lo' generates 71 bits.
-                                                                                      : ... In instance tb_top.rvtop
-  swerv swerv (.*);
-        ^~~~~
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv_wrapper.sv:405: Input port connection 'dccm_rd_data_hi' expects 39 bits on the pin connection, but pin connection's VARREF 'dccm_rd_data_hi' generates 71 bits.
-                                                                                      : ... In instance tb_top.rvtop
-  swerv swerv (.*);
-        ^~~~~
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv_wrapper.sv:408: Input port connection 'dccm_wr_data' expects 39 bits on the pin connection, but pin connection's VARREF 'dccm_wr_data' generates 71 bits.
-                                                                                      : ... In instance tb_top.rvtop
-  mem mem (
-      ^~~
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv_wrapper.sv:408: Output port connection 'dccm_rd_data_lo' expects 39 bits on the pin connection, but pin connection's VARREF 'dccm_rd_data_lo' generates 71 bits.
-                                                                                      : ... In instance tb_top.rvtop
-  mem mem (
-      ^~~
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv_wrapper.sv:408: Output port connection 'dccm_rd_data_hi' expects 39 bits on the pin connection, but pin connection's VARREF 'dccm_rd_data_hi' generates 71 bits.
-                                                                                      : ... In instance tb_top.rvtop
-  mem mem (
-      ^~~
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/testbench/tb_top.sv:360: Operator PATMEMBER expects 32 bits on the Pattern value, but Pattern value's VARXREF 'dec_i1_wdata_wb' generates 64 bits.
-                                                                                  : ... In instance tb_top
-        wb_data[1:0]   <= '{rvtop.swerv.dec.dec_i1_wdata_wb, rvtop.swerv.dec.dec_i0_wdata_wb};
-                                           ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/testbench/tb_top.sv:360: Operator PATMEMBER expects 32 bits on the Pattern value, but Pattern value's VARXREF 'dec_i0_wdata_wb' generates 64 bits.
-                                                                                  : ... In instance tb_top
-        wb_data[1:0]   <= '{rvtop.swerv.dec.dec_i1_wdata_wb, rvtop.swerv.dec.dec_i0_wdata_wb};
-                                                                            ^
-%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/testbench/tb_top.sv:379: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARXREF 'lsu_nonblock_load_data' generates 64 bits.
-                                                                                  : ... In instance tb_top
-            tb_top.gpr[0][rvtop.swerv.dec.dec_nonblock_load_waddr] = rvtop.swerv.dec.lsu_nonblock_load_data;
-                                                                   ^
-%Error: Exiting due to 88 warning(s)
+                           ({XLEN{ dec_i0_rs1_bypass_en_d}} & i0_rs1_bypass_data_d[XLEN-1:0]);
+                                                            ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:282: Operator AND expects 64 bits on the RHS, but RHS's SEL generates 32 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+                           ({XLEN{ dec_i0_rs1_bypass_en_d}} & i0_rs1_bypass_data_d[XLEN-1:0]);
+                                                            ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/exu/exu.sv:280: Operator ASSIGNW expects 32 bits on the Assign RHS, but Assign RHS's OR generates 64 bits.
+                                                                                : ... In instance tb_top.rvtop.swerv.exu
+   assign i0_rs1_d[XLEN-1:0] = ({XLEN{~dec_i0_rs1_bypass_en_d}} & ((dec_debug_wdata_rs1_d) ? {XLEN-32'h0, dbg_cmd_wrdata[31:0]} : gpr_i0_rs1_d[XLEN-1:0])) |
+                             ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dma_ctrl.sv:264: Operator COND expects 128 bits on the Conditional True, but Conditional True's REPLICATE generates 64 bits.
+                                                                                 : ... In instance tb_top.rvtop.swerv.dma_ctrl
+      assign fifo_data_in[i]   = (fifo_error_en[i] & (|fifo_error_in[i])) ? (fifo_cmd_en[i] ? {32'b0,axi_mstr_addr[31:0]} : {32'b0,fifo_addr[i]}) :
+                                                                                            ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dma_ctrl.sv:264: Operator COND expects 128 bits on the Conditional False, but Conditional False's REPLICATE generates 64 bits.
+                                                                                 : ... In instance tb_top.rvtop.swerv.dma_ctrl
+      assign fifo_data_in[i]   = (fifo_error_en[i] & (|fifo_error_in[i])) ? (fifo_cmd_en[i] ? {32'b0,axi_mstr_addr[31:0]} : {32'b0,fifo_addr[i]}) :
+                                                                                            ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dma_ctrl.sv:265: Operator COND expects 128 bits on the Conditional True, but Conditional True's SEL generates 64 bits.
+                                                                                 : ... In instance tb_top.rvtop.swerv.dma_ctrl
+                                                                            ((dccm_dma_rvalid & (i == RdPtr_Q3[DEPTH_PTR-1:0]))  ? dccm_dma_rdata[63:0] : (iccm_dma_rvalid & (i == RdPtr_Q2[DEPTH_PTR-1:0])) ? iccm_dma_rdata[63:0] :
+                                                                                                                                 ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dma_ctrl.sv:265: Operator COND expects 128 bits on the Conditional True, but Conditional True's SEL generates 64 bits.
+                                                                                 : ... In instance tb_top.rvtop.swerv.dma_ctrl
+                                                                            ((dccm_dma_rvalid & (i == RdPtr_Q3[DEPTH_PTR-1:0]))  ? dccm_dma_rdata[63:0] : (iccm_dma_rvalid & (i == RdPtr_Q2[DEPTH_PTR-1:0])) ? iccm_dma_rdata[63:0] :
+                                                                                                                                                                                                             ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dma_ctrl.sv:266: Operator COND expects 128 bits on the Conditional True, but Conditional True's REPLICATE generates 64 bits.
+                                                                                 : ... In instance tb_top.rvtop.swerv.dma_ctrl
+                                                                                                                                                       (dbg_cmd_valid ? {2{dma_dbg_mem_wrdata[31:0]}} : axi_mstr_wdata[63:0]));
+                                                                                                                                                                      ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dma_ctrl.sv:266: Operator COND expects 128 bits on the Conditional False, but Conditional False's SEL generates 64 bits.
+                                                                                 : ... In instance tb_top.rvtop.swerv.dma_ctrl
+                                                                                                                                                       (dbg_cmd_valid ? {2{dma_dbg_mem_wrdata[31:0]}} : axi_mstr_wdata[63:0]));
+                                                                                                                                                                      ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/dma_ctrl.sv:325: Bit extraction of var[15:0] requires 4 bit index, not 3 bits.
+                                                                                 : ... In instance tb_top.rvtop.swerv.dma_ctrl
+                                 (axi_mstr_write & (axi_mstr_size[2:0] == 3'h2) & (axi_mstr_wstrb[axi_mstr_addr[2:0]+:4] != 4'hf))          |     
+                                                                                                 ^
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv.sv:1011: Input port connection 'dma_mem_wdata' expects 64 bits on the pin connection, but pin connection's VARREF 'dma_mem_wdata' generates 128 bits.
+                                                                               : ... In instance tb_top.rvtop.swerv
+      .dma_mem_wdata(dma_mem_wdata),
+       ^~~~~~~~~~~~~
+%Warning-WIDTH: /home/marco/LuminousComputing/SweRV-golden/design/swerv.sv:1012: Output port connection 'dccm_dma_rdata' expects 64 bits on the pin connection, but pin connection's VARREF 'dccm_dma_rdata' generates 128 bits.
+                                                                               : ... In instance tb_top.rvtop.swerv
+      .dccm_dma_rdata(dccm_dma_rdata),
+       ^~~~~~~~~~~~~~
+%Error: Exiting due to 5 error(s), 209 warning(s)
 make: *** [tools/Makefile:98: verilator-build] Error 1

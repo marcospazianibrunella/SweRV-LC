@@ -74,8 +74,8 @@ module dbg (
 
    output logic                        sb_axi_wvalid,
    input  logic                        sb_axi_wready,
-   output logic [63:0]                 sb_axi_wdata,
-   output logic [7:0]                  sb_axi_wstrb,
+   output logic [127:0]                 sb_axi_wdata,
+   output logic [15:0]                  sb_axi_wstrb,
    output logic                        sb_axi_wlast,
 
    input  logic                        sb_axi_bvalid,
@@ -100,7 +100,7 @@ module dbg (
    input  logic                        sb_axi_rvalid,
    output logic                        sb_axi_rready,
    input  logic [`RV_SB_BUS_TAG-1:0]   sb_axi_rid,
-   input  logic [63:0]                 sb_axi_rdata,
+   input  logic [127:0]                 sb_axi_rdata,
    input  logic [1:0]                  sb_axi_rresp,
    input  logic                        sb_axi_rlast,
 

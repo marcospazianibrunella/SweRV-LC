@@ -113,7 +113,7 @@ module lsu_bus_buffer
 
     output logic [`RV_DCCM_BYTE_WIDTH-1:0] ld_byte_hit_buf_lo,
     ld_byte_hit_buf_hi,  // Byte enables for forwarding data
-    output logic [`RV_DCCM_DATA_WIDTH-1:0] ld_fwddata_buf_lo,
+    output logic [DCCM_DATA_WIDTH-1:0] ld_fwddata_buf_lo,
     ld_fwddata_buf_hi,  // load forwarding data
 
     output logic        lsu_imprecise_error_load_any,   // imprecise load bus error
@@ -154,7 +154,7 @@ module lsu_bus_buffer
     output logic        lsu_axi_wvalid,
     input  logic        lsu_axi_wready,
     output logic [127:0] lsu_axi_wdata,
-    output logic [ 7:0] lsu_axi_wstrb,
+    output logic [ 15:0] lsu_axi_wstrb,
     output logic        lsu_axi_wlast,
 
     input  logic                       lsu_axi_bvalid,
@@ -421,6 +421,7 @@ module lsu_bus_buffer
       {8{ld_byte_ibuf_hit_lo[1]}},
       {8{ld_byte_ibuf_hit_lo[0]}}
     } & ibuf_data[31:0];
+    
     ld_fwddata_buf_lo[63:32] = {
       {8{ld_byte_ibuf_hit_lo[7]}},
       {8{ld_byte_ibuf_hit_lo[6]}},
@@ -1432,9 +1433,8 @@ module lsu_bus_buffer
   assign lsu_axi_awlock = '0;
 
   assign lsu_axi_wvalid = obuf_valid & obuf_write & ~obuf_data_done & ~bus_addr_match_pending;
-  assign lsu_axi_wstrb[7:0] = obuf_byteen[7:0] & {8{obuf_write}};
-  assign lsu_axi_wdata[63:0] = obuf_data[63:0];
-  assign lsu_axi_wdata[127:64] = '0;
+  assign lsu_axi_wstrb = obuf_byteen & {16{obuf_write}};
+  assign lsu_axi_wdata = obuf_data;
   assign lsu_axi_wlast = '1;
 
   assign lsu_axi_arvalid = obuf_valid & ~obuf_write & ~bus_addr_match_pending;

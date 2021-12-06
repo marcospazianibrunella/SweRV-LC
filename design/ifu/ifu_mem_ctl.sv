@@ -73,11 +73,11 @@ module ifu_mem_ctl
     output logic [                2:0] ifu_axi_awprot,
     output logic [                3:0] ifu_axi_awqos,
 
-    output logic        ifu_axi_wvalid,
-    input  logic        ifu_axi_wready,
-    output logic [63:0] ifu_axi_wdata,
-    output logic [ 7:0] ifu_axi_wstrb,
-    output logic        ifu_axi_wlast,
+    output logic         ifu_axi_wvalid,
+    input  logic         ifu_axi_wready,
+    output logic [127:0] ifu_axi_wdata,
+    output logic [ 15:0] ifu_axi_wstrb,
+    output logic         ifu_axi_wlast,
 
     input  logic                       ifu_axi_bvalid,
     output logic                       ifu_axi_bready,
@@ -101,7 +101,7 @@ module ifu_mem_ctl
     input  logic                       ifu_axi_rvalid,
     output logic                       ifu_axi_rready,
     input  logic [`RV_IFU_BUS_TAG-1:0] ifu_axi_rid,
-    input  logic [               63:0] ifu_axi_rdata,
+    input  logic [              127:0] ifu_axi_rdata,
     input  logic [                1:0] ifu_axi_rresp,
     input  logic                       ifu_axi_rlast,
 
@@ -113,7 +113,7 @@ module ifu_mem_ctl
     input logic [31:0] dma_mem_addr,   //  dma address
     input logic [ 2:0] dma_mem_sz,     //  size
     input logic        dma_mem_write,  //  write
-    input logic [63:0] dma_mem_wdata,  //  write data
+    input logic [127:0] dma_mem_wdata,  //  write data
 
     output logic        iccm_dma_ecc_error,  //   Data read from iccm has an ecc error
     output logic        iccm_dma_rvalid,     //   Data read from iccm is valid
@@ -217,12 +217,12 @@ module ifu_mem_ctl
 
   logic        ifu_wr_en_new;
   logic        ifu_wr_en_new_q;
-  logic [63:0] ifu_wr_data_new;
+  logic [127:0] ifu_wr_data_new;
 
   logic        axi_ifu_wr_en_new;
   logic        axi_ifu_wr_en_new_q;
   logic        axi_ifu_wr_en_new_wo_err;
-  logic [63:0] axi_ifu_wr_data_new;
+  logic [127:0] axi_ifu_wr_data_new;
   logic [ 3:0] axi_ic_wr_en;
 
   logic        reset_tag_valid_for_miss;
@@ -362,8 +362,8 @@ module ifu_mem_ctl
   assign ifu_axi_awlock = '0;
   // AXI Write Data Channel
   assign ifu_axi_wvalid = '0;
-  assign ifu_axi_wdata[63:0] = '0;
-  assign ifu_axi_wstrb[7:0] = '0;
+  assign ifu_axi_wdata[127:0] = '0;
+  assign ifu_axi_wstrb[15:0] = '0;
   assign ifu_axi_wlast = '1;
   // AXI Write Response Channel
   assign ifu_axi_bready = '1;
@@ -1228,7 +1228,7 @@ module ifu_mem_ctl
   logic        ifu_axi_arready_unq_ff;
   logic        ifu_axi_arvalid_ff;
   logic        ifu_axi_arready_ff;
-  logic [63:0] ifu_axi_rdata_ff;
+  logic [127:0] ifu_axi_rdata_ff;
   logic [ 1:0] ifu_axi_rresp_ff;
 
   logic        axi_w0_wren;
@@ -1367,13 +1367,13 @@ module ifu_mem_ctl
       .din(ifu_axi_rid[IFU_BUS_TAG-1:0]),
       .dout(ifu_axi_rid_ff[IFU_BUS_TAG-1:0])
   );
-  rvdff_fpga #(64) axi_data_ff (
+  rvdff_fpga #(128) axi_data_ff (
       .*,
       .clk(axiclk),
       .clken(axi_ifu_bus_clk_en),
       .rawclk(clk),
-      .din(ifu_axi_rdata[63:0]),
-      .dout(ifu_axi_rdata_ff[63:0])
+      .din(ifu_axi_rdata[127:0]),
+      .dout(ifu_axi_rdata_ff[127:0])
   );
 
 
@@ -1446,7 +1446,7 @@ module ifu_mem_ctl
   assign axi_ifu_wr_en_new = ifu_axi_rvalid_ff & miss_pending;
   assign  axi_ifu_wr_en_new_q       =  ifu_axi_rvalid_ff  & miss_pending & ~uncacheable_miss_ff & ~(|ifu_axi_rresp_ff[1:0]); // qualify with no-error conditions ;
   assign axi_ifu_wr_en_new_wo_err = ifu_axi_rvalid_ff & miss_pending & ~uncacheable_miss_ff;
-  assign axi_ifu_wr_data_new[63:0] = ifu_axi_rdata_ff[63:0];
+  assign axi_ifu_wr_data_new[127:0] = ifu_axi_rdata_ff[127:0];
 
   assign axi_w0_wren = axi_ifu_wr_en_new_q & (replace_way_mb_any[3:0] == 4'b0001) & miss_pending;
   assign axi_w1_wren = axi_ifu_wr_en_new_q & (replace_way_mb_any[3:0] == 4'b0010) & miss_pending;
@@ -1500,7 +1500,7 @@ module ifu_mem_ctl
   //         logic  ic_dma_active_in;
   logic        iccm_dma_ecc_error_in;
   logic [13:0] dma_mem_ecc;
-  logic [1:0] dma_mem_ecc_nc;
+  logic [ 1:0] dma_mem_ecc_nc;
   logic [63:0] iccm_dma_rdata_in;
 
   //         assign ic_dma_active_in   =  ifc_dma_access_q_ok & dma_iccm_req ;
@@ -1516,8 +1516,8 @@ module ifu_mem_ctl
 
   rvecc_encode iccm_ecc_encode1 (
       .din({32'h0, dma_mem_wdata[63:32]}),
-      .ecc_out({dma_mem_ecc_nc[1],dma_mem_ecc[13:7]})
-      
+      .ecc_out({dma_mem_ecc_nc[1], dma_mem_ecc[13:7]})
+
   );
 
   assign iccm_wr_data[38:0]  =  (iccm_correct_ecc & ~(ifc_dma_access_q_ok & dma_iccm_req)) ?  iccm_ecc_corr_data_ff[38:0] :

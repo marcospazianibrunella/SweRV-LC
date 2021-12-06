@@ -125,8 +125,8 @@ module tb_top;
 
     wire                        lsu_axi_wvalid;
     wire                        lsu_axi_wready;
-    wire [63:0]                 lsu_axi_wdata;
-    wire [7:0]                  lsu_axi_wstrb;
+    wire [127:0]                 lsu_axi_wdata;
+    wire [15:0]                  lsu_axi_wstrb;
     wire                        lsu_axi_wlast;
 
     wire                        lsu_axi_bvalid;
@@ -151,7 +151,7 @@ module tb_top;
     wire                        lsu_axi_rvalid;
     wire                        lsu_axi_rready;
     wire [`RV_LSU_BUS_TAG-1:0]  lsu_axi_rid;
-    wire [63:0]                 lsu_axi_rdata;
+    wire [127:0]                 lsu_axi_rdata;
     wire [1:0]                  lsu_axi_rresp;
     wire                        lsu_axi_rlast;
 
@@ -172,8 +172,8 @@ module tb_top;
 
     wire                        ifu_axi_wvalid;
     wire                        ifu_axi_wready;
-    wire [63:0]                 ifu_axi_wdata;
-    wire [7:0]                  ifu_axi_wstrb;
+    wire [127:0]                 ifu_axi_wdata;
+    wire [15:0]                  ifu_axi_wstrb;
     wire                        ifu_axi_wlast;
 
     wire                        ifu_axi_bvalid;
@@ -198,7 +198,7 @@ module tb_top;
     wire                        ifu_axi_rvalid;
     wire                        ifu_axi_rready;
     wire [`RV_IFU_BUS_TAG-1:0]  ifu_axi_rid;
-    wire [63:0]                 ifu_axi_rdata;
+    wire [127:0]                 ifu_axi_rdata;
     wire [1:0]                  ifu_axi_rresp;
     wire                        ifu_axi_rlast;
 
@@ -219,8 +219,8 @@ module tb_top;
 
     wire                        sb_axi_wvalid;
     wire                        sb_axi_wready;
-    wire [63:0]                 sb_axi_wdata;
-    wire [7:0]                  sb_axi_wstrb;
+    wire [127:0]                 sb_axi_wdata;
+    wire [15:0]                  sb_axi_wstrb;
     wire                        sb_axi_wlast;
 
     wire                        sb_axi_bvalid;
@@ -245,7 +245,7 @@ module tb_top;
     wire                        sb_axi_rvalid;
     wire                        sb_axi_rready;
     wire [`RV_SB_BUS_TAG-1:0]   sb_axi_rid;
-    wire [63:0]                 sb_axi_rdata;
+    wire [127:0]                 sb_axi_rdata;
     wire [1:0]                  sb_axi_rresp;
     wire                        sb_axi_rlast;
 
@@ -263,8 +263,8 @@ module tb_top;
 
     wire                        dma_axi_wvalid;
     wire                        dma_axi_wready;
-    wire [63:0]                 dma_axi_wdata;
-    wire [7:0]                  dma_axi_wstrb;
+    wire [127:0]                 dma_axi_wdata;
+    wire [15:0]                  dma_axi_wstrb;
     wire                        dma_axi_wlast;
 
     wire                        dma_axi_bvalid;
@@ -285,7 +285,7 @@ module tb_top;
     wire                        dma_axi_rvalid;
     wire                        dma_axi_rready;
     wire [`RV_DMA_BUS_TAG-1:0]  dma_axi_rid;
-    wire [63:0]                 dma_axi_rdata;
+    wire [127:0]                 dma_axi_rdata;
     wire [1:0]                  dma_axi_rresp;
     wire                        dma_axi_rlast;
 
@@ -295,7 +295,7 @@ module tb_top;
     wire                        lmem_axi_rvalid;
     wire [`RV_LSU_BUS_TAG-1:0]  lmem_axi_rid;
     wire [1:0]                  lmem_axi_rresp;
-    wire [63:0]                 lmem_axi_rdata;
+    wire [127:0]                 lmem_axi_rdata;
     wire                        lmem_axi_rlast;
     wire                        lmem_axi_rready;
 
@@ -312,7 +312,7 @@ module tb_top;
 
 
 `endif
-    wire[63:0]                  WriteData;
+    wire[127:0]                  WriteData;
     string                      abi_reg[32]; // ABI register names
 
 `define DEC rvtop.swerv.dec

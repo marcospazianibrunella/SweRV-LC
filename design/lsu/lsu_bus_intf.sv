@@ -142,7 +142,7 @@ module lsu_bus_intf
     output logic        lsu_axi_wvalid,
     input  logic        lsu_axi_wready,
     output logic [127:0] lsu_axi_wdata,
-    output logic [ 7:0] lsu_axi_wstrb,
+    output logic [ 15:0] lsu_axi_wstrb,
     output logic        lsu_axi_wlast,
 
     input  logic                       lsu_axi_bvalid,

@@ -70,11 +70,11 @@ module ifu
     output logic [                2:0] ifu_axi_awprot,
     output logic [                3:0] ifu_axi_awqos,
 
-    output logic        ifu_axi_wvalid,
-    input  logic        ifu_axi_wready,
-    output logic [63:0] ifu_axi_wdata,
-    output logic [ 7:0] ifu_axi_wstrb,
-    output logic        ifu_axi_wlast,
+    output logic         ifu_axi_wvalid,
+    input  logic         ifu_axi_wready,
+    output logic [127:0] ifu_axi_wdata,
+    output logic [ 15:0] ifu_axi_wstrb,
+    output logic         ifu_axi_wlast,
 
     input  logic                       ifu_axi_bvalid,
     output logic                       ifu_axi_bready,
@@ -98,7 +98,7 @@ module ifu
     input  logic                       ifu_axi_rvalid,
     output logic                       ifu_axi_rready,
     input  logic [`RV_IFU_BUS_TAG-1:0] ifu_axi_rid,
-    input  logic [               63:0] ifu_axi_rdata,
+    input  logic [              127:0] ifu_axi_rdata,
     input  logic [                1:0] ifu_axi_rresp,
     input  logic                       ifu_axi_rlast,
 
@@ -107,12 +107,12 @@ module ifu
     input logic ifu_bus_clk_en,
 
 
-    input logic        dma_iccm_req,
-    input logic        dma_iccm_stall_any,
-    input logic [31:0] dma_mem_addr,
-    input logic [ 2:0] dma_mem_sz,
-    input logic        dma_mem_write,
-    input logic [63:0] dma_mem_wdata,
+    input logic         dma_iccm_req,
+    input logic         dma_iccm_stall_any,
+    input logic [ 31:0] dma_mem_addr,
+    input logic [  2:0] dma_mem_sz,
+    input logic         dma_mem_write,
+    input logic [127:0] dma_mem_wdata,
 
     output logic        iccm_dma_ecc_error,
     output logic        iccm_dma_rvalid,
