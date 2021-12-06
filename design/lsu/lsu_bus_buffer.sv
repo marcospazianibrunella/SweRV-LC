@@ -1439,7 +1439,7 @@ module lsu_bus_buffer
 
   assign lsu_axi_arvalid = obuf_valid & ~obuf_write & ~bus_addr_match_pending;
   assign lsu_axi_arid[LSU_BUS_TAG-1:0] = LSU_BUS_TAG'(obuf_tag0);
-  assign lsu_axi_araddr[31:0] = obuf_sideeffect ? obuf_addr[31:0] : {obuf_addr[31:3], 3'b0};
+  assign lsu_axi_araddr[31:0] = obuf_sideeffect ? obuf_addr[31:0] : {obuf_addr[31:4], 4'b0};
   assign lsu_axi_arsize[2:0] = obuf_sideeffect ? obuf_sz[2:0] : 3'b011;
   assign lsu_axi_arprot[2:0] = '0;
   assign lsu_axi_arcache[3:0] = obuf_sideeffect ? 4'b0 : 4'b1111;
