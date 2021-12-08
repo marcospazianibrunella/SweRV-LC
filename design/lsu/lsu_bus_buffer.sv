@@ -151,11 +151,11 @@ module lsu_bus_buffer
     output logic [                2:0] lsu_axi_awprot,
     output logic [                3:0] lsu_axi_awqos,
 
-    output logic        lsu_axi_wvalid,
-    input  logic        lsu_axi_wready,
+    output logic         lsu_axi_wvalid,
+    input  logic         lsu_axi_wready,
     output logic [127:0] lsu_axi_wdata,
     output logic [ 15:0] lsu_axi_wstrb,
-    output logic        lsu_axi_wlast,
+    output logic         lsu_axi_wlast,
 
     input  logic                       lsu_axi_bvalid,
     output logic                       lsu_axi_bready,
@@ -179,7 +179,7 @@ module lsu_bus_buffer
     input  logic                       lsu_axi_rvalid,
     output logic                       lsu_axi_rready,
     input  logic [`RV_LSU_BUS_TAG-1:0] lsu_axi_rid,
-    input  logic [               127:0] lsu_axi_rdata,
+    input  logic [              127:0] lsu_axi_rdata,
     input  logic [                1:0] lsu_axi_rresp,
     input  logic                       lsu_axi_rlast,
 
@@ -214,8 +214,8 @@ module lsu_bus_buffer
   logic ld_addr_ibuf_hit_lo, ld_addr_ibuf_hit_hi;
   logic [`RV_DCCM_BYTE_WIDTH-1:0] ld_byte_ibuf_hit_lo, ld_byte_ibuf_hit_hi;
 
-  logic [  `RV_DCCM_BYTE_WIDTH-1:0] ldst_byteen_dc5;
-//  logic [`RV_DCCM_BYTE_WIDTH*2-1:0] ldst_byteen_ext_dc5;
+  logic [`RV_DCCM_BYTE_WIDTH-1:0] ldst_byteen_dc5;
+  //  logic [`RV_DCCM_BYTE_WIDTH*2-1:0] ldst_byteen_ext_dc5;
   logic [`RV_DCCM_BYTE_WIDTH-1:0] ldst_byteen_hi_dc5, ldst_byteen_lo_dc5;
   logic [`RV_DCCM_DATA_WIDTH-1:0] store_data_hi_dc5, store_data_lo_dc5;
   logic ldst_samedw_dc5;
@@ -231,7 +231,7 @@ module lsu_bus_buffer
   logic lsu_nonblock_unsign, lsu_nonblock_dual;
   logic                           dec_nonblock_load_freeze_dc3;
   logic                           ld_precise_bus_error;
- // logic [         DEPTH_LOG2-1:0] lsu_imprecise_error_load_tag;
+  // logic [         DEPTH_LOG2-1:0] lsu_imprecise_error_load_tag;
   logic [`RV_DCCM_DATA_WIDTH-1:0] ld_block_bus_data;
 
   logic [DEPTH-1:0] CmdPtr0Dec, CmdPtr1Dec;
@@ -421,7 +421,7 @@ module lsu_bus_buffer
       {8{ld_byte_ibuf_hit_lo[1]}},
       {8{ld_byte_ibuf_hit_lo[0]}}
     } & ibuf_data[31:0];
-    
+
     ld_fwddata_buf_lo[63:32] = {
       {8{ld_byte_ibuf_hit_lo[7]}},
       {8{ld_byte_ibuf_hit_lo[6]}},
@@ -1345,7 +1345,7 @@ module lsu_bus_buffer
     end
   end
 
-  assign lsu_nonblock_addr_offset[1:0] = buf_addr[lsu_nonblock_load_data_tag][1:0];
+  assign lsu_nonblock_addr_offset[2:0] = buf_addr[lsu_nonblock_load_data_tag][2:0];
   assign lsu_nonblock_sz[2:0] = buf_sz[lsu_nonblock_load_data_tag][2:0];
   assign lsu_nonblock_unsign = buf_unsign[lsu_nonblock_load_data_tag];
   assign lsu_nonblock_dual = buf_dual[lsu_nonblock_load_data_tag];
@@ -1358,7 +1358,6 @@ module lsu_bus_buffer
   assign lsu_nonblock_load_data_valid = lsu_nonblock_load_data_valid_lo & (~lsu_nonblock_dual | lsu_nonblock_load_data_valid_hi);
   assign lsu_nonblock_load_data_error = lsu_nonblock_load_data_error_lo | (lsu_nonblock_dual & lsu_nonblock_load_data_error_hi);
 
-  /* Check Here */
   assign lsu_nonblock_load_data = ({64{lsu_nonblock_unsign & (lsu_nonblock_sz[2:0] == 3'b000)}} & {
     56'b0, lsu_nonblock_data_unalgn[7:0]
   }) | ({64{lsu_nonblock_unsign & (lsu_nonblock_sz[2:0] == 3'b001)}} & {
@@ -1370,7 +1369,7 @@ module lsu_bus_buffer
   }) | ({64{~lsu_nonblock_unsign & (lsu_nonblock_sz[2:0] == 3'b001)}} & {
     {48{lsu_nonblock_data_unalgn[15]}}, lsu_nonblock_data_unalgn[15:0]
   }) | ({64{~lsu_nonblock_unsign & (lsu_nonblock_sz[2:0] == 3'b010)}} & {
-    {32{lsu_nonblock_data_unalgn[31]}}, lsu_nonblock_data_unalgn[32:0]
+    {32{lsu_nonblock_data_unalgn[31]}}, lsu_nonblock_data_unalgn[31:0]
   }) | ({64{(lsu_nonblock_sz[2:0] == 3'b100)}} & lsu_nonblock_data_unalgn[63:0]);
 
   // Determine if there is a pending return to sideeffect load/store
@@ -1418,12 +1417,12 @@ module lsu_bus_buffer
   assign bus_rsp_write_error = bus_rsp_write & (lsu_axi_bresp_q[1:0] != 2'b0);
   assign bus_rsp_read_error = bus_rsp_read & (lsu_axi_rresp_q[1:0] != 2'b0);
   assign bus_rsp_rdata = lsu_axi_rdata_q;
-  
+
   // AXI command signals
   assign lsu_axi_awvalid = obuf_valid & obuf_write & ~obuf_cmd_done & ~bus_addr_match_pending;
   assign lsu_axi_awid[LSU_BUS_TAG-1:0] = LSU_BUS_TAG'(obuf_tag0);
-  assign lsu_axi_awaddr[31:0] = obuf_sideeffect ? obuf_addr[31:0] : {obuf_addr[31:3], 3'b0};
-  assign lsu_axi_awsize[2:0] = obuf_sideeffect ? obuf_sz[2:0] : 3'b011;
+  assign lsu_axi_awaddr[31:0] = obuf_sideeffect ? obuf_addr[31:0] : {obuf_addr[31:4], 4'b0};
+  assign lsu_axi_awsize[2:0] = obuf_sideeffect ? obuf_sz[2:0] : 3'b100;
   assign lsu_axi_awprot[2:0] = '0;
   assign lsu_axi_awcache[3:0] = obuf_sideeffect ? 4'b0 : 4'b1111;
   assign lsu_axi_awregion[3:0] = obuf_addr[31:28];
@@ -1440,7 +1439,7 @@ module lsu_bus_buffer
   assign lsu_axi_arvalid = obuf_valid & ~obuf_write & ~bus_addr_match_pending;
   assign lsu_axi_arid[LSU_BUS_TAG-1:0] = LSU_BUS_TAG'(obuf_tag0);
   assign lsu_axi_araddr[31:0] = obuf_sideeffect ? obuf_addr[31:0] : {obuf_addr[31:4], 4'b0};
-  assign lsu_axi_arsize[2:0] = obuf_sideeffect ? obuf_sz[2:0] : 3'b011;
+  assign lsu_axi_arsize[2:0] = obuf_sideeffect ? obuf_sz[2:0] : 3'b100;
   assign lsu_axi_arprot[2:0] = '0;
   assign lsu_axi_arcache[3:0] = obuf_sideeffect ? 4'b0 : 4'b1111;
   assign lsu_axi_arregion[3:0] = obuf_addr[31:28];
