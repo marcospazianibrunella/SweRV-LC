@@ -1350,9 +1350,7 @@ module lsu_bus_buffer
   assign lsu_nonblock_unsign = buf_unsign[lsu_nonblock_load_data_tag];
   assign lsu_nonblock_dual = buf_dual[lsu_nonblock_load_data_tag];
   assign lsu_nonblock_data_unalgn_wide = {lsu_nonblock_load_data_hi, lsu_nonblock_load_data_lo};
-  assign lsu_nonblock_data_unalgn = lsu_nonblock_data_unalgn_wide >> (lsu_nonblock_addr_offset[$clog2(
-      DCCM_BYTE_WIDTH
-  )-1:0] << 3);
+  assign lsu_nonblock_data_unalgn[63:0] = 64'(lsu_nonblock_data_unalgn_wide >> 8*lsu_nonblock_addr_offset[2:0]);
 
 
   assign lsu_nonblock_load_data_valid = lsu_nonblock_load_data_valid_lo & (~lsu_nonblock_dual | lsu_nonblock_load_data_valid_hi);
