@@ -490,7 +490,7 @@ module lsu_bus_buffer
   } << {
     lsu_addr_dc5[$clog2(DCCM_BYTE_WIDTH)-1:0], 3'b0
   };
-  assign ldst_samedw_dc5 = (lsu_addr_dc5[3] == end_addr_dc5[3]);
+  assign ldst_samedw_dc5 = (lsu_addr_dc5[4] == end_addr_dc5[4]);
 
   //------------------------------------------------------------------------------
   // Input buffer logic starts here
@@ -499,7 +499,7 @@ module lsu_bus_buffer
   assign ibuf_byp   = lsu_busreq_dc5 & ((lsu_pkt_dc5.load  | no_word_merge_dc5) & ~ibuf_valid);    // Bypass if ibuf is empty and it's a load or no merge possible
   assign ibuf_wr_en = lsu_busreq_dc5 & (lsu_commit_dc5 | lsu_freeze_dc3) & ~ibuf_byp;
   assign ibuf_rst = ibuf_drain_vld & ~ibuf_wr_en;
-  assign ibuf_force_drain = lsu_busreq_dc2 & ~lsu_busreq_dc3 & ~lsu_busreq_dc4 & ~lsu_busreq_dc5 & ibuf_valid & (lsu_pkt_dc2.load | (ibuf_addr[31:2] != lsu_addr_dc2[31:2]));  // Move the ibuf to buf if there is a non-colaescable ld/st in dc2 but nothing in dc3/dc4/dc5
+  assign ibuf_force_drain = lsu_busreq_dc2 & ~lsu_busreq_dc3 & ~lsu_busreq_dc4 & ~lsu_busreq_dc5 & ibuf_valid & (lsu_pkt_dc2.load | (ibuf_addr[31:3] != lsu_addr_dc2[31:3]));  // Move the ibuf to buf if there is a non-colaescable ld/st in dc2 but nothing in dc3/dc4/dc5
   assign ibuf_drain_vld = ibuf_valid & (((ibuf_wr_en | (ibuf_timer == TIMER_MAX)) & ~(ibuf_merge_en & ibuf_merge_in)) | ibuf_byp | ibuf_force_drain | ibuf_sideeffect | ~ibuf_write | bus_coalescing_disable);
   assign ibuf_tag_in[DEPTH_LOG2-1:0] = (ibuf_merge_en & ibuf_merge_in) ? ibuf_tag[DEPTH_LOG2-1:0] : (ldst_dual_dc5 ? WrPtr1_dc5 : WrPtr0_dc5);
   assign ibuf_dualtag_in[DEPTH_LOG2-1:0] = WrPtr0_dc5;
@@ -1039,7 +1039,7 @@ module lsu_bus_buffer
   for (genvar i = 0; i < DEPTH; i++) begin
 
     assign ibuf_drainvec_vld[i] = (ibuf_drain_vld & (i == ibuf_tag));
-    assign buf_byteen_in[i]     = ibuf_drainvec_vld[i] ? ibuf_byteen_out[3:0] : ((ibuf_byp & ldst_dual_dc5 & (i == WrPtr1_dc5)) ? ldst_byteen_hi_dc5[3:0] : ldst_byteen_lo_dc5[3:0]);
+    assign buf_byteen_in[i]     = ibuf_drainvec_vld[i] ? ibuf_byteen_out : ((ibuf_byp & ldst_dual_dc5 & (i == WrPtr1_dc5)) ? ldst_byteen_hi_dc5 : ldst_byteen_lo_dc5);
     assign buf_addr_in[i]       = ibuf_drainvec_vld[i] ? ibuf_addr[31:0] : ((ibuf_byp & ldst_dual_dc5 & (i == WrPtr1_dc5)) ? end_addr_dc5[31:0] : lsu_addr_dc5[31:0]);
     assign buf_dual_in[i] = ibuf_drainvec_vld[i] ? ibuf_dual : ldst_dual_dc5;
     assign buf_samedw_in[i] = ibuf_drainvec_vld[i] ? ibuf_samedw : ldst_samedw_dc5;
@@ -1075,7 +1075,7 @@ module lsu_bus_buffer
                                        (ibuf_drain_vld & (i == ibuf_tag));
           buf_wr_en[i] = buf_state_en[i];
           buf_data_en[i] = buf_state_en[i];
-          buf_data_in[i]   = (ibuf_drain_vld & (i == ibuf_tag)) ? ibuf_data_out[31:0] : store_data_lo_dc5[31:0];
+          buf_data_in[i]   = (ibuf_drain_vld & (i == ibuf_tag)) ? ibuf_data_out : store_data_lo_dc5;
         end
         WAIT: begin
           buf_nxtstate[i] = CMD;
