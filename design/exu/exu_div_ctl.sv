@@ -213,7 +213,7 @@ module exu_div_ctl
 
   logic [   4:0] a_cls;
   logic [   4:0] b_cls;
-  logic [   5:0] shortq;
+  //logic [   4:0] shortq;
   logic [   5:0] shortq_shift;
   logic [   5:0] shortq_shift_ff;
   logic          shortq_enable;
@@ -365,7 +365,7 @@ module exu_div_ctl
   assign m_already_comp = (divisor_neg_ff & sign_ff);
 
   // if m already complemented, then invert operation add->sub, sub->add
-  assign add = (a_ff[32] | rem_correct) ^ m_already_comp;
+  assign add = (a_ff[XLEN] | rem_correct) ^ m_already_comp;
 
   assign rem_correct = (count[5:0] == 6'd33) & rem_ff & a_ff[XLEN];
 
