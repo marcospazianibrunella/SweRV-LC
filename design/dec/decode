@@ -119,14 +119,19 @@ csrrwi3 =     [.................101.1...1110011]
 csrrwi4 =     [.................1011....1110011]
 
 mul =        [0000001..........000.....0110011]
+mulw =       [0000001..........000.....0111011]
 mulh =       [0000001..........001.....0110011]
 mulhsu =     [0000001..........010.....0110011]
 mulhu =      [0000001..........011.....0110011]
 
 div =        [0000001..........100.....0110011]
+divw =        [0000001..........100.....0111011]
 divu =       [0000001..........101.....0110011]
+divuw =       [0000001..........101.....0111011]
 rem =        [0000001..........110.....0110011]
+remw =        [0000001..........110.....0111011]
 remu =       [0000001..........111.....0110011]
+remuw =       [0000001..........111.....0111011]
 
 
 .input
@@ -226,14 +231,19 @@ rv32i = {
 .decode
 
 rv32i[mul]    = { mul rs1 rs2 rd low }
+rv32i[mulw]    = { mul alu_half rs1 rs2 rd low }
 rv32i[mulh]   = { mul rs1 rs2 rd rs1_sign rs2_sign }
 rv32i[mulhu]  = { mul rs1 rs2 rd                   }
 rv32i[mulhsu] = { mul rs1 rs2 rd rs1_sign          }
 
 rv32i[div]    =  { div rs1 rs2 rd        presync postsync}
+rv32i[divw]    =  { div alu_half rs1 rs2 rd        presync postsync}
 rv32i[divu]    = { div rs1 rs2 rd unsign presync postsync}
+rv32i[divuw]    = { div alu_half rs1 rs2 rd unsign presync postsync}
 rv32i[rem]    =  { div rs1 rs2 rd        presync postsync rem}
+rv32i[remw]    =  { div alu_half rs1 rs2 rd        presync postsync rem}
 rv32i[remu]    = { div rs1 rs2 rd unsign presync postsync rem}
+rv32i[remuw]    = { div alu_half rs1 rs2 rd unsign presync postsync rem}
 
 rv32i[add]   = { alu rs1 rs2   rd add pm_alu }
 rv32i[addw]   = { alu alu_half rs1 rs2   rd add pm_alu }
