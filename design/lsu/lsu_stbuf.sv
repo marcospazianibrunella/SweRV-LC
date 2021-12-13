@@ -186,7 +186,7 @@ module lsu_stbuf
                                  ({8{lsu_pkt_dc3.word}} & 8'b0000_1111) |
                                  ({8{lsu_pkt_dc3.dword}} & 8'b1111_1111);
 
-   assign store_byteen_ext_dc3[7:0] = {8'b0, ldst_byteen_dc3[7:0]} << lsu_addr_dc3[$clog2(DCCM_BYTE_WIDTH)-1:0];
+   assign store_byteen_ext_dc3[2*DCCM_BYTE_WIDTH-1:0] = {8'b0, ldst_byteen_dc3[7:0]} << lsu_addr_dc3[$clog2(DCCM_BYTE_WIDTH)-1:0];
    assign store_byteen_hi_dc3[BYTE_WIDTH-1:0] = store_byteen_ext_dc3[DCCM_BYTE_WIDTH*2-1:DCCM_BYTE_WIDTH];
    assign store_byteen_lo_dc3[BYTE_WIDTH-1:0] = store_byteen_ext_dc3[DCCM_BYTE_WIDTH-1:0];
 

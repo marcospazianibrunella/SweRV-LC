@@ -283,7 +283,7 @@ module lsu_lsc_ctl
                                       
                                       ({64{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.by  }} & {{56{  lsu_ld_datafn_corr_dc3[7]}}, lsu_ld_datafn_corr_dc3[7:0]}) |
                                       ({64{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.half}} & {{48{  lsu_ld_datafn_corr_dc3[15]}},lsu_ld_datafn_corr_dc3[15:0]}) |
-                                      ({64{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.word}} & {{48{  lsu_ld_datafn_corr_dc3[31]}},lsu_ld_datafn_corr_dc3[31:0]}) |
+                                      ({64{~lsu_pkt_dc3.unsign & lsu_pkt_dc3.word}} & {{32{  lsu_ld_datafn_corr_dc3[31]}},lsu_ld_datafn_corr_dc3[31:0]}) |
                                       
                                       ({64{lsu_pkt_dc3.dword}} &                       lsu_ld_datafn_corr_dc3[DCCM_DATA_WIDTH-1:0]);
 

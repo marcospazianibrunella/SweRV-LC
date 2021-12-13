@@ -105,7 +105,7 @@ module tb_top;
 
     logic                       wb_valid[1:0];
     logic [4:0]                 wb_dest[1:0];
-    logic [31:0]                wb_data[1:0];
+    logic [63:0]                wb_data[1:0];
 
 `ifdef RV_BUILD_AXI4
    //-------------------------- LSU AXI signals--------------------------
@@ -945,6 +945,7 @@ axi_lsu_dma_bridge # (`RV_LSU_BUS_TAG,`RV_LSU_BUS_TAG ) bridge(
 task preload_iccm;
 bit[31:0] data;
 bit[31:0] addr, eaddr, saddr;
+bit [7:0] ecc_64;
 
 /*
 addresses:
@@ -967,14 +968,15 @@ $display("ICCM pre-load from %h to %h", saddr, eaddr);
 
 for(addr= saddr; addr <= eaddr; addr+=4) begin
     data = {imem.mem[addr+3],imem.mem[addr+2],imem.mem[addr+1],imem.mem[addr]};
-    slam_iccm_ram(addr, data == 0 ? 0 : {riscv_ecc32(data),data});
+    ecc_64 =riscv_ecc64({32'h0,data}) ;
+    slam_iccm_ram(addr, data == 0 ? 0 : {ecc_64[7], ecc_64[5:0],data});
 end
 
 endtask
 
 
 task preload_dccm;
-bit[31:0] data;
+bit[63:0] data;
 bit[31:0] addr, saddr, eaddr;
 
 /*
@@ -997,8 +999,8 @@ eaddr = {lmem.mem[addr+3],lmem.mem[addr+2],lmem.mem[addr+1],lmem.mem[addr]};
 $display("DCCM pre-load from %h to %h", saddr, eaddr);
 
 for(addr=saddr; addr <= eaddr; addr+=4) begin
-    data = {lmem.mem[addr+3],lmem.mem[addr+2],lmem.mem[addr+1],lmem.mem[addr]};
-    slam_dccm_ram(addr, data == 0 ? 0 : {riscv_ecc32(data),data});
+    data = {lmem.mem[addr+7],lmem.mem[addr+6],lmem.mem[addr+5],lmem.mem[addr+4], lmem.mem[addr+3],lmem.mem[addr+2],lmem.mem[addr+1],lmem.mem[addr]};
+    slam_dccm_ram(addr, data == 0 ? 0 : {riscv_ecc64(data),data});
 end
 
 endtask
@@ -1042,7 +1044,7 @@ endcase
 `endif
 endtask
 
-task slam_dccm_ram(input [31:0] addr, input[38:0] data);
+task slam_dccm_ram(input [31:0] addr, input[71:0] data);
 int bank, indx;
 `ifdef RV_DCCM_ENABLE
 bank = get_dccm_bank(addr, indx);
@@ -1065,15 +1067,16 @@ endcase
 `endif
 endtask
 
-function[6:0] riscv_ecc32(input[31:0] data);
-reg[6:0] synd;
-synd[0] = ^(data & 32'h56aa_ad5b);
-synd[1] = ^(data & 32'h9b33_366d);
-synd[2] = ^(data & 32'he3c3_c78e);
-synd[3] = ^(data & 32'h03fc_07f0);
-synd[4] = ^(data & 32'h03ff_f800);
-synd[5] = ^(data & 32'hfc00_0000);
-synd[6] = ^{data, synd[5:0]};
+function[7:0] riscv_ecc64(input[63:0] data);
+reg[7:0] synd;
+synd[0] = ^(data & 64'hab55555556aaad5b);
+synd[1] = ^(data & 64'hcd9999929b33366d);
+synd[2] = ^(data & 64'hf1e1e1e1e3c3c78e);
+synd[3] = ^(data & 64'h01fe01fe03fc07f0);
+synd[4] = ^(data & 64'h01fffe0003fff800);
+synd[5] = ^(data & 64'h01fffffffc000000);
+synd[6] = ^(data & 64'hfe00000000000000);
+synd[7] = ^{data, synd[6:0]};
 return synd;
 endfunction
 

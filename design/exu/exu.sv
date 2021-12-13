@@ -278,7 +278,7 @@ module exu
    assign freeze = lsu_freeze_dc3;
 
    assign i0_rs1_d[XLEN-1:0] = ({XLEN{~dec_i0_rs1_bypass_en_d}} & ((dec_debug_wdata_rs1_d) ? {XLEN-32'h0, dbg_cmd_wrdata[31:0]} : gpr_i0_rs1_d[XLEN-1:0])) |
-                           ({XLEN{~dec_i0_rs1_bypass_en_d   & dec_i0_select_pc_d}} & { dec_i0_pc_d[31:1], 1'b0}) |    // for jal's
+                           ({XLEN{~dec_i0_rs1_bypass_en_d   & dec_i0_select_pc_d}} & { 32'b0, dec_i0_pc_d[31:1], 1'b0}) |    // for jal's
                            ({XLEN{ dec_i0_rs1_bypass_en_d}} & i0_rs1_bypass_data_d[XLEN-1:0]);
 
 
@@ -289,7 +289,7 @@ module exu
                                  ({XLEN{ dec_i0_rs2_bypass_en_d}} & i0_rs2_bypass_data_d[XLEN-1:0]);
 
    assign i1_rs1_d[XLEN-1:0]       = ({XLEN{~dec_i1_rs1_bypass_en_d}} & gpr_i1_rs1_d[XLEN-1:0]) |
-                                 ({XLEN{~dec_i1_rs1_bypass_en_d   & dec_i1_select_pc_d}} & { dec_i1_pc_d[31:1], 1'b0}) |  // pc orthogonal with rs1
+                                 ({XLEN{~dec_i1_rs1_bypass_en_d   & dec_i1_select_pc_d}} & {32'b0,  dec_i1_pc_d[31:1], 1'b0}) |  // pc orthogonal with rs1
                                  ({XLEN{ dec_i1_rs1_bypass_en_d}} & i1_rs1_bypass_data_d[XLEN-1:0]);
 
    assign i1_rs2_d[XLEN-1:0]       = ({XLEN{~dec_i1_rs2_bypass_en_d}} & gpr_i1_rs2_d[XLEN-1:0]) |

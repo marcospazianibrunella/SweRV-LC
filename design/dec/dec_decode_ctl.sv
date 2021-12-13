@@ -309,13 +309,13 @@ module dec_decode_ctl
 
   //logic             flush_final_e3;
 
-  logic            lsu_decode_d;
-  logic [XLEN-1:0] i0_immed_d;
-  logic            i0_presync;
-  logic            i0_postsync;
+  logic        lsu_decode_d;
+  logic [31:0] i0_immed_d;
+  logic        i0_presync;
+  logic        i0_postsync;
 
-  logic            postsync_stall;
-  logic            ps_stall;
+  logic        postsync_stall;
+  logic        ps_stall;
 
   logic prior_inflight, prior_inflight_e1e4, prior_inflight_wb;
 
@@ -1347,20 +1347,23 @@ module dec_decode_ctl
 
   // read the csr value through rs2 immed port
   assign dec_i0_immed_d = {
-    {XLEN - 32{'0}}, ({32{i0_dp.csr_read}} & dec_csr_rddata_d)
-  } | ({XLEN{~i0_dp.csr_read}} & i0_immed_d[XLEN-1:0]);
+    32'b0, {({32{i0_dp.csr_read}} & dec_csr_rddata_d)} | ({32{~i0_dp.csr_read}} & i0_immed_d[31:0])
+  };
 
   // end csr stuff
   // XXX
-  assign i0_immed_d = ({XLEN{i0_dp.imm12}} & {
+  assign i0_immed_d = ({32{i0_dp.imm12}} & {
     {20{i0[31]}}, i0[31:20]
   }) |  // jalr
-  ({XLEN{i0_dp.shimm5}} & i0[25:20]) | ({32{i0_jalimm20}} & {
+  ({32{i0_dp.shimm5}} & {
+    26'b0, i0[25:20]
+  }) | ({32{i0_jalimm20}} & {
     {12{i0[31]}}, i0[19:12], i0[20], i0[30:21], 1'b0
   }) | ({32{i0_uiimm20}} & {
     i0[31:12], 12'b0
-  }) | ({32{i0_csr_write_only_d & i0_dp.csr_imm}} & i0[19:15])
-      ;  // for csr's that only write csr, dont read csr
+  }) | ({32{i0_csr_write_only_d & i0_dp.csr_imm}} & {
+    27'b0, i0[19:15]
+  });  // for csr's that only write csr, dont read csr
 
 
   //   assign dec_i0_br_immed_d[12:1] = ({12{ i0_ap.predict_nt }} &           {i0[31],i0[7],i0[30:25],i0[11:8]}) |
@@ -1382,13 +1385,18 @@ module dec_decode_ctl
   assign i1_rd_d[4:0] = i1r.rd[4:0];
 
   // XXX
-  assign dec_i1_immed_d = ({XLEN{i1_dp.imm12}} & {
-    {20{i1[31]}}, i1[31:20]
-  }) | ({32{i1_dp.shimm5}} & i1[25:20]) | ({32{i1_jalimm20}} & {
-    {12{i1[31]}}, i1[19:12], i1[20], i1[30:21], 1'b0
-  }) | ({32{i1_uiimm20}} & {
-    i1[31:12], 12'b0
-  });
+  assign dec_i1_immed_d = {
+    32'b0,
+    ({32{i1_dp.imm12}} & {
+      {20{i1[31]}}, i1[31:20]
+    }) | ({32{i1_dp.shimm5}} & {
+      26'b0, i1[25:20]
+    }) | ({32{i1_jalimm20}} & {
+      {12{i1[31]}}, i1[19:12], i1[20], i1[30:21], 1'b0
+    }) | ({32{i1_uiimm20}} & {
+      i1[31:12], 12'b0
+    })
+  };
 
 
   // jal is always +2 or +4
@@ -3206,7 +3214,7 @@ module dec_dec_ctl
   assign out.pm_alu = (i[28]&i[22]&!i[13]&!i[12]&i[4]) | (i[4]&i[2]) | (!i[25]&!i[6]
     &i[4]) | (!i[5]&i[4]);
 
-    assign out.legal = (!i[31]&!i[30]&i[29]&i[28]&!i[27]&!i[26]&!i[25]&!i[24]&!i[23]
+  assign out.legal = (!i[31]&!i[30]&i[29]&i[28]&!i[27]&!i[26]&!i[25]&!i[24]&!i[23]
     &!i[22]&i[21]&!i[20]&!i[19]&!i[18]&!i[17]&!i[16]&!i[15]&!i[14]&!i[11]
     &!i[10]&!i[9]&!i[8]&!i[7]&i[6]&i[5]&i[4]&!i[3]&!i[2]&i[1]&i[0]) | (
     !i[31]&!i[30]&!i[29]&i[28]&!i[27]&!i[26]&!i[25]&!i[24]&!i[23]&i[22]
@@ -3235,7 +3243,7 @@ module dec_dec_ctl
     &i[1]&i[0]) | (!i[14]&!i[6]&!i[4]&!i[3]&!i[2]&i[1]&i[0]) | (!i[13]
     &!i[6]&!i[5]&!i[4]&!i[3]&!i[2]&i[1]&i[0]) | (i[6]&i[5]&!i[4]&i[3]
     &i[2]&i[1]&i[0]) | (i[13]&!i[6]&!i[5]&i[4]&!i[3]&i[1]&i[0]) | (!i[6]
-    &i[4]&!i[3]&i[2]&i[1]&i[0]); 
+    &i[4]&!i[3]&i[2]&i[1]&i[0]);
 
 
 endmodule

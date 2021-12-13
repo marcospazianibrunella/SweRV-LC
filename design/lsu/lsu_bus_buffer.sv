@@ -456,7 +456,7 @@ module lsu_bus_buffer
       ld_fwddata_buf_hi[15:8] |= {8{ld_byte_hitvecfn_hi[1][i]}} & buf_data[i][15:8];
       ld_fwddata_buf_hi[23:16] |= {8{ld_byte_hitvecfn_hi[2][i]}} & buf_data[i][23:16];
       ld_fwddata_buf_hi[31:24] |= {8{ld_byte_hitvecfn_hi[3][i]}} & buf_data[i][31:24];
-      ld_fwddata_buf_hi[39:32] |= {8{ld_byte_hitvecfn_hi[4][i]}} & buf_data[i][39:31];
+      ld_fwddata_buf_hi[39:32] |= {8{ld_byte_hitvecfn_hi[4][i]}} & buf_data[i][39:32];
       ld_fwddata_buf_hi[47:40] |= {8{ld_byte_hitvecfn_hi[5][i]}} & buf_data[i][47:40];
       ld_fwddata_buf_hi[55:48] |= {8{ld_byte_hitvecfn_hi[6][i]}} & buf_data[i][55:48];
       ld_fwddata_buf_hi[63:56] |= {8{ld_byte_hitvecfn_hi[7][i]}} & buf_data[i][63:56];
@@ -486,7 +486,7 @@ module lsu_bus_buffer
           DCCM_BYTE_WIDTH
       )-1:0];
   assign {store_data_hi_dc5[DCCM_DATA_WIDTH-1:0], store_data_lo_dc5[DCCM_DATA_WIDTH-1:0]} = {
-    {DCCM_DATA_WIDTH - 1{'0}}, store_data_dc5[DCCM_DATA_WIDTH-1:0]
+    {DCCM_DATA_WIDTH{'0}}, store_data_dc5[DCCM_DATA_WIDTH-1:0]
   } << {
     lsu_addr_dc5[$clog2(DCCM_BYTE_WIDTH)-1:0], 3'b0
   };

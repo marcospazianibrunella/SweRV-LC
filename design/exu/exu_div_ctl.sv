@@ -277,7 +277,7 @@ module exu_div_ctl
                                     ( (a_cls[2:1] == 2'b01 ) & (b_cls[2:0] == 3'b000) );
 
 
-  assign shortq_enable = valid_ff_e1 & (m_ff != {XLEN{'0}}) & (shortq_raw[3:0] != 4'b0);
+  assign shortq_enable = valid_ff_e1 & (m_ff != {XLEN+1{'0}}) & (shortq_raw[3:0] != 4'b0);
 
   assign shortq_shift[3:0] = ({4{shortq_enable}} & shortq_raw[3:0]);
 
@@ -335,7 +335,7 @@ module exu_div_ctl
   }) | ({XLEN + 1{run_state & (valid_ff_e1 | shortq_enable_ff)}} & ({
     dividend_eff, ~a_in[XLEN]
   } << shortq_shift_ff[5:0])) | ({XLEN + 1{run_state & ~(valid_ff_e1 | shortq_enable_ff)}} & {
-    q_ff, ~a_in[XLEN]
+    q_ff[XLEN-1:0], ~a_in[XLEN]
   });
 
   assign qff_enable = dp.valid | (run_state & ~shortq_enable);
@@ -343,7 +343,7 @@ module exu_div_ctl
 
 
 
-  assign dividend_eff = (sign_ff & dividend_neg_ff) ? dividend_comp : q_ff;
+  assign dividend_eff = (sign_ff & dividend_neg_ff) ? dividend_comp : q_ff[XLEN-1:0];
 
 
   assign m_eff = (add) ? m_ff : ~m_ff;
@@ -352,7 +352,7 @@ module exu_div_ctl
 
   assign a_eff             = ({XLEN+1{ rem_correct                    }} &  a_ff           ) |
                                     ({XLEN+1{~rem_correct & ~shortq_enable_ff}} & {
-    a_ff, q_ff[XLEN]
+    a_ff[XLEN-1:0], q_ff[XLEN]
   }) | ({XLEN + 1{~rem_correct & shortq_enable_ff}} & a_eff_shift[2*XLEN:XLEN]);
 
   assign a_shift = {XLEN + 1{run_state}} & a_eff;
@@ -371,9 +371,9 @@ module exu_div_ctl
 
 
 
-  assign q_ff_eff = (sign_ff & (dividend_neg_ff ^ divisor_neg_ff)) ? q_ff_comp : q_ff;
+  assign q_ff_eff = (sign_ff & (dividend_neg_ff ^ divisor_neg_ff)) ? q_ff_comp : q_ff[XLEN-1:0];
 
-  assign a_ff_eff = (sign_ff & dividend_neg_ff) ? a_ff_comp : a_ff;
+  assign a_ff_eff = (sign_ff & dividend_neg_ff) ? a_ff_comp : a_ff[XLEN-1:0];
 
   assign out = ({XLEN{smallnum_case_ff}} & {
     {XLEN - 4{'0}}, smallnum_ff[3:0]

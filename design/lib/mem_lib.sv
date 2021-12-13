@@ -229,6 +229,29 @@ module ram_1024x39
 
 endmodule // ram_1024x39
 
+module ram_1024x72
+  ( input logic CLK,
+    input logic [9:0] ADR,
+    input logic [71:0] D,
+
+    output logic [71:0] Q,
+    input logic WE );
+
+   // behavior to be replaced by actual SRAM in VLE
+
+   reg [71:0]   ram_core [1023:0];
+
+   always @(posedge CLK) begin
+      if (WE) begin// for active high WE - must be specified by user
+         ram_core[ADR] <= D; Q <= 'x; end else
+           Q <= ram_core[ADR];
+   end
+
+
+
+
+endmodule // ram_1024x72
+
 module ram_768x39
   ( input logic CLK,
     input logic [9:0] ADR,

@@ -20,7 +20,7 @@
 `define RV_NUM_THREADS 1
 `endif
 
-bit[31:0] [31:0] gpr[`RV_NUM_THREADS];
+bit[31:0] [63:0] gpr[`RV_NUM_THREADS];
 
 // main DASM function
 function string dasm(input[31:0] opcode, input[31:0] pc, input[4:0] regn, input[31:0] regv, input tid=0);
