@@ -1088,8 +1088,8 @@ function int get_dccm_bank(input int addr,  output int bank_idx);
     bank_idx = int'(addr[`RV_DCCM_BITS-1:4]);
     return int'(addr[3:2]);
 `elsif RV_DCCM_NUM_BANKS_8
-    bank_idx = int'(addr[`RV_DCCM_BITS-1:5]);
-    return int'( addr[4:2]);
+    bank_idx = int'(addr[`RV_DCCM_BITS-1:6]);
+    return int'( addr[5:3]);
 `endif
 endfunction
 
