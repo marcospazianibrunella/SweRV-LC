@@ -13,7 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 module exu_div_ctl_32
 import swerv_types::*;
 (
@@ -269,7 +268,7 @@ assign sign_eff                = ~dp.unsign & (divisor[31:0] != 32'b0);
 
 assign q_in[32:0]              = ({33{~run_state                                   }} &  {1'b0,dividend[31:0]}) |
                                  ({33{ run_state &  (valid_ff_e1 | shortq_enable_ff)}} &  ({dividend_eff[31:0], ~a_in[32]} << shortq_shift_ff[5:0])) |
-                                 ({33{ run_state & ~(valid_ff_e1 | shortq_enable_ff)}} &  {q_ff[31:0], ~a_in[32]});
+                                 ({33{ run_state &  ~(valid_ff_e1 | shortq_enable_ff)}} &  {q_ff[31:0], ~a_in[32]});
 
 assign qff_enable              =  dp.valid | (run_state & ~shortq_enable);
 

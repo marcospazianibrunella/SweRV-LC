@@ -196,13 +196,31 @@ module tb_exu
     @(posedge clk);
     @(posedge clk);
     @(posedge clk);
-    /* Deaasert Reset */
+    /* Deassert Reset */
     rst_l = 1;
     @(posedge clk);
+    @(posedge clk);
+    @(posedge clk);
+    @(posedge clk);
+    dec_i0_div_d = '1;
+    div_p.valid  = '1;
+    div_p.unsign  = '1;
+    gpr_i0_rs1_d = 'h100;
+    gpr_i0_rs2_d = 'h2;
+
+    @(posedge clk);
+    dec_i0_div_d = '0;
+    div_p.valid  = '0;
+    gpr_i0_rs1_d = '0;
+    gpr_i0_rs2_d = '0;
 
     /* Simulation Trailer */
-    for (integer i = 0; i < 20; i++) @(posedge clk);
+    for (integer i = 0; i < 40; i++) @(posedge clk);
     $finish;
+  end
+
+  always @(*) begin
+    $monitor("Div: %h, Vld: %b", exu_div_result, exu_div_finish);
   end
 
 endmodule

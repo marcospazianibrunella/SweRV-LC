@@ -34,21 +34,24 @@ module tb_div
 
   initial begin
 
+    flush_lower = '1;
     for (integer i = 0; i < 10; i++) begin
       @(posedge clk);
     end
+    flush_lower = '0;
 
+    @(posedge clk);
     rst_l = 1;
+    @(posedge clk);
+    @(posedge clk);
+    @(posedge clk);
     @(posedge clk);
 
     /* Prepare Operands */
+    dp.valid  = 1;
     dividend  = 'h7d0;
     divisor   = 'h3;
     dp.unsign = 1;
-
-    @(posedge clk);
-    /* Fire the division */
-    dp.valid = 1;
 
     @(posedge clk);
     dp.valid = 0;
