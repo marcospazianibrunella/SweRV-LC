@@ -1347,7 +1347,9 @@ module dec_decode_ctl
 
   // read the csr value through rs2 immed port
   assign dec_i0_immed_d = {
-    32'b0, {({32{i0_dp.csr_read}} & dec_csr_rddata_d)} | ({32{~i0_dp.csr_read}} & i0_immed_d[31:0])
+    32'b0, {({32{i0_dp.csr_read}} & dec_csr_rddata_d)}
+  } | {
+    {32{i0_immed_d[31]}}, {32{~i0_dp.csr_read}} & i0_immed_d[31:0]
   };
 
   // end csr stuff
