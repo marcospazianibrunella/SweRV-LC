@@ -226,10 +226,10 @@ assign shortq_shift[3:0]       = ({4{shortq_enable}} & shortq_raw[3:0]);
 
 rvdff  #(5)  i_shortq_ff       (.*, .clk(active_clk), .din({shortq_enable,shortq_shift[3:0]}), .dout({shortq_enable_ff,shortq_shift_xx[3:0]}));
 
-assign shortq_shift_ff[5:0]    = ({6{shortq_shift_xx[3]}} & 6'b01_1111) |   // 31
-                                 ({6{shortq_shift_xx[2]}} & 6'b01_1000) |   // 24
-                                 ({6{shortq_shift_xx[1]}} & 6'b01_0000) |   // 16
-                                 ({6{shortq_shift_xx[0]}} & 6'b00_1000);    //  8
+assign shortq_shift_ff[7:0]    = ({8{shortq_shift_xx[3]}} & 8'b0001_1111) |   // 31
+                                 ({8{shortq_shift_xx[2]}} & 8'b0001_1000) |   // 24
+                                 ({8{shortq_shift_xx[1]}} & 8'b0001_0000) |   // 16
+                                 ({8{shortq_shift_xx[0]}} & 8'b0000_1000);    //  8
 
 `ifdef ASSERT_ON
 

@@ -1,7 +1,7 @@
 module tb_div
   import swerv_types::*;
 ;
-  localparam XLEN = 32;
+  localparam XLEN = 64;
 
   /* input */logic                clk = 0;  // Top level clock
   /* input */logic                active_clk;  // Level 1 active clock
@@ -26,7 +26,7 @@ module tb_div
   /* output */logic     [XLEN-1:0] out;  // Result
 
 
-  exu_div_ctl_32 DUT_i (.*);
+  exu_div_ctl DUT_i (.*);
 
   /* Clock Generation */
   always #5 clk = ~clk;
@@ -51,7 +51,6 @@ module tb_div
     dp.valid  = 1;
     dividend  = 'h7d0;
     divisor   = 'h3;
-    dp.unsign = 1;
 
     @(posedge clk);
     dp.valid = 0;
