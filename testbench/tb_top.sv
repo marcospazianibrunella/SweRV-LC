@@ -1070,7 +1070,7 @@ endtask
 function[7:0] riscv_ecc64(input[63:0] data);
 reg[7:0] synd;
 synd[0] = ^(data & 64'hab55555556aaad5b);
-synd[1] = ^(data & 64'hcd9999929b33366d);
+synd[1] = ^(data & 64'hcd9999999b33366d);
 synd[2] = ^(data & 64'hf1e1e1e1e3c3c78e);
 synd[3] = ^(data & 64'h01fe01fe03fc07f0);
 synd[4] = ^(data & 64'h01fffe0003fff800);
