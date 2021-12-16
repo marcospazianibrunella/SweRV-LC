@@ -321,7 +321,7 @@ module tb_top;
     assign WriteData = lmem.WriteData;
     assign mailbox_data_val = WriteData[7:0] > 8'h5 && WriteData[7:0] < 8'h7f;
 
-    parameter MAX_CYCLES = 10_000_000;
+    parameter MAX_CYCLES = 100_000_000;
 
     integer fd, tp, el;
 
@@ -365,11 +365,11 @@ module tb_top;
            for (int i=0; i<2; i++)
                if (trace_rv_i_valid_ip[i]==1) begin
                    commit_count++;
-                 //  $fwrite (el, "%10d : %8s %0d %h %h%13s ; %s\n",cycleCnt, $sformatf("#%0d",commit_count), 0,
-                 //          trace_rv_i_address_ip[31+i*32 -:32], trace_rv_i_insn_ip[31+i*32-:32],
-                 //          (wb_dest[i] !=0 && wb_valid[i]) ?  $sformatf("%s=%h", wb_dest[i], wb_data[i]) : "             ",
-                 //          dasm(trace_rv_i_insn_ip[31+i*32 -:32], trace_rv_i_address_ip[31+i*32-:32], wb_dest[i] & {5{wb_valid[i]}}, wb_data[i])
-                 //          );
+                  $fwrite (el, "%10d : %8s %0d %h %h%13s ; %s\n",cycleCnt, $sformatf("#%0d",commit_count), 0,
+                          trace_rv_i_address_ip[31+i*32 -:32], trace_rv_i_insn_ip[31+i*32-:32],
+                          (wb_dest[i] !=0 && wb_valid[i]) ?  $sformatf("%s=%h", wb_dest[i], wb_data[i]) : "             ",
+                          dasm(trace_rv_i_insn_ip[31+i*32 -:32], trace_rv_i_address_ip[31+i*32-:32], wb_dest[i] & {5{wb_valid[i]}}, wb_data[i])
+                          );
                end
         end
         if(`DEC.dec_nonblock_load_wen) begin
@@ -420,8 +420,8 @@ module tb_top;
         nmi_vector   = 32'hee000000;
         nmi_int   = 0;
 
-        $readmemh("/home/marco/LuminousComputing/SweRV-golden/testbench/hex/hello_world.hex",  lmem.mem);
-        $readmemh("/home/marco/LuminousComputing/SweRV-golden/testbench/hex/hello_world.hex",  imem.mem);
+        $readmemh("program.hex",  lmem.mem);
+        $readmemh("program.hex",  imem.mem);
         tp = $fopen("trace_port.csv","w");
         el = $fopen("exec.log","w");
         $fwrite (el, "//   Cycle : #inst  hart   pc    opcode    reg=value   ; mnemonic\n");
