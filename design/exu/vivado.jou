@@ -1,0 +1,43 @@
+#-----------------------------------------------------------
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:47 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Mon Dec 20 14:46:12 2021
+# Process ID: 875557
+# Current directory: /home/marco/LuminousComputing/SweRV-golden/design/exu
+# Command line: vivado
+# Log file: /home/marco/LuminousComputing/SweRV-golden/design/exu/vivado.log
+# Journal file: /home/marco/LuminousComputing/SweRV-golden/design/exu/vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project /home/marco/vivado_projects/LC_SweRV/LC_SweRV.xpr
+update_compile_order -fileset sources_1
+open_run synth_1 -name synth_1
+report_timing_summary -delay_type min_max -report_unconstrained -check_timing_verbose -max_paths 10 -input_pins -routable_nets -name timing_1
+close_design
+# Disabling source management mode.  This is to allow the top design properties to be set without GUI intervention.
+set_property source_mgmt_mode None [current_project]
+set_property top tb_top [get_filesets sim_1]
+set_property top_lib xil_defaultlib [get_filesets sim_1]
+# Re-enabling previously disabled source management mode.
+set_property source_mgmt_mode All [current_project]
+update_compile_order -fileset sim_1
+launch_simulation
+reset_simulation
+launch_simulation
+launch_simulation
+source tb_top.tcl
+relaunch_sim
+restart
+run 1000 ns
+run 1000 ns
+run 1000 ns
+run 1000 ns
+run 1000 ns
+run 1000 ns
+run 1000 ns
+relaunch_sim
+relaunch_sim
+relaunch_sim
+relaunch_sim
+relaunch_sim

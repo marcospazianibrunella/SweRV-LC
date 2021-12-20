@@ -315,6 +315,8 @@ module tb_top;
     wire[127:0]                  WriteData;
     string                      abi_reg[32]; // ABI register names
 
+    logic [31:0]  golden_instructions [4095:0];
+
 `define DEC rvtop.swerv.dec
 
     assign mailbox_write = lmem.mailbox_write;
@@ -323,7 +325,7 @@ module tb_top;
 
     parameter MAX_CYCLES = 100_000_000;
 
-    integer fd, tp, el;
+    integer fd, tp, el, assertion_file;
 
     always @(negedge core_clk) begin
         cycleCnt <= cycleCnt+1;
@@ -370,6 +372,8 @@ module tb_top;
                           (wb_dest[i] !=0 && wb_valid[i]) ?  $sformatf("%s=%h", wb_dest[i], wb_data[i]) : "             ",
                           dasm(trace_rv_i_insn_ip[31+i*32 -:32], trace_rv_i_address_ip[31+i*32-:32], wb_dest[i] & {5{wb_valid[i]}}, wb_data[i])
                           );
+                $fwrite (assertion_file,"[%d] Received instruction: %h -- Expected Instruction: %h\n", commit_count, trace_rv_i_insn_ip[31+i*32 -:32], golden_instructions[commit_count-1]);    
+                assert (trace_rv_i_insn_ip[31+i*32 -:32] == golden_instructions[commit_count-1]);
                end
         end
         if(`DEC.dec_nonblock_load_wen) begin
@@ -422,8 +426,10 @@ module tb_top;
 
         $readmemh("program.hex",  lmem.mem);
         $readmemh("program.hex",  imem.mem);
+        $readmemh("/home/marco/LuminousComputing/SweRV-golden/testbench/golden/cmark/cmark.gold",  golden_instructions);
         tp = $fopen("trace_port.csv","w");
         el = $fopen("exec.log","w");
+        assertion_file = $fopen("assert.txt", "w");
         $fwrite (el, "//   Cycle : #inst  hart   pc    opcode    reg=value   ; mnemonic\n");
         $fwrite (el, "//---------------------------------------------------------------\n");
         fd = $fopen("console.log","w");

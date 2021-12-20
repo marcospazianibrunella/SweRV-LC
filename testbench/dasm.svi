@@ -23,7 +23,7 @@
 bit[31:0] [63:0] gpr[`RV_NUM_THREADS];
 
 // main DASM function
-function string dasm(input[31:0] opcode, input[31:0] pc, input[4:0] regn, input[31:0] regv, input tid=0);
+function string dasm(input[31:0] opcode, input[31:0] pc, input[4:0] regn, input[63:0] regv, input tid=0);
     dasm = (opcode[1:0] == 2'b11) ? dasm32(opcode, pc, tid) : dasm16(opcode, pc, tid);
     if(regn) gpr[tid][regn] = regv;
 endfunction
