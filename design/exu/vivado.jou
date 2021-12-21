@@ -41,3 +41,78 @@ relaunch_sim
 relaunch_sim
 relaunch_sim
 relaunch_sim
+open_run synth_1 -name synth_1
+save_constraints
+reset_run synth_1
+launch_runs synth_1 -jobs 16
+wait_on_run synth_1
+report_timing_summary -delay_type min_max -report_unconstrained -check_timing_verbose -max_paths 10 -input_pins -routable_nets -name timing_1
+report_timing_summary -delay_type min_max -report_unconstrained -check_timing_verbose -max_paths 10 -input_pins -routable_nets -name timing_1
+report_timing_summary -delay_type min_max -report_unconstrained -check_timing_verbose -max_paths 10 -input_pins -routable_nets -name timing_1
+report_timing_summary -delay_type min_max -report_unconstrained -check_timing_verbose -max_paths 10 -input_pins -routable_nets -name timing_1
+save_constraints -force
+close_sim
+close_project
+open_project /home/marco/vivado_projects/riscv_fpu/riscv_fpu.xpr
+update_compile_order -fileset sources_1
+relaunch_sim
+reset_
+reset_simula
+reset_simulation
+launch_simulation
+launch_simulation
+reset_simulation
+set_property source_mgmt_mode None [current_project]
+set_property source_mgmt_mode All [current_project]
+update_compile_order -fileset sources_1
+launch_simulation
+move_files -fileset sim_1 [get_files  /home/marco/LuminousComputing/fpnew/src/common_cells/include/common_cells/registers.svh]
+export_ip_user_files -of_objects  [get_files /home/marco/LuminousComputing/fpnew/src/common_cells/include/common_cells/registers.svh] -no_script -reset -force -quiet
+remove_files  -fileset sim_1 /home/marco/LuminousComputing/fpnew/src/common_cells/include/common_cells/registers.svh
+update_compile_order -fileset sources_1
+add_files -norecurse /home/marco/LuminousComputing/fpnew/src/common_cells/include/common_cells/registers.svh
+update_compile_order -fileset sources_1
+launch_simulation
+launch_simulation
+launch_simulation
+launch_simulation
+source fpnew_top.tcl
+run 1000 ns
+close_sim
+set_property SOURCE_SET sources_1 [get_filesets sim_1]
+add_files -fileset sim_1 -norecurse /home/marco/LuminousComputing/fpnew/tb/tb_top.sv
+update_compile_order -fileset sim_1
+# Disabling source management mode.  This is to allow the top design properties to be set without GUI intervention.
+set_property source_mgmt_mode None [current_project]
+set_property top tb_top [get_filesets sim_1]
+set_property top_lib xil_defaultlib [get_filesets sim_1]
+# Re-enabling previously disabled source management mode.
+set_property source_mgmt_mode All [current_project]
+update_compile_order -fileset sim_1
+launch_simulation
+launch_simulation
+launch_simulation
+launch_simulation
+launch_simulation
+launch_simulation
+launch_simulation
+launch_simulation
+launch_simulation
+source tb_top.tcl
+relaunch_sim
+close_sim
+close_project
+open_project /home/marco/vivado_projects/LC_SweRV/LC_SweRV.xpr
+update_compile_order -fileset sources_1
+# Disabling source management mode.  This is to allow the top design properties to be set without GUI intervention.
+set_property source_mgmt_mode None [current_project]
+set_property top tb_core [get_filesets sim_1]
+set_property top_lib xil_defaultlib [get_filesets sim_1]
+# Re-enabling previously disabled source management mode.
+set_property source_mgmt_mode All [current_project]
+update_compile_order -fileset sim_1
+launch_simulation
+reset_simulation
+launch_simulation
+launch_simulation
+source tb_core.tcl

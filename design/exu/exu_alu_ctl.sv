@@ -165,9 +165,9 @@ module exu_alu_ctl
 
 
   assign {cout, aout} = ap.alu_half ? {
-    1'b0, {32'h0, a_ff[31:0]}
+    1'b0, {32{a_ff[31]}}, a_ff[31:0]
   } + {
-    1'b0, {32'h0, bm[31:0]}
+    1'b0, {32{bm[31]}}, bm[31:0]
   } + {
     {XLEN{'0}}, ap.sub
   } : {
@@ -193,25 +193,21 @@ module exu_alu_ctl
 
 
   assign lout = ap.alu_half ? ({
-    32'h0, a_ff[31:0]
+    {32{a_ff[31]}}, a_ff[31:0]
   } & {
-    32'h0, b_ff[31:0]
-  } & {
-    32'h0, {32{logic_sel[3]}}
-  }) | (a_ff & ~b_ff & {XLEN{logic_sel[2]}}) | (~a_ff & b_ff & {XLEN{logic_sel[1]}})
-      : (a_ff & b_ff & {XLEN{logic_sel[3]}}) | (a_ff & ~b_ff & {XLEN{logic_sel[2]}}) | (
-      ~a_ff & b_ff & {XLEN{logic_sel[1]}});
+    {32{b_ff[31]}}, b_ff[31:0]
+  } & {64{logic_sel[3]}}) | (a_ff & ~b_ff & {XLEN{logic_sel[2]}}) | (
+      ~a_ff & b_ff & {XLEN{logic_sel[1]}}) : (a_ff & b_ff & {XLEN{logic_sel[3]}}) | (
+      a_ff & ~b_ff & {XLEN{logic_sel[2]}}) | (~a_ff & b_ff & {XLEN{logic_sel[1]}});
 
 
 
-  assign ashift =ap.alu_half ? {32'h0, a_ff[31:0]} >>> b_ff[4:0] : a_ff >>> b_ff[5:0];
+  assign ashift = ap.alu_half ? {32'h0, a_ff[31:0]} >>> b_ff[4:0] : a_ff >>> b_ff[5:0];
 
-  assign sout = ap.alu_half ? ({
-    32'h0, {32{ap.sll}}
-  } & ({
-    32'h0, a_ff[31:0]
+  assign sout = ap.alu_half ? ({64{ap.sll}} & ({
+    {32{a_ff[31]}}, a_ff[31:0]
   } << b_ff[4:0])) | ({XLEN{ap.srl}} & ({
-    32'h0, a_ff[31:0]
+    {32{a_ff[31]}}, a_ff[31:0]
   } >> b_ff[4:0])) | ({XLEN{ap.sra}} & ashift) : ({XLEN{ap.sll}} & (a_ff << b_ff[5:0])) |
       ({XLEN{ap.srl}} & (a_ff >> b_ff[5:0])) | ({XLEN{ap.sra}} & ashift);
 
