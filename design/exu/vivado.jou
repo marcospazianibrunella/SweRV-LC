@@ -116,3 +116,7 @@ reset_simulation
 launch_simulation
 launch_simulation
 source tb_core.tcl
+close_sim
+reset_run synth_1
+launch_runs synth_1 -jobs 16
+wait_on_run synth_1

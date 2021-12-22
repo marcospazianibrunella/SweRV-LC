@@ -217,7 +217,7 @@ rv32c = {
 
 
 rv32c[c.add{0-4}] =             { rdrd rdrs1 rs2rs2                                    o[5] o[4] o[1] o[0] }
-rv32c[c.addw] =            { rdrd rdrs1 rs2rs2                                   o[5] o[4] o[3] o[1] o[0] }
+rv32c[c.addw] =            { rdprd rdprs1 rs2prs2                                   o[5] o[4] o[3] o[1] o[0] }
 
 rv32c[c.mv{0-4}] =              { rdrd rs2rs2                                          o[5] o[4] o[1] o[0] }
 

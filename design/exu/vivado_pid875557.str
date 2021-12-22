@@ -3671,3 +3671,45 @@ dismissDialog("Run Simulation"); // e
 // TclEventType: WAVEFORM_MODEL_EVENT
 // TclEventType: WAVEFORM_UPDATE_WAVEFORM
 // TclEventType: WAVEFORM_MODEL_EVENT
+// HMemoryUtils.trashcanNow. Engine heap size: 5,234 MB. GUI used memory: 159 MB. Current time: 12/21/21, 11:53:54 AM CET
+// Elapsed time: 2613 seconds
+selectButton(PAResourceTtoZ.TaskBanner_CLOSE, (String) null); // k
+closeTask("Simulation", "Behavioral Simulation - Functional - sim_1 - tb_core", "DesignTask.SIMULATION");
+// bz (cr):  Close : addNotify
+// TclEventType: WAVEFORM_CLOSE_WCFG
+// TclEventType: SIMULATION_CLOSE_SIMULATION
+// Tcl Message: close_sim 
+// Tcl Message: INFO: [Simtcl 6-16] Simulation closed 
+// Tcl Message: close_sim: Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 11105.340 ; gain = 0.000 ; free physical = 13130 ; free virtual = 145991 
+dismissDialog("Close"); // bz
+selectButton(PAResourceQtoS.StaleMoreAction_OUT_OF_DATE_DETAILS, "details"); // h
+selectButton(PAResourceQtoS.StaleMoreAction_OUT_OF_DATE_DETAILS, "details"); // h
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Synthesis, Run Synthesis]", 14, false); // u
+// Run Command: PAResourceCommand.PACommandNames_RUN_SYNTHESIS
+// bz (cr):  Resetting Runs : addNotify
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// Tcl Message: reset_run synth_1 
+// bz (cr):  Starting Design Runs : addNotify
+// TclEventType: FILESET_TARGET_UCF_CHANGE
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: launch_runs synth_1 -jobs 16 
+// Tcl Message: [Tue Dec 21 12:07:40 2021] Launched synth_1... Run output will be captured here: /home/marco/vivado_projects/LC_SweRV/LC_SweRV.runs/synth_1/runme.log 
+dismissDialog("Starting Design Runs"); // bz
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// HMemoryUtils.trashcanNow. Engine heap size: 5,196 MB. GUI used memory: 157 MB. Current time: 12/21/21, 12:23:54 PM CET
+// HMemoryUtils.trashcanNow. Engine heap size: 5,196 MB. GUI used memory: 157 MB. Current time: 12/21/21, 12:53:54 PM CET
+// HMemoryUtils.trashcanNow. Engine heap size: 5,196 MB. GUI used memory: 116 MB. Current time: 12/21/21, 1:23:54 PM CET
+// HMemoryUtils.trashcanNow. Engine heap size: 5,196 MB. GUI used memory: 116 MB. Current time: 12/21/21, 1:53:54 PM CET
+// HMemoryUtils.trashcanNow. Engine heap size: 5,196 MB. GUI used memory: 116 MB. Current time: 12/21/21, 2:23:54 PM CET
+// HMemoryUtils.trashcanNow. Engine heap size: 5,196 MB. GUI used memory: 116 MB. Current time: 12/21/21, 2:53:54 PM CET
+// HMemoryUtils.trashcanNow. Engine heap size: 5,196 MB. GUI used memory: 164 MB. Current time: 12/21/21, 3:23:54 PM CET
+// HMemoryUtils.trashcanNow. Engine heap size: 5,196 MB. GUI used memory: 116 MB. Current time: 12/21/21, 3:53:54 PM CET
