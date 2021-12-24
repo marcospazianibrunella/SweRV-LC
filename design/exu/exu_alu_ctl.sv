@@ -64,23 +64,28 @@ module exu_alu_ctl
   logic [XLEN-1:0] sout;
   logic sel_logic, sel_shift, sel_adder;
 
-  logic                   slt_one;
+  logic                      slt_one;
 
-  logic                   actual_taken;
+  logic                      actual_taken;
 
-  logic signed [XLEN-1:0] a_ff;
+  logic signed [   XLEN-1:0] a_ff;
 
-  logic        [XLEN-1:0] b_ff;
+  logic        [   XLEN-1:0] b_ff;
 
-  logic        [    12:1] brimm_ff;
+  logic        [       12:1] brimm_ff;
 
-  logic        [    31:1] pcout;
+  logic        [       31:1] pcout;
 
-  logic                   valid_ff;
+  logic                      valid_ff;
 
-  logic        [XLEN-1:0] ashift;
-  logic                   cond_mispredict;
-  logic                   target_mispredict;
+  logic        [   XLEN-1:0] ashift;
+  logic                      cond_mispredict;
+  logic                      target_mispredict;
+
+  logic signed [XLEN/2-1:0] a_ff_half;
+  logic        [XLEN/2-1:0] sra_half;
+  logic        [XLEN/2-1:0] srl_half;
+  logic        [XLEN/2-1:0] sll_half;
 
   logic eq, ne, lt, ge;
 
@@ -178,6 +183,9 @@ module exu_alu_ctl
     {XLEN{'0}}, ap.sub
   };
 
+  assign a_ff_half = a_ff[31:0];
+  assign sra_half = a_ff_half >>> b_ff[4:0];
+
   assign ov = ap.alu_half ? (~a_ff[31] & ~bm[31] & aout[31]) | (a_ff[31] & bm[31] & ~aout[31]) : (~a_ff[XLEN-1] & ~bm[XLEN-1] & aout[XLEN-1]) | (a_ff[XLEN-1] & bm[XLEN-1] & ~aout[XLEN-1]);
 
   assign neg = ap.alu_half ? aout[31] : aout[XLEN-1];
@@ -202,13 +210,18 @@ module exu_alu_ctl
 
 
 
-  assign ashift = ap.alu_half ? {32'h0, a_ff[31:0]} >>> b_ff[4:0] : a_ff >>> b_ff[5:0];
+  assign ashift = ap.alu_half ? {{32{sra_half[31]}}, sra_half} : a_ff >>> b_ff[5:0];
 
-  assign sout = ap.alu_half ? ({64{ap.sll}} & ({
-    {32{a_ff[31]}}, a_ff[31:0]
-  } << b_ff[4:0])) | ({XLEN{ap.srl}} & ({
-    {32{a_ff[31]}}, a_ff[31:0]
-  } >> b_ff[4:0])) | ({XLEN{ap.sra}} & ashift) : ({XLEN{ap.sll}} & (a_ff << b_ff[5:0])) |
+  assign sll_half = a_ff[31:0] << b_ff[4:0];
+  assign srl_half = a_ff[31:0] >> b_ff[4:0];
+
+  assign sout = ap.alu_half ? ({
+    {64{ap.sll}}
+  } & {
+    {32{sll_half[31]}}, sll_half
+  }) | ({XLEN{ap.srl}} & {
+    {32{srl_half[31]}}, srl_half
+  }) | ({XLEN{ap.sra}} & ashift) : ({XLEN{ap.sll}} & (a_ff << b_ff[5:0])) |
       ({XLEN{ap.srl}} & (a_ff >> b_ff[5:0])) | ({XLEN{ap.sra}} & ashift);
 
 
