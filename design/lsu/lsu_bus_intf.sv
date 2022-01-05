@@ -246,7 +246,7 @@ module lsu_bus_intf
                                  ({8{lsu_pkt_dc2.word}} & 8'b0000_1111) |
                                  ({8{lsu_pkt_dc2.dword}} & 8'b1111_1111);
 
-  assign ldst_dual_dc1 = (lsu_addr_dc1[2] != end_addr_dc1[2]);
+  assign ldst_dual_dc1 = (lsu_addr_dc1[3] != end_addr_dc1[3]);
   assign lsu_freeze_dc3 = ld_freeze_dc3 & ~(flush_dc4 | flush_dc5);
 
   // Determine if the packet is double word aligned
