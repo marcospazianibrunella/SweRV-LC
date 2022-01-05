@@ -145,11 +145,12 @@ module lsu_dccm_ctl
     stbuf_fwdbyteen_hi_dc3[DCCM_BYTE_WIDTH-1:0], stbuf_fwdbyteen_lo_dc3[DCCM_BYTE_WIDTH-1:0]
   };
 
-  for (genvar i = 0; i < DCCM_BYTE_WIDTH * 2; i++) begin : GenLoop
-    assign lsu_rdata_dc3[(8*i)+7:8*i]      = stbuf_fwdbyteen_dc3[i] ? stbuf_fwddata_dc3[(8*i)+7:8*i] :
-                                                                        (addr_in_pic_dc3 ? picm_rd_data_dc3[(8*i)+7:8*i] :  dccm_dout_dc3[(8*i)+7:8*i]);
+  for (genvar i = 0; i < 2 * `DCCM_BYTE_WIDTH; i++) begin : GenLoop
+    assign lsu_rdata_dc3[(8*i)+7:8*i] = stbuf_fwdbyteen_dc3[i] ? stbuf_fwddata_dc3[(8*i)+7:8*i] :
+    (addr_in_pic_dc3 ? picm_rd_data_dc3[(8*i)+7:8*i] : dccm_dout_dc3[(8*i)+7:8*i]);
+
     assign lsu_rdata_corr_dc3[(8*i)+7:8*i] = stbuf_fwdbyteen_dc3[i] ? stbuf_fwddata_dc3[(8*i)+7:8*i] :
-                                                                        (addr_in_pic_dc3 ? picm_rd_data_dc3[(8*i)+7:8*i] :  dccm_corr_dout_dc3[(8*i)+7:8*i]);
+    (addr_in_pic_dc3 ? picm_rd_data_dc3[(8*i)+7:8*i] : dccm_corr_dout_dc3[(8*i)+7:8*i]);
   end
 
   assign lsu_stbuf_commit_any = stbuf_reqvld_any & ~lsu_freeze_dc3 & (
