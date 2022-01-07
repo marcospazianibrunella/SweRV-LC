@@ -45,6 +45,7 @@ module ifu_compress_ctl (
   logic uimm9_2;
   logic ulwimm6_2;
   logic ulwspimm7_2;
+  logic uldspimm8_3;
   logic rdeq2;
   logic rdeq1;
   logic rs1eq2;
@@ -56,6 +57,7 @@ module ifu_compress_ctl (
   logic uimm5_0;
   logic uswimm6_2;
   logic uswspimm7_2;
+  logic usdspimm8_3;
 
 
 
@@ -111,6 +113,7 @@ module ifu_compress_ctl (
   logic [  9:4] simm9d;
   logic [  6:2] ulwimm6d;
   logic [  7:2] ulwspimm7d;
+  logic [  8:3] uldspimm8d;
   logic [  5:0] uimm5d;
   logic [ 20:1] sjald;
 
@@ -127,6 +130,8 @@ module ifu_compress_ctl (
   assign ulwimm6d[6:2] = {i[5], i[12:10], i[6]};
 
   assign ulwspimm7d[7:2] = {i[3:2], i[12], i[6:4]};
+
+  assign uldspimm8d[8:3] = {i[4:2], i[12], i[6:5]};
 
   assign uimm5d[5:0] = {i[12], i[6:2]};
 
@@ -149,6 +154,8 @@ module ifu_compress_ctl (
     5'b0, ulwimm6d[6:2], 2'b0
   }) | ({12{ulwspimm7_2}} & {
     4'b0, ulwspimm7d[7:2], 2'b0
+  }) | ({12{uldspimm8_3}} & {
+    3'b0, uldspimm8d[8:3], 3'b0
   }) | ({12{uimm5_0}} & {
     6'b0, uimm5d[5:0]
   }) | ({12{sjaloffset11_1}} & {
@@ -170,6 +177,7 @@ module ifu_compress_ctl (
   logic [8:1] sbr8d;
   logic [6:2] uswimm6d;
   logic [7:2] uswspimm7d;
+  logic [8:3] usdspimm8d;
 
 
   assign sbr8d[8:1] = {i[12], i[6], i[5], i[2], i[11], i[10], i[4], i[3]};
@@ -178,12 +186,16 @@ module ifu_compress_ctl (
 
   assign uswspimm7d[7:2] = {i[8:7], i[12:9]};
 
+  assign usdspimm8d[8:3] = {i[9:7], i[12:10]};
+
   assign l3[31:25] = (l2[31:25]) | ({7{sbroffset8_1}} & {
     {4{sbr8d[8]}}, sbr8d[7:5]
   }) | ({7{uswimm6_2}} & {
     5'b0, uswimm6d[6:5]
   }) | ({7{uswspimm7_2}} & {
     4'b0, uswspimm7d[7:5]
+  }) | ({7{usdspimm8_3}} & {
+    3'b0, usdspimm8d[8:5]
   });
 
 
@@ -195,6 +207,8 @@ module ifu_compress_ctl (
     uswimm6d[4:2], 2'b0
   }) | ({5{uswspimm7_2}} & {
     uswspimm7d[4:2], 2'b0
+  }) | ({5{usdspimm8_3}} & {
+    usdspimm8d[4:3], 3'b0
   });
 
   assign l3[6:0] = l2[6:0];
@@ -229,8 +243,6 @@ module ifu_compress_ctl (
     &i[10]&i[0]) | (!i[15]&i[11]&i[0]) | (!i[15]&i[1]) | (!i[15]&!i[13]
     &i[0]);
 
-  //assign half  = 1'b0;
-
   assign rdrs1 = (!i[14]&i[12]&i[11]&i[1]) | (!i[14]&i[12]&i[10]&i[1]) | (!i[14]
     &i[12]&i[9]&i[1]) | (!i[14]&i[12]&i[8]&i[1]) | (!i[14]&i[12]&i[7]
     &i[1]) | (!i[14]&!i[12]&!i[6]&!i[5]&!i[4]&!i[3]&!i[2]&i[1]) | (!i[14]
@@ -253,7 +265,9 @@ module ifu_compress_ctl (
 
   assign ulwimm6_2 = (!i[15] & i[14] & !i[1] & !i[0]);
 
-  assign ulwspimm7_2 = (!i[15] & i[14] & i[1]);
+  assign ulwspimm7_2 = (!i[15] & i[14] & !i[13] & i[1]);
+
+  assign uldspimm8_3 = (!i[15] & i[13] & i[1]);
 
   assign rdeq2 = (!i[15] & i[14] & i[13] & !i[11] & !i[10] & !i[9] & i[8] & !i[7] & i[0]);
 
@@ -283,7 +297,9 @@ module ifu_compress_ctl (
 
   assign uswimm6_2 = (i[15] & !i[1] & !i[0]);
 
-  assign uswspimm7_2 = (i[15] & i[14] & i[1]);
+  assign uswspimm7_2 = (i[15] & i[14] & !i[13] & i[1]);
+
+  assign usdspimm8_3 = (i[15] & i[13] & i[1]);
 
   assign o[31] = 1'b0;
 
