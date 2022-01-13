@@ -14,39 +14,39 @@
 `include "registers.svh"
 
 module fpnew_fma #(
-  parameter fpnew_pkg::fp_format_e   FpFormat    = fpnew_pkg::fp_format_e'(0),
-  parameter int unsigned             NumPipeRegs = 0,
-  parameter fpnew_pkg::pipe_config_t PipeConfig  = fpnew_pkg::BEFORE,
-  parameter type                     TagType     = logic,
-  parameter type                     AuxType     = logic,
+    parameter fpnew_pkg::fp_format_e   FpFormat    = fpnew_pkg::fp_format_e'(0),
+    parameter int unsigned             NumPipeRegs = 0,
+    parameter fpnew_pkg::pipe_config_t PipeConfig  = fpnew_pkg::BEFORE,
+    parameter type                     TagType     = logic,
+    parameter type                     AuxType     = logic,
 
-  localparam int unsigned WIDTH = fpnew_pkg::fp_width(FpFormat) // do not change
+    localparam int unsigned WIDTH = fpnew_pkg::fp_width(FpFormat)  // do not change
 ) (
-  input logic                      clk_i,
-  input logic                      rst_ni,
-  // Input signals
-  input logic [2:0][WIDTH-1:0]     operands_i, // 3 operands
-  input logic [2:0]                is_boxed_i, // 3 operands
-  input fpnew_pkg::roundmode_e     rnd_mode_i,
-  input fpnew_pkg::operation_e     op_i,
-  input logic                      op_mod_i,
-  input TagType                    tag_i,
-  input AuxType                    aux_i,
-  // Input Handshake
-  input  logic                     in_valid_i,
-  output logic                     in_ready_o,
-  input  logic                     flush_i,
-  // Output signals
-  output logic [WIDTH-1:0]         result_o,
-  output fpnew_pkg::status_t       status_o,
-  output logic                     extension_bit_o,
-  output TagType                   tag_o,
-  output AuxType                   aux_o,
-  // Output handshake
-  output logic                     out_valid_o,
-  input  logic                     out_ready_i,
-  // Indication of valid data in flight
-  output logic                     busy_o
+    input  logic                                         clk_i,
+    input  logic                                         rst_ni,
+    // Input signals
+    input  logic                  [      2:0][WIDTH-1:0] operands_i,       // 3 operands
+    input  logic                  [      2:0]            is_boxed_i,       // 3 operands
+    input  fpnew_pkg::roundmode_e                        rnd_mode_i,
+    input  fpnew_pkg::operation_e                        op_i,
+    input  logic                                         op_mod_i,
+    input  TagType                                       tag_i,
+    input  AuxType                                       aux_i,
+    // Input Handshake
+    input  logic                                         in_valid_i,
+    output logic                                         in_ready_o,
+    input  logic                                         flush_i,
+    // Output signals
+    output logic                  [WIDTH-1:0]            result_o,
+    output fpnew_pkg::status_t                           status_o,
+    output logic                                         extension_bit_o,
+    output TagType                                       tag_o,
+    output AuxType                                       aux_o,
+    // Output handshake
+    output logic                                         out_valid_o,
+    input  logic                                         out_ready_i,
+    // Indication of valid data in flight
+    output logic                                         busy_o
 );
 
   // ----------
@@ -54,11 +54,11 @@ module fpnew_fma #(
   // ----------
   localparam int unsigned EXP_BITS = fpnew_pkg::exp_bits(FpFormat);
   localparam int unsigned MAN_BITS = fpnew_pkg::man_bits(FpFormat);
-  localparam int unsigned BIAS     = fpnew_pkg::bias(FpFormat);
+  localparam int unsigned BIAS = fpnew_pkg::bias(FpFormat);
   // Precision bits 'p' include the implicit bit
   localparam int unsigned PRECISION_BITS = MAN_BITS + 1;
   // The lower 2p+3 bits of the internal FMA result will be needed for leading-zero detection
-  localparam int unsigned LOWER_SUM_WIDTH  = 2 * PRECISION_BITS + 3;
+  localparam int unsigned LOWER_SUM_WIDTH = 2 * PRECISION_BITS + 3;
   localparam int unsigned LZC_RESULT_WIDTH = $clog2(LOWER_SUM_WIDTH);
   // Internal exponent width of FMA must accomodate all meaningful exponent values in order to avoid
   // datapath leakage. This is either given by the exponent bits or the width of the LZC result.
@@ -71,17 +71,17 @@ module fpnew_fma #(
                             ? NumPipeRegs
                             : (PipeConfig == fpnew_pkg::DISTRIBUTED
                                ? ((NumPipeRegs + 1) / 3) // Second to get distributed regs
-                               : 0); // no regs here otherwise
+  : 0);  // no regs here otherwise
   localparam NUM_MID_REGS = PipeConfig == fpnew_pkg::INSIDE
                           ? NumPipeRegs
                           : (PipeConfig == fpnew_pkg::DISTRIBUTED
                              ? ((NumPipeRegs + 2) / 3) // First to get distributed regs
-                             : 0); // no regs here otherwise
+  : 0);  // no regs here otherwise
   localparam NUM_OUT_REGS = PipeConfig == fpnew_pkg::AFTER
                             ? NumPipeRegs
                             : (PipeConfig == fpnew_pkg::DISTRIBUTED
                                ? (NumPipeRegs / 3) // Last to get distributed regs
-                               : 0); // no regs here otherwise
+  : 0);  // no regs here otherwise
 
   // ----------------
   // Type definition
@@ -93,70 +93,43 @@ module fpnew_fma #(
   } fp_t;
 
   // ---------------
-  // Input pipeline
+  // Input Stage 
   // ---------------
-  // Input pipeline signals, index i holds signal after i register stages
-  logic                  [0:NUM_INP_REGS][2:0][WIDTH-1:0] inp_pipe_operands_q;
-  logic                  [0:NUM_INP_REGS][2:0]            inp_pipe_is_boxed_q;
-  fpnew_pkg::roundmode_e [0:NUM_INP_REGS]                 inp_pipe_rnd_mode_q;
-  fpnew_pkg::operation_e [0:NUM_INP_REGS]                 inp_pipe_op_q;
-  logic                  [0:NUM_INP_REGS]                 inp_pipe_op_mod_q;
-  TagType                [0:NUM_INP_REGS]                 inp_pipe_tag_q;
-  AuxType                [0:NUM_INP_REGS]                 inp_pipe_aux_q;
-  logic                  [0:NUM_INP_REGS]                 inp_pipe_valid_q;
-  // Ready signal is combinatorial for all stages
-  logic [0:NUM_INP_REGS] inp_pipe_ready;
+  logic                  [2:0][WIDTH-1:0] operands_fpx1;
+  logic                  [2:0]            is_boxed_fpx1;
+  fpnew_pkg::roundmode_e                  rnd_mode_fpx1;
+  fpnew_pkg::operation_e                  op_fpx1;
+  logic                                   op_mod_fpx1;
+  TagType                                 tag_fpx1;
+  AuxType                                 aux_fpx1;
+  logic                                   valid_fpx1;
 
-  // Input stage: First element of pipeline is taken from inputs
-  assign inp_pipe_operands_q[0] = operands_i;
-  assign inp_pipe_is_boxed_q[0] = is_boxed_i;
-  assign inp_pipe_rnd_mode_q[0] = rnd_mode_i;
-  assign inp_pipe_op_q[0]       = op_i;
-  assign inp_pipe_op_mod_q[0]   = op_mod_i;
-  assign inp_pipe_tag_q[0]      = tag_i;
-  assign inp_pipe_aux_q[0]      = aux_i;
-  assign inp_pipe_valid_q[0]    = in_valid_i;
-  // Input stage: Propagate pipeline ready signal to updtream circuitry
-  assign in_ready_o = inp_pipe_ready[0];
-  // Generate the register stages
-  for (genvar i = 0; i < NUM_INP_REGS; i++) begin : gen_input_pipeline
-    // Internal register enable for this stage
-    logic reg_ena;
-    // Determine the ready signal of the current stage - advance the pipeline:
-    // 1. if the next stage is ready for our data
-    // 2. if the next stage only holds a bubble (not valid) -> we can pop it
-    assign inp_pipe_ready[i] = inp_pipe_ready[i+1] | ~inp_pipe_valid_q[i+1];
-    // Valid: enabled by ready signal, synchronous clear with the flush signal
-    `FFLARNC(inp_pipe_valid_q[i+1], inp_pipe_valid_q[i], inp_pipe_ready[i], flush_i, 1'b0, clk_i, rst_ni)
-    // Enable register if pipleine ready and a valid data item is present
-    assign reg_ena = inp_pipe_ready[i] & inp_pipe_valid_q[i];
-    // Generate the pipeline registers within the stages, use enable-registers
-    `FFL(inp_pipe_operands_q[i+1], inp_pipe_operands_q[i], reg_ena, '0)
-    `FFL(inp_pipe_is_boxed_q[i+1], inp_pipe_is_boxed_q[i], reg_ena, '0)
-    `FFL(inp_pipe_rnd_mode_q[i+1], inp_pipe_rnd_mode_q[i], reg_ena, fpnew_pkg::RNE)
-    `FFL(inp_pipe_op_q[i+1],       inp_pipe_op_q[i],       reg_ena, fpnew_pkg::FMADD)
-    `FFL(inp_pipe_op_mod_q[i+1],   inp_pipe_op_mod_q[i],   reg_ena, '0)
-    `FFL(inp_pipe_tag_q[i+1],      inp_pipe_tag_q[i],      reg_ena, TagType'('0))
-    `FFL(inp_pipe_aux_q[i+1],      inp_pipe_aux_q[i],      reg_ena, AuxType'('0))
-  end
+  assign operands_fpx1 = operands_i;
+  assign is_boxed_fpx1 = is_boxed_i;
+  assign rnd_mode_fpx1 = rnd_mode_i;
+  assign op_fpx1       = op_i;
+  assign op_mod_fpx1   = op_mod_i;
+  assign tag_fpx1      = tag_i;
+  assign aux_fpx1      = aux_i;
+  assign valid_fpx1    = in_valid_i;
 
   // -----------------
   // Input processing
   // -----------------
-  fpnew_pkg::fp_info_t [2:0] info_q;
+  fpnew_pkg::fp_info_t [2:0] info_fpx1;
 
   // Classify input
   fpnew_classifier #(
-    .FpFormat    ( FpFormat ),
-    .NumOperands ( 3        )
-    ) i_class_inputs (
-    .operands_i ( inp_pipe_operands_q[NUM_INP_REGS] ),
-    .is_boxed_i ( inp_pipe_is_boxed_q[NUM_INP_REGS] ),
-    .info_o     ( info_q                            )
+      .FpFormat   (FpFormat),
+      .NumOperands(3)
+  ) i_class_inputs (
+      .operands_i(operands_fpx1),
+      .is_boxed_i(is_boxed_fpx1),
+      .info_o    (info_fpx1)
   );
 
-  fp_t                 operand_a, operand_b, operand_c;
-  fpnew_pkg::fp_info_t info_a,    info_b,    info_c;
+  fp_t operand_a_fpx1, operand_b_fpx1, operand_c_fpx1;
+  fpnew_pkg::fp_info_t info_a_fpx1, info_b_fpx1, info_c_fpx1;
 
   // Operation selection and operand adjustment
   // | \c op_q  | \c op_mod_q | Operation Adjustment
@@ -173,34 +146,34 @@ module fpnew_fma #(
   always_comb begin : op_select
 
     // Default assignments - packing-order-agnostic
-    operand_a = inp_pipe_operands_q[NUM_INP_REGS][0];
-    operand_b = inp_pipe_operands_q[NUM_INP_REGS][1];
-    operand_c = inp_pipe_operands_q[NUM_INP_REGS][2];
-    info_a    = info_q[0];
-    info_b    = info_q[1];
-    info_c    = info_q[2];
+    operand_a_fpx1 = operands_fpx1[0];
+    operand_b_fpx1 = operands_fpx1[1];
+    operand_c_fpx1 = operands_fpx1[2];
+    info_a_fpx1    = info_fpx1[0];
+    info_b_fpx1    = info_fpx1[1];
+    info_c_fpx1    = info_fpx1[2];
 
     // op_mod_q inverts sign of operand C
-    operand_c.sign = operand_c.sign ^ inp_pipe_op_mod_q[NUM_INP_REGS];
+    operand_c_fpx1.sign = operand_c_fpx1.sign ^ op_mod_fpx1;
 
-    unique case (inp_pipe_op_q[NUM_INP_REGS])
-      fpnew_pkg::FMADD:  ; // do nothing
-      fpnew_pkg::FNMSUB: operand_a.sign = ~operand_a.sign; // invert sign of product
-      fpnew_pkg::ADD: begin // Set multiplicand to +1
-        operand_a = '{sign: 1'b0, exponent: BIAS, mantissa: '0};
-        info_a    = '{is_normal: 1'b1, is_boxed: 1'b1, default: 1'b0}; //normal, boxed value.
+    unique case (op_fpx1)
+      fpnew_pkg::FMADD:  ;  // do nothing
+      fpnew_pkg::FNMSUB: operand_a_fpx1.sign = ~operand_a_fpx1.sign;  // invert sign of product
+      fpnew_pkg::ADD: begin  // Set multiplicand to +1
+        operand_a_fpx1 = '{sign: 1'b0, exponent: BIAS, mantissa: '0};
+        info_a_fpx1    = '{is_normal: 1'b1, is_boxed: 1'b1, default: 1'b0}; //normal, boxed value.
       end
-      fpnew_pkg::MUL: begin // Set addend to -0 (for proper rounding with RDN)
-        operand_c = '{sign: 1'b1, exponent: '0, mantissa: '0};
-        info_c    = '{is_zero: 1'b1, is_boxed: 1'b1, default: 1'b0}; //zero, boxed value.
+      fpnew_pkg::MUL: begin  // Set addend to -0 (for proper rounding with RDN)
+        operand_c_fpx1 = '{sign: 1'b1, exponent: '0, mantissa: '0};
+        info_c_fpx1    = '{is_zero: 1'b1, is_boxed: 1'b1, default: 1'b0}; //zero, boxed value.
       end
-      default: begin // propagate don't cares
-        operand_a  = '{default: fpnew_pkg::DONT_CARE};
-        operand_b  = '{default: fpnew_pkg::DONT_CARE};
-        operand_c  = '{default: fpnew_pkg::DONT_CARE};
-        info_a     = '{default: fpnew_pkg::DONT_CARE};
-        info_b     = '{default: fpnew_pkg::DONT_CARE};
-        info_c     = '{default: fpnew_pkg::DONT_CARE};
+      default: begin  // propagate don't cares
+        operand_a_fpx1 = '{default: fpnew_pkg::DONT_CARE};
+        operand_b_fpx1 = '{default: fpnew_pkg::DONT_CARE};
+        operand_c_fpx1 = '{default: fpnew_pkg::DONT_CARE};
+        info_a_fpx1    = '{default: fpnew_pkg::DONT_CARE};
+        info_b_fpx1    = '{default: fpnew_pkg::DONT_CARE};
+        info_c_fpx1    = '{default: fpnew_pkg::DONT_CARE};
       end
     endcase
   end
@@ -208,59 +181,69 @@ module fpnew_fma #(
   // ---------------------
   // Input classification
   // ---------------------
-  logic any_operand_inf;
-  logic any_operand_nan;
-  logic signalling_nan;
-  logic effective_subtraction;
-  logic tentative_sign;
+  logic any_operand_inf_fpx1;
+  logic any_operand_nan_fpx1;
+  logic signalling_nan_fpx1;
+  logic effective_subtraction_fpx1;
+  logic tentative_sign_fpx1;
 
   // Reduction for special case handling
-  assign any_operand_inf = (| {info_a.is_inf,        info_b.is_inf,        info_c.is_inf});
-  assign any_operand_nan = (| {info_a.is_nan,        info_b.is_nan,        info_c.is_nan});
-  assign signalling_nan  = (| {info_a.is_signalling, info_b.is_signalling, info_c.is_signalling});
+  assign any_operand_inf_fpx1 = (|{info_a_fpx1.is_inf, info_b_fpx1.is_inf, info_c_fpx1.is_inf});
+  assign any_operand_nan_fpx1 = (|{info_a_fpx1.is_nan, info_b_fpx1.is_nan, info_c_fpx1.is_nan});
+  assign signalling_nan_fpx1 = (|{
+    info_a_fpx1.is_signalling, info_b_fpx1.is_signalling, info_c_fpx1.is_signalling
+  });
   // Effective subtraction in FMA occurs when product and addend signs differ
-  assign effective_subtraction = operand_a.sign ^ operand_b.sign ^ operand_c.sign;
+  assign effective_subtraction_fpx1 = operand_a_fpx1.sign ^ operand_b_fpx1.sign ^ operand_c_fpx1.sign;
   // The tentative sign of the FMA shall be the sign of the product
-  assign tentative_sign = operand_a.sign ^ operand_b.sign;
+  assign tentative_sign_fpx1 = operand_a_fpx1.sign ^ operand_b_fpx1.sign;
 
   // ----------------------
   // Special case handling
   // ----------------------
-  fp_t                special_result;
-  fpnew_pkg::status_t special_status;
-  logic               result_is_special;
+  fp_t                special_result_fpx1;
+  fpnew_pkg::status_t special_status_fpx1;
+  logic               result_is_special_fpx1;
 
   always_comb begin : special_cases
     // Default assignments
-    special_result    = '{sign: 1'b0, exponent: '1, mantissa: 2**(MAN_BITS-1)}; // canonical qNaN
-    special_status    = '0;
-    result_is_special = 1'b0;
+    special_result_fpx1 = '{
+        sign: 1'b0,
+        exponent: '1,
+        mantissa: 2 ** (MAN_BITS - 1)
+    };  // canonical qNaN
+    special_status_fpx1 = '0;
+    result_is_special_fpx1 = 1'b0;
 
     // Handle potentially mixed nan & infinity input => important for the case where infinity and
     // zero are multiplied and added to a qnan.
     // RISC-V mandates raising the NV exception in these cases:
     // (inf * 0) + c or (0 * inf) + c INVALID, no matter c (even quiet NaNs)
-    if ((info_a.is_inf && info_b.is_zero) || (info_a.is_zero && info_b.is_inf)) begin
-      result_is_special = 1'b1; // bypass FMA, output is the canonical qNaN
-      special_status.NV = 1'b1; // invalid operation
-    // NaN Inputs cause canonical quiet NaN at the output and maybe invalid OP
-    end else if (any_operand_nan) begin
-      result_is_special = 1'b1;           // bypass FMA, output is the canonical qNaN
-      special_status.NV = signalling_nan; // raise the invalid operation flag if signalling
-    // Special cases involving infinity
-    end else if (any_operand_inf) begin
-      result_is_special = 1'b1; // bypass FMA
+    if ((info_a_fpx1.is_inf && info_b_fpx1.is_zero) || (info_a_fpx1.is_zero && info_b_fpx1.is_inf)) begin
+      result_is_special_fpx1 = 1'b1;  // bypass FMA, output is the canonical qNaN
+      special_status_fpx1.NV = 1'b1;  // invalid operation
+      // NaN Inputs cause canonical quiet NaN at the output and maybe invalid OP
+    end else if (any_operand_nan_fpx1) begin
+      result_is_special_fpx1 = 1'b1;  // bypass FMA, output is the canonical qNaN
+      special_status_fpx1.NV = signalling_nan_fpx1;  // raise the invalid operation flag if signalling
+      // Special cases involving infinity
+    end else if (any_operand_inf_fpx1) begin
+      result_is_special_fpx1 = 1'b1;  // bypass FMA
       // Effective addition of opposite infinities (±inf - ±inf) is invalid!
-      if ((info_a.is_inf || info_b.is_inf) && info_c.is_inf && effective_subtraction)
-        special_status.NV = 1'b1; // invalid operation
-      // Handle cases where output will be inf because of inf product input
-      else if (info_a.is_inf || info_b.is_inf) begin
+      if ((info_a_fpx1.is_inf || info_b_fpx1.is_inf) && info_c_fpx1.is_inf && effective_subtraction_fpx1)
+        special_status_fpx1.NV = 1'b1;  // invalid operation
+      // Handle cases where output will be inf because of inf product input      else
+      if (info_a_fpx1.is_inf || info_b_fpx1.is_inf) begin
         // Result is infinity with the sign of the product
-        special_result    = '{sign: operand_a.sign ^ operand_b.sign, exponent: '1, mantissa: '0};
-      // Handle cases where the addend is inf
-      end else if (info_c.is_inf) begin
-        // Result is inifinity with sign of the addend (= operand_c)
-        special_result    = '{sign: operand_c.sign, exponent: '1, mantissa: '0};
+        special_result_fpx1 = '{
+            sign: operand_a_fpx1.sign ^ operand_b_fpx1.sign,
+            exponent: '1,
+            mantissa: '0
+        };
+        // Handle cases where the addend is inf
+      end else if (info_c_fpx1.is_inf) begin
+        // Result is inifinity with sign of the addend (= operand_c_fpx1)
+        special_result_fpx1 = '{sign: operand_c_fpx1.sign, exponent: '1, mantissa: '0};
       end
     end
   end
@@ -268,72 +251,165 @@ module fpnew_fma #(
   // ---------------------------
   // Initial exponent data path
   // ---------------------------
-  logic signed [EXP_WIDTH-1:0] exponent_a, exponent_b, exponent_c;
-  logic signed [EXP_WIDTH-1:0] exponent_addend, exponent_product, exponent_difference;
-  logic signed [EXP_WIDTH-1:0] tentative_exponent;
+  logic signed [EXP_WIDTH-1:0] exponent_a_fpx1, exponent_b_fpx1, exponent_c_fpx1;
+  logic signed [EXP_WIDTH-1:0]
+      exponent_addend_fpx1, exponent_product_fpx1, exponent_difference_fpx1;
+  logic signed [EXP_WIDTH-1:0] tentative_exponent_fpx1;
 
   // Zero-extend exponents into signed container - implicit width extension
-  assign exponent_a = signed'({1'b0, operand_a.exponent});
-  assign exponent_b = signed'({1'b0, operand_b.exponent});
-  assign exponent_c = signed'({1'b0, operand_c.exponent});
+  assign exponent_a_fpx1 = signed'({1'b0, operand_a_fpx1.exponent});
+  assign exponent_b_fpx1 = signed'({1'b0, operand_b_fpx1.exponent});
+  assign exponent_c_fpx1 = signed'({1'b0, operand_c_fpx1.exponent});
 
   // Calculate internal exponents from encoded values. Real exponents are (ex = Ex - bias + 1 - nx)
   // with Ex the encoded exponent and nx the implicit bit. Internal exponents stay biased.
-  assign exponent_addend = signed'(exponent_c + $signed({1'b0, ~info_c.is_normal})); // 0 as subnorm
+  assign exponent_addend_fpx1 = signed'(exponent_c_fpx1 + $signed(
+          {1'b0, ~info_c_fpx1.is_normal}
+      ));  // 0 as subnorm
   // Biased product exponent is the sum of encoded exponents minus the bias.
-  assign exponent_product = (info_a.is_zero || info_b.is_zero)
+  assign exponent_product_fpx1 = (info_a_fpx1.is_zero || info_b_fpx1.is_zero)
                             ? 2 - signed'(BIAS) // in case the product is zero, set minimum exp.
-                            : signed'(exponent_a + info_a.is_subnormal
-                                      + exponent_b + info_b.is_subnormal
+                            : signed'(exponent_a_fpx1 + info_a_fpx1.is_subnormal
+                                      + exponent_b_fpx1 + info_b_fpx1.is_subnormal
                                       - signed'(BIAS));
   // Exponent difference is the addend exponent minus the product exponent
-  assign exponent_difference = exponent_addend - exponent_product;
+  assign exponent_difference_fpx1 = exponent_addend_fpx1 - exponent_product_fpx1;
   // The tentative exponent will be the larger of the product or addend exponent
-  assign tentative_exponent = (exponent_difference > 0) ? exponent_addend : exponent_product;
+  assign tentative_exponent_fpx1 = (exponent_difference_fpx1 > 0) ? exponent_addend_fpx1 : exponent_product_fpx1;
 
   // Shift amount for addend based on exponents (unsigned as only right shifts)
-  logic [SHIFT_AMOUNT_WIDTH-1:0] addend_shamt;
+  logic [SHIFT_AMOUNT_WIDTH-1:0] addend_shamt_fpx1;
 
   always_comb begin : addend_shift_amount
     // Product-anchored case, saturated shift (addend is only in the sticky bit)
-    if (exponent_difference <= signed'(-2 * PRECISION_BITS - 1))
-      addend_shamt = 3 * PRECISION_BITS + 4;
-    // Addend and product will have mutual bits to add
-    else if (exponent_difference <= signed'(PRECISION_BITS + 2))
-      addend_shamt = unsigned'(signed'(PRECISION_BITS) + 3 - exponent_difference);
+    if (exponent_difference_fpx1 <= signed'(-2 * PRECISION_BITS - 1))
+      addend_shamt_fpx1 = 3 * PRECISION_BITS + 4;
+    // Addend and product will have mutual bits to add    else
+    if (exponent_difference_fpx1 <= signed'(PRECISION_BITS + 2))
+      addend_shamt_fpx1 = unsigned'(signed'(PRECISION_BITS) + 3 - exponent_difference_fpx1);
     // Addend-anchored case, saturated shift (product is only in the sticky bit)
     else
-      addend_shamt = 0;
+      addend_shamt_fpx1 = 0;
   end
 
   // ------------------
   // Product data path
   // ------------------
-  logic [PRECISION_BITS-1:0]   mantissa_a, mantissa_b, mantissa_c;
-  logic [2*PRECISION_BITS-1:0] product;             // the p*p product is 2p bits wide
-  logic [3*PRECISION_BITS+3:0] product_shifted;     // addends are 3p+4 bit wide (including G/R)
+  logic [PRECISION_BITS-1:0] mantissa_a_fpx1, mantissa_b_fpx1, mantissa_c_fpx1;
+  logic [2*PRECISION_BITS-1:0] product_fpx1;  // the p*p product is 2p bits wide
+  logic [3*PRECISION_BITS+3:0] product_shifted_fpx1;  // addends are 3p+4 bit wide (including G/R)
 
   // Add implicit bits to mantissae
-  assign mantissa_a = {info_a.is_normal, operand_a.mantissa};
-  assign mantissa_b = {info_b.is_normal, operand_b.mantissa};
-  assign mantissa_c = {info_c.is_normal, operand_c.mantissa};
+  assign mantissa_a_fpx1 = {info_a_fpx1.is_normal, operand_a_fpx1.mantissa};
+  assign mantissa_b_fpx1 = {info_b_fpx1.is_normal, operand_b_fpx1.mantissa};
+  assign mantissa_c_fpx1 = {info_c_fpx1.is_normal, operand_c_fpx1.mantissa};
 
   // Mantissa multiplier (a*b)
-  assign product = mantissa_a * mantissa_b;
+  assign product_fpx1 = mantissa_a_fpx1 * mantissa_b_fpx1;
 
   // Product is placed into a 3p+4 bit wide vector, padded with 2 bits for round and sticky:
   // | 000...000 | product | RS |
   //  <-  p+2  -> <-  2p -> < 2>
-  assign product_shifted = product << 2; // constant shift
+  assign product_shifted_fpx1 = product_fpx1 << 2;  // constant shift
+
+
+
+  /* 
+  FPX1 --> FPX2 Sync Stage 
+    */
+  logic                  [2:0][WIDTH-1:0] operands_fpx2;
+  logic                  [2:0]            is_boxed_fpx2;
+  fpnew_pkg::roundmode_e                  rnd_mode_fpx2;
+  fpnew_pkg::operation_e                  op_fpx2;
+  logic                                   op_mod_fpx2;
+  TagType                                 tag_fpx2;
+  AuxType                                 aux_fpx2;
+  logic                                   valid_fpx2;
+  logic                                   any_operand_inf_fpx2;
+  logic                                   any_operand_nan_fpx2;
+  logic                                   signalling_nan_fpx2;
+  logic                                   effective_subtraction_fpx2;
+  logic                                   tentative_sign_fpx2;
+  logic [PRECISION_BITS-1:0] mantissa_a_fpx2, mantissa_b_fpx2, mantissa_c_fpx2;
+  logic [2*PRECISION_BITS-1:0] product_fpx2;  // the p*p product is 2p bits wide
+  logic [3*PRECISION_BITS+3:0] product_shifted_fpx2;  // addends are 3p+4 bit wide (including G/R)
+  logic signed [EXP_WIDTH-1:0] exponent_a_fpx2, exponent_b_fpx2, exponent_c_fpx2;
+  logic signed [EXP_WIDTH-1:0]
+      exponent_addend_fpx2, exponent_product_fpx2, exponent_difference_fpx2;
+  logic signed        [         EXP_WIDTH-1:0] tentative_exponent_fpx2;
+  logic               [SHIFT_AMOUNT_WIDTH-1:0] addend_shamt_fpx2;
+  fp_t                                         special_result_fpx2;
+  fpnew_pkg::status_t                          special_status_fpx2;
+  logic                                        result_is_special_fpx2;
+
+  `FFNR({
+        operands_fpx2,
+        is_boxed_fpx2,
+        rnd_mode_fpx2,
+        op_fpx2,
+        op_mod_fpx2,
+        tag_fpx2,
+        aux_fpx2,
+        valid_fpx2
+        }, {
+        operands_fpx1,
+        is_boxed_fpx1,
+        rnd_mode_fpx1,
+        op_fpx1,
+        op_mod_fpx1,
+        tag_fpx1,
+        aux_fpx1,
+        valid_fpx1
+        }, clk_i)
+
+  `FFNR({
+        any_operand_inf_fpx2,
+        any_operand_nan_fpx2,
+        signalling_nan_fpx2,
+        effective_subtraction_fpx2,
+        tentative_sign_fpx2
+        }, {
+        any_operand_inf_fpx1,
+        any_operand_nan_fpx1,
+        signalling_nan_fpx1,
+        effective_subtraction_fpx1,
+        tentative_sign_fpx1
+        }, clk_i)
+
+  `FFNR({mantissa_a_fpx2, mantissa_b_fpx2, mantissa_c_fpx2}, {
+        mantissa_a_fpx1, mantissa_b_fpx1, mantissa_c_fpx1}, clk_i)
+
+  `FFNR({product_fpx2, product_shifted_fpx2}, {product_fpx1, product_shifted_fpx1}, clk_i)
+
+  `FFNR({exponent_a_fpx2, exponent_b_fpx2, exponent_c_fpx2}, {
+        exponent_a_fpx1, exponent_b_fpx1, exponent_c_fpx1}, clk_i)
+
+  `FFNR({
+        exponent_addend_fpx2,
+        exponent_product_fpx2,
+        exponent_difference_fpx2,
+        tentative_exponent_fpx2,
+        addend_shamt_fpx2
+        }, {
+        exponent_addend_fpx1,
+        exponent_product_fpx1,
+        exponent_difference_fpx1,
+        tentative_exponent_fpx1,
+        addend_shamt_fpx1
+        }, clk_i)
+
+  `FFNR({special_result_fpx2, special_status_fpx2, result_is_special_fpx2}, {
+        special_result_fpx1, special_status_fpx1, result_is_special_fpx1}, clk_i)
+
 
   // -----------------
   // Addend data path
   // -----------------
-  logic [3*PRECISION_BITS+3:0] addend_after_shift;  // upper 3p+4 bits are needed to go on
-  logic [PRECISION_BITS-1:0]   addend_sticky_bits;  // up to p bit of shifted addend are sticky
-  logic                        sticky_before_add;   // they are compressed into a single sticky bit
-  logic [3*PRECISION_BITS+3:0] addend_shifted;      // addends are 3p+4 bit wide (including G/R)
-  logic                        inject_carry_in;     // inject carry for subtractions if needed
+  logic [3*PRECISION_BITS+3:0] addend_after_shift_fpx2;  // upper 3p+4 bits are needed to go on
+  logic [PRECISION_BITS-1:0] addend_sticky_bits_fpx2;  // up to p bit of shifted addend are sticky
+  logic sticky_before_add_fpx2;  // they are compressed into a single sticky bit
+  logic [3*PRECISION_BITS+3:0] addend_shifted_fpx2;  // addends are 3p+4 bit wide (including G/R)
+  logic inject_carry_in_fpx2;  // inject carry for subtractions if needed
 
   // In parallel, the addend is right-shifted according to the exponent difference. Up to p bits
   // are shifted out and compressed into a sticky bit.
@@ -343,331 +419,334 @@ module fpnew_fma #(
   // AFTER THE SHIFT:
   // | 000..........000 | mantissa_c | 000...............0GR |  sticky bits  |
   //  <- addend_shamt -> <-    p   -> <- 2p+4-addend_shamt -> <-  up to p  ->
-  assign {addend_after_shift, addend_sticky_bits} =
-      (mantissa_c << (3 * PRECISION_BITS + 4)) >> addend_shamt;
+  assign {addend_after_shift_fpx2, addend_sticky_bits_fpx2} =
+      (mantissa_c_fpx2 << (3 * PRECISION_BITS + 4)) >> addend_shamt_fpx2;
 
-  assign sticky_before_add     = (| addend_sticky_bits);
+  assign sticky_before_add_fpx2 = (|addend_sticky_bits_fpx2);
   // assign addend_after_shift[0] = sticky_before_add;
 
   // In case of a subtraction, the addend is inverted
-  assign addend_shifted  = (effective_subtraction) ? ~addend_after_shift : addend_after_shift;
-  assign inject_carry_in = effective_subtraction & ~sticky_before_add;
+  assign addend_shifted_fpx2 = (effective_subtraction_fpx2) ? ~addend_after_shift_fpx2 : addend_after_shift_fpx2;
+  assign inject_carry_in_fpx2 = effective_subtraction_fpx2 & ~sticky_before_add_fpx2;
 
   // ------
   // Adder
   // ------
-  logic [3*PRECISION_BITS+4:0] sum_raw;   // added one bit for the carry
-  logic                        sum_carry; // observe carry bit from sum for sign fixing
-  logic [3*PRECISION_BITS+3:0] sum;       // discard carry as sum won't overflow
-  logic                        final_sign;
+  logic [3*PRECISION_BITS+4:0] sum_raw_fpx2;  // added one bit for the carry
+  logic                        sum_carry_fpx2;  // observe carry bit from sum for sign fixing
+  logic [3*PRECISION_BITS+3:0] sum_fpx2;  // discard carry as sum won't overflow
+  logic                        final_sign_fpx2;
 
   //Mantissa adder (ab+c). In normal addition, it cannot overflow.
-  assign sum_raw = product_shifted + addend_shifted + inject_carry_in;
-  assign sum_carry = sum_raw[3*PRECISION_BITS+4];
+  assign sum_raw_fpx2 = product_shifted_fpx2 + addend_shifted_fpx2 + inject_carry_in_fpx2;
+  assign sum_carry_fpx2 = sum_raw_fpx2[3*PRECISION_BITS+4];
 
   // Complement negative sum (can only happen in subtraction -> overflows for positive results)
-  assign sum        = (effective_subtraction && ~sum_carry) ? -sum_raw : sum_raw;
+  assign sum_fpx2 = (effective_subtraction_fpx2 && ~sum_carry_fpx2) ? -sum_raw_fpx2 : sum_raw_fpx2;
 
   // In case of a mispredicted subtraction result, do a sign flip
-  assign final_sign = (effective_subtraction && (sum_carry == tentative_sign))
+  assign final_sign_fpx2 = (effective_subtraction_fpx2 && (sum_carry_fpx2 == tentative_sign_fpx2))
                       ? 1'b1
-                      : (effective_subtraction ? 1'b0 : tentative_sign);
+                      : (effective_subtraction_fpx2 ? 1'b0 : tentative_sign_fpx2);
 
-  // ---------------
-  // Internal pipeline
-  // ---------------
-  // Pipeline output signals as non-arrays
-  logic                          effective_subtraction_q;
-  logic signed [EXP_WIDTH-1:0]   exponent_product_q;
-  logic signed [EXP_WIDTH-1:0]   exponent_difference_q;
-  logic signed [EXP_WIDTH-1:0]   tentative_exponent_q;
-  logic [SHIFT_AMOUNT_WIDTH-1:0] addend_shamt_q;
-  logic                          sticky_before_add_q;
-  logic [3*PRECISION_BITS+3:0]   sum_q;
-  logic                          final_sign_q;
-  fpnew_pkg::roundmode_e         rnd_mode_q;
-  logic                          result_is_special_q;
-  fp_t                           special_result_q;
-  fpnew_pkg::status_t            special_status_q;
-  // Internal pipeline signals, index i holds signal after i register stages
-  logic                  [0:NUM_MID_REGS]                         mid_pipe_eff_sub_q;
-  logic signed           [0:NUM_MID_REGS][EXP_WIDTH-1:0]          mid_pipe_exp_prod_q;
-  logic signed           [0:NUM_MID_REGS][EXP_WIDTH-1:0]          mid_pipe_exp_diff_q;
-  logic signed           [0:NUM_MID_REGS][EXP_WIDTH-1:0]          mid_pipe_tent_exp_q;
-  logic                  [0:NUM_MID_REGS][SHIFT_AMOUNT_WIDTH-1:0] mid_pipe_add_shamt_q;
-  logic                  [0:NUM_MID_REGS]                         mid_pipe_sticky_q;
-  logic                  [0:NUM_MID_REGS][3*PRECISION_BITS+3:0]   mid_pipe_sum_q;
-  logic                  [0:NUM_MID_REGS]                         mid_pipe_final_sign_q;
-  fpnew_pkg::roundmode_e [0:NUM_MID_REGS]                         mid_pipe_rnd_mode_q;
-  logic                  [0:NUM_MID_REGS]                         mid_pipe_res_is_spec_q;
-  fp_t                   [0:NUM_MID_REGS]                         mid_pipe_spec_res_q;
-  fpnew_pkg::status_t    [0:NUM_MID_REGS]                         mid_pipe_spec_stat_q;
-  TagType                [0:NUM_MID_REGS]                         mid_pipe_tag_q;
-  AuxType                [0:NUM_MID_REGS]                         mid_pipe_aux_q;
-  logic                  [0:NUM_MID_REGS]                         mid_pipe_valid_q;
-  // Ready signal is combinatorial for all stages
-  logic [0:NUM_MID_REGS] mid_pipe_ready;
+  /* 
+      FPX2 --> FPX3 Registers 
+      */
+  logic [3*PRECISION_BITS+4:0] sum_raw_fpx3;
+  logic                        sum_carry_fpx3;
+  logic [3*PRECISION_BITS+3:0] sum_fpx3;
+  logic                        final_sign_fpx3;
+  logic [3*PRECISION_BITS+3:0] addend_after_shift_fpx3;
+  logic [  PRECISION_BITS-1:0] addend_sticky_bits_fpx3;
+  logic                        sticky_before_add_fpx3;
+  logic [3*PRECISION_BITS+3:0] addend_shifted_fpx3;
+  logic                        inject_carry_in_fpx3;
+  logic signed [EXP_WIDTH-1:0]
+      exponent_addend_fpx3, exponent_product_fpx3, exponent_difference_fpx3;
+  logic signed           [         EXP_WIDTH-1:0] tentative_exponent_fpx3;
+  logic                  [SHIFT_AMOUNT_WIDTH-1:0] addend_shamt_fpx3;
+  fpnew_pkg::roundmode_e                          rnd_mode_fpx3;
+  logic                                           effective_subtraction_fpx3;
 
-  // Input stage: First element of pipeline is taken from upstream logic
-  assign mid_pipe_eff_sub_q[0]     = effective_subtraction;
-  assign mid_pipe_exp_prod_q[0]    = exponent_product;
-  assign mid_pipe_exp_diff_q[0]    = exponent_difference;
-  assign mid_pipe_tent_exp_q[0]    = tentative_exponent;
-  assign mid_pipe_add_shamt_q[0]   = addend_shamt;
-  assign mid_pipe_sticky_q[0]      = sticky_before_add;
-  assign mid_pipe_sum_q[0]         = sum;
-  assign mid_pipe_final_sign_q[0]  = final_sign;
-  assign mid_pipe_rnd_mode_q[0]    = inp_pipe_rnd_mode_q[NUM_INP_REGS];
-  assign mid_pipe_res_is_spec_q[0] = result_is_special;
-  assign mid_pipe_spec_res_q[0]    = special_result;
-  assign mid_pipe_spec_stat_q[0]   = special_status;
-  assign mid_pipe_tag_q[0]         = inp_pipe_tag_q[NUM_INP_REGS];
-  assign mid_pipe_aux_q[0]         = inp_pipe_aux_q[NUM_INP_REGS];
-  assign mid_pipe_valid_q[0]       = inp_pipe_valid_q[NUM_INP_REGS];
-  // Input stage: Propagate pipeline ready signal to input pipe
-  assign inp_pipe_ready[NUM_INP_REGS] = mid_pipe_ready[0];
+  fp_t                                            special_result_fpx3;
+  fpnew_pkg::status_t                             special_status_fpx3;
+  logic                                           result_is_special_fpx3;
 
-  // Generate the register stages
-  for (genvar i = 0; i < NUM_MID_REGS; i++) begin : gen_inside_pipeline
-    // Internal register enable for this stage
-    logic reg_ena;
-    // Determine the ready signal of the current stage - advance the pipeline:
-    // 1. if the next stage is ready for our data
-    // 2. if the next stage only holds a bubble (not valid) -> we can pop it
-    assign mid_pipe_ready[i] = mid_pipe_ready[i+1] | ~mid_pipe_valid_q[i+1];
-    // Valid: enabled by ready signal, synchronous clear with the flush signal
-    `FFLARNC(mid_pipe_valid_q[i+1], mid_pipe_valid_q[i], mid_pipe_ready[i], flush_i, 1'b0, clk_i, rst_ni)
-    // Enable register if pipleine ready and a valid data item is present
-    assign reg_ena = mid_pipe_ready[i] & mid_pipe_valid_q[i];
-    // Generate the pipeline registers within the stages, use enable-registers
-    `FFL(mid_pipe_eff_sub_q[i+1],     mid_pipe_eff_sub_q[i],     reg_ena, '0)
-    `FFL(mid_pipe_exp_prod_q[i+1],    mid_pipe_exp_prod_q[i],    reg_ena, '0)
-    `FFL(mid_pipe_exp_diff_q[i+1],    mid_pipe_exp_diff_q[i],    reg_ena, '0)
-    `FFL(mid_pipe_tent_exp_q[i+1],    mid_pipe_tent_exp_q[i],    reg_ena, '0)
-    `FFL(mid_pipe_add_shamt_q[i+1],   mid_pipe_add_shamt_q[i],   reg_ena, '0)
-    `FFL(mid_pipe_sticky_q[i+1],      mid_pipe_sticky_q[i],      reg_ena, '0)
-    `FFL(mid_pipe_sum_q[i+1],         mid_pipe_sum_q[i],         reg_ena, '0)
-    `FFL(mid_pipe_final_sign_q[i+1],  mid_pipe_final_sign_q[i],  reg_ena, '0)
-    `FFL(mid_pipe_rnd_mode_q[i+1],    mid_pipe_rnd_mode_q[i],    reg_ena, fpnew_pkg::RNE)
-    `FFL(mid_pipe_res_is_spec_q[i+1], mid_pipe_res_is_spec_q[i], reg_ena, '0)
-    `FFL(mid_pipe_spec_res_q[i+1],    mid_pipe_spec_res_q[i],    reg_ena, '0)
-    `FFL(mid_pipe_spec_stat_q[i+1],   mid_pipe_spec_stat_q[i],   reg_ena, '0)
-    `FFL(mid_pipe_tag_q[i+1],         mid_pipe_tag_q[i],         reg_ena, TagType'('0))
-    `FFL(mid_pipe_aux_q[i+1],         mid_pipe_aux_q[i],         reg_ena, AuxType'('0))
-  end
-  // Output stage: assign selected pipe outputs to signals for later use
-  assign effective_subtraction_q = mid_pipe_eff_sub_q[NUM_MID_REGS];
-  assign exponent_product_q      = mid_pipe_exp_prod_q[NUM_MID_REGS];
-  assign exponent_difference_q   = mid_pipe_exp_diff_q[NUM_MID_REGS];
-  assign tentative_exponent_q    = mid_pipe_tent_exp_q[NUM_MID_REGS];
-  assign addend_shamt_q          = mid_pipe_add_shamt_q[NUM_MID_REGS];
-  assign sticky_before_add_q     = mid_pipe_sticky_q[NUM_MID_REGS];
-  assign sum_q                   = mid_pipe_sum_q[NUM_MID_REGS];
-  assign final_sign_q            = mid_pipe_final_sign_q[NUM_MID_REGS];
-  assign rnd_mode_q              = mid_pipe_rnd_mode_q[NUM_MID_REGS];
-  assign result_is_special_q     = mid_pipe_res_is_spec_q[NUM_MID_REGS];
-  assign special_result_q        = mid_pipe_spec_res_q[NUM_MID_REGS];
-  assign special_status_q        = mid_pipe_spec_stat_q[NUM_MID_REGS];
+  TagType                                         tag_fpx3;
+  AuxType                                         aux_fpx3;
+  logic                                           valid_fpx3;
+
+  `FFNR({tag_fpx3, aux_fpx3, valid_fpx3}, {tag_fpx2, aux_fpx2, valid_fpx2}, clk_i)
+
+  `FFNR({special_result_fpx3, special_status_fpx3, result_is_special_fpx3}, {
+        special_result_fpx2, special_status_fpx2, result_is_special_fpx2}, clk_i)
+
+  `FFNR({
+        sum_raw_fpx3,
+        sum_carry_fpx3,
+        sum_fpx3,
+        final_sign_fpx3,
+        addend_after_shift_fpx3,
+        addend_sticky_bits_fpx3,
+        sticky_before_add_fpx3,
+        addend_shifted_fpx3,
+        inject_carry_in_fpx3,
+        addend_shamt_fpx3,
+        rnd_mode_fpx3
+        }, {
+        sum_raw_fpx2,
+        sum_carry_fpx2,
+        sum_fpx2,
+        final_sign_fpx2,
+        addend_after_shift_fpx2,
+        addend_sticky_bits_fpx2,
+        sticky_before_add_fpx2,
+        addend_shifted_fpx2,
+        inject_carry_in_fpx2,
+        addend_shamt_fpx2,
+        rnd_mode_fpx2
+        }, clk_i)
+
+  `FFNR({
+        exponent_addend_fpx3,
+        exponent_product_fpx3,
+        exponent_difference_fpx3,
+        tentative_exponent_fpx3,
+        effective_subtraction_fpx3
+        }, {
+        exponent_addend_fpx2,
+        exponent_product_fpx2,
+        exponent_difference_fpx2,
+        tentative_exponent_fpx2,
+        effective_subtraction_fpx2
+        }, clk_i)
+
 
   // --------------
   // Normalization
   // --------------
-  logic        [LOWER_SUM_WIDTH-1:0]  sum_lower;              // lower 2p+3 bits of sum are searched
-  logic        [LZC_RESULT_WIDTH-1:0] leading_zero_count;     // the number of leading zeroes
-  logic signed [LZC_RESULT_WIDTH:0]   leading_zero_count_sgn; // signed leading-zero count
-  logic                               lzc_zeroes;             // in case only zeroes found
+  logic [LOWER_SUM_WIDTH-1:0] sum_lower_fpx3;  // lower 2p+3 bits of sum are searched
+  logic [LZC_RESULT_WIDTH-1:0] leading_zero_count_fpx3;  // the number of leading zeroes
+  logic signed [LZC_RESULT_WIDTH:0] leading_zero_count_sgn_fpx3;  // signed leading-zero count
+  logic lzc_zeroes_fpx3;  // in case only zeroes found
 
-  logic        [SHIFT_AMOUNT_WIDTH-1:0] norm_shamt; // Normalization shift amount
-  logic signed [EXP_WIDTH-1:0]          normalized_exponent;
 
-  logic [3*PRECISION_BITS+4:0] sum_shifted;       // result after first normalization shift
-  logic [PRECISION_BITS:0]     final_mantissa;    // final mantissa before rounding with round bit
-  logic [2*PRECISION_BITS+2:0] sum_sticky_bits;   // remaining 2p+3 sticky bits after normalization
-  logic                        sticky_after_norm; // sticky bit after normalization
+  logic [SHIFT_AMOUNT_WIDTH-1:0] norm_shamt_fpx3;  // Normalization shift amount
+  logic signed [EXP_WIDTH-1:0] normalized_exponent_fpx3;
 
-  logic signed [EXP_WIDTH-1:0] final_exponent;
+  logic [3*PRECISION_BITS+4:0] sum_shifted_fpx3;  // result after first normalization shift
+  logic [PRECISION_BITS:0] final_mantissa_fpx3;  // final mantissa before rounding with round bit
+  logic [2*PRECISION_BITS+2:0] sum_sticky_bits_fpx3;   // remaining 2p+3 sticky bits after normalization
+  logic sticky_after_norm_fpx3;  // sticky bit after normalization
 
-  assign sum_lower = sum_q[LOWER_SUM_WIDTH-1:0];
+  logic signed [EXP_WIDTH-1:0] final_exponent_fpx3;
+
+  assign sum_lower_fpx3 = sum_fpx3[LOWER_SUM_WIDTH-1:0];
 
   // Leading zero counter for cancellations
   lzc #(
-    .WIDTH ( LOWER_SUM_WIDTH ),
-    .MODE  ( 1               ) // MODE = 1 counts leading zeroes
+      .WIDTH(LOWER_SUM_WIDTH),
+      .MODE (1)  // MODE = 1 counts leading zeroes
   ) i_lzc (
-    .in_i    ( sum_lower          ),
-    .cnt_o   ( leading_zero_count ),
-    .empty_o ( lzc_zeroes         )
+      .in_i   (sum_lower_fpx3),
+      .cnt_o  (leading_zero_count_fpx3),
+      .empty_o(lzc_zeroes_fpx3)
   );
 
-  assign leading_zero_count_sgn = signed'({1'b0, leading_zero_count});
+  assign leading_zero_count_sgn_fpx3 = signed'({1'b0, leading_zero_count_fpx3});
 
   // Normalization shift amount based on exponents and LZC (unsigned as only left shifts)
   always_comb begin : norm_shift_amount
     // Product-anchored case or cancellations require LZC
-    if ((exponent_difference_q <= 0) || (effective_subtraction_q && (exponent_difference_q <= 2))) begin
+    if ((exponent_difference_fpx3 <= 0) || (effective_subtraction_fpx3 && (exponent_difference_fpx3 <= 2))) begin
       // Normal result (biased exponent > 0 and not a zero)
-      if ((exponent_product_q - leading_zero_count_sgn + 1 >= 0) && !lzc_zeroes) begin
+      if ((exponent_product_fpx3 - leading_zero_count_sgn_fpx3 + 1 >= 0) && !lzc_zeroes_fpx3) begin
         // Undo initial product shift, remove the counted zeroes
-        norm_shamt          = PRECISION_BITS + 2 + leading_zero_count;
-        normalized_exponent = exponent_product_q - leading_zero_count_sgn + 1; // account for shift
-      // Subnormal result
+        norm_shamt_fpx3 = PRECISION_BITS + 2 + leading_zero_count_fpx3;
+        normalized_exponent_fpx3 = exponent_product_fpx3 - leading_zero_count_sgn_fpx3 + 1;  // account for shift
+        // Subnormal result
       end else begin
         // Cap the shift distance to align mantissa with minimum exponent
-        norm_shamt          = unsigned'(signed'(PRECISION_BITS) + 2 + exponent_product_q);
-        normalized_exponent = 0; // subnormals encoded as 0
+        norm_shamt_fpx3          = unsigned'(signed'(PRECISION_BITS) + 2 + exponent_product_fpx3);
+        normalized_exponent_fpx3 = 0;  // subnormals encoded as 0
       end
-    // Addend-anchored case
+      // Addend-anchored case
     end else begin
-      norm_shamt          = addend_shamt_q; // Undo the initial shift
-      normalized_exponent = tentative_exponent_q;
+      norm_shamt_fpx3          = addend_shamt_fpx3;  // Undo the initial shift
+      normalized_exponent_fpx3 = tentative_exponent_fpx3;
     end
   end
 
   // Do the large normalization shift
-  assign sum_shifted       = sum_q << norm_shamt;
+  assign sum_shifted_fpx3 = sum_fpx3 << norm_shamt_fpx3;
 
   // The addend-anchored case needs a 1-bit normalization since the leading-one can be to the left
   // or right of the (non-carry) MSB of the sum.
   always_comb begin : small_norm
     // Default assignment, discarding carry bit
-    {final_mantissa, sum_sticky_bits} = sum_shifted;
-    final_exponent                    = normalized_exponent;
+    {final_mantissa_fpx3, sum_sticky_bits_fpx3} = sum_shifted_fpx3;
+    final_exponent_fpx3                         = normalized_exponent_fpx3;
 
     // The normalized sum has overflown, align right and fix exponent
-    if (sum_shifted[3*PRECISION_BITS+4]) begin // check the carry bit
-      {final_mantissa, sum_sticky_bits} = sum_shifted >> 1;
-      final_exponent                    = normalized_exponent + 1;
-    // The normalized sum is normal, nothing to do
-    end else if (sum_shifted[3*PRECISION_BITS+3]) begin // check the sum MSB
+    if (sum_shifted_fpx3[3*PRECISION_BITS+4]) begin  // check the carry bit
+      {final_mantissa_fpx3, sum_sticky_bits_fpx3} = sum_shifted_fpx3 >> 1;
+      final_exponent_fpx3                         = normalized_exponent_fpx3 + 1;
+      // The normalized sum is normal, nothing to do
+    end else if (sum_shifted_fpx3[3*PRECISION_BITS+3]) begin  // check the sum MSB
       // do nothing
-    // The normalized sum is still denormal, align left - unless the result is not already subnormal
-    end else if (normalized_exponent > 1) begin
-      {final_mantissa, sum_sticky_bits} = sum_shifted << 1;
-      final_exponent                    = normalized_exponent - 1;
-    // Otherwise we're denormal
+      // The normalized sum is still denormal, align left - unless the result is not already subnormal
+    end else if (normalized_exponent_fpx3 > 1) begin
+      {final_mantissa_fpx3, sum_sticky_bits_fpx3} = sum_shifted_fpx3 << 1;
+      final_exponent_fpx3                         = normalized_exponent_fpx3 - 1;
+      // Otherwise we're denormal
     end else begin
-      final_exponent = '0;
+      final_exponent_fpx3 = '0;
     end
   end
 
   // Update the sticky bit with the shifted-out bits
-  assign sticky_after_norm = (| {sum_sticky_bits}) | sticky_before_add_q;
+  assign sticky_after_norm_fpx3 = (|{sum_sticky_bits_fpx3}) | sticky_before_add_fpx3;
+
+  /* FPX3 --> FPX4 */
+  logic                  [   LOWER_SUM_WIDTH-1:0] sum_lower_fpx4;
+  logic                  [  LZC_RESULT_WIDTH-1:0] leading_zero_count_fpx4;
+  logic signed           [    LZC_RESULT_WIDTH:0] leading_zero_count_sgn_fpx4;
+  logic                                           lzc_zeroes_fpx4;
+  logic                  [SHIFT_AMOUNT_WIDTH-1:0] norm_shamt_fpx4;
+  logic signed           [         EXP_WIDTH-1:0] normalized_exponent_fpx4;
+  logic                  [  3*PRECISION_BITS+4:0] sum_shifted_fpx4;
+  logic                  [      PRECISION_BITS:0] final_mantissa_fpx4;
+  logic                  [  2*PRECISION_BITS+2:0] sum_sticky_bits_fpx4;
+  logic                                           sticky_after_norm_fpx4;
+  logic signed           [         EXP_WIDTH-1:0] final_exponent_fpx4;
+  logic                                           final_sign_fpx4;
+  fpnew_pkg::roundmode_e                          rnd_mode_fpx4;
+  logic                                           effective_subtraction_fpx4;
+
+  fp_t                                            special_result_fpx4;
+  fpnew_pkg::status_t                             special_status_fpx4;
+  logic                                           result_is_special_fpx4;
+
+  TagType                                         tag_fpx4;
+  AuxType                                         aux_fpx4;
+  logic                                           valid_fpx4;
+
+  `FFNR({tag_fpx4, aux_fpx4, valid_fpx4}, {tag_fpx3, aux_fpx3, valid_fpx3}, clk_i)
+
+  `FFNR({special_result_fpx4, special_status_fpx4, result_is_special_fpx4}, {
+        special_result_fpx3, special_status_fpx3, result_is_special_fpx3}, clk_i)
+
+  `FFNR({
+        sum_lower_fpx4,
+        leading_zero_count_fpx4,
+        leading_zero_count_sgn_fpx4,
+        lzc_zeroes_fpx4,
+        norm_shamt_fpx4,
+        normalized_exponent_fpx4,
+        sum_shifted_fpx4,
+        final_mantissa_fpx4,
+        sum_sticky_bits_fpx4,
+        sticky_after_norm_fpx4,
+        final_exponent_fpx4,
+        final_sign_fpx4,
+        rnd_mode_fpx4,
+        effective_subtraction_fpx4
+        }, {
+        sum_lower_fpx3,
+        leading_zero_count_fpx3,
+        leading_zero_count_sgn_fpx3,
+        lzc_zeroes_fpx3,
+        norm_shamt_fpx3,
+        normalized_exponent_fpx3,
+        sum_shifted_fpx3,
+        final_mantissa_fpx3,
+        sum_sticky_bits_fpx3,
+        sticky_after_norm_fpx3,
+        final_exponent_fpx3,
+        final_sign_fpx3,
+        rnd_mode_fpx3,
+        effective_subtraction_fpx3
+        }, clk_i)
 
   // ----------------------------
   // Rounding and classification
   // ----------------------------
-  logic                         pre_round_sign;
-  logic [EXP_BITS-1:0]          pre_round_exponent;
-  logic [MAN_BITS-1:0]          pre_round_mantissa;
-  logic [EXP_BITS+MAN_BITS-1:0] pre_round_abs; // absolute value of result before rounding
-  logic [1:0]                   round_sticky_bits;
+  logic                         pre_round_sign_fpx4;
+  logic [         EXP_BITS-1:0] pre_round_exponent_fpx4;
+  logic [         MAN_BITS-1:0] pre_round_mantissa_fpx4;
+  logic [EXP_BITS+MAN_BITS-1:0] pre_round_abs_fpx4;  // absolute value of result before rounding
+  logic [                  1:0] round_sticky_bits_fpx4;
 
-  logic of_before_round, of_after_round; // overflow
-  logic uf_before_round, uf_after_round; // underflow
-  logic result_zero;
+  logic of_before_round_fpx4, of_after_round_fpx4;  // overflow
+  logic uf_before_round_fpx4, uf_after_round_fpx4;  // underflow
+  logic                         result_zero_fpx4;
 
-  logic                         rounded_sign;
-  logic [EXP_BITS+MAN_BITS-1:0] rounded_abs; // absolute value of result after rounding
+  logic                         rounded_sign_fpx4;
+  logic [EXP_BITS+MAN_BITS-1:0] rounded_abs_fpx4;  // absolute value of result after rounding
 
   // Classification before round. RISC-V mandates checking underflow AFTER rounding!
-  assign of_before_round = final_exponent >= 2**(EXP_BITS)-1; // infinity exponent is all ones
-  assign uf_before_round = final_exponent == 0;               // exponent for subnormals capped to 0
+  assign of_before_round_fpx4 = final_exponent_fpx4 >= 2 ** (EXP_BITS) - 1;  // infinity exponent is all ones
+  assign uf_before_round_fpx4 = final_exponent_fpx4 == 0;  // exponent for subnormals capped to 0
 
   // Assemble result before rounding. In case of overflow, the largest normal value is set.
-  assign pre_round_sign     = final_sign_q;
-  assign pre_round_exponent = (of_before_round) ? 2**EXP_BITS-2 : unsigned'(final_exponent[EXP_BITS-1:0]);
-  assign pre_round_mantissa = (of_before_round) ? '1 : final_mantissa[MAN_BITS:1]; // bit 0 is R bit
-  assign pre_round_abs      = {pre_round_exponent, pre_round_mantissa};
+  assign pre_round_sign_fpx4 = final_sign_fpx4;
+  assign pre_round_exponent_fpx4 = (of_before_round_fpx4) ? 2**EXP_BITS-2 : unsigned'(final_exponent_fpx4[EXP_BITS-1:0]);
+  assign pre_round_mantissa_fpx4 = (of_before_round_fpx4) ? '1 : final_mantissa_fpx4[MAN_BITS:1]; // bit 0 is R bit
+  assign pre_round_abs_fpx4 = {pre_round_exponent_fpx4, pre_round_mantissa_fpx4};
 
   // In case of overflow, the round and sticky bits are set for proper rounding
-  assign round_sticky_bits  = (of_before_round) ? 2'b11 : {final_mantissa[0], sticky_after_norm};
+  assign round_sticky_bits_fpx4 = (of_before_round_fpx4) ? 2'b11 : {
+    final_mantissa_fpx4[0], sticky_after_norm_fpx4
+  };
 
   // Perform the rounding
   fpnew_rounding #(
-    .AbsWidth ( EXP_BITS + MAN_BITS )
+      .AbsWidth(EXP_BITS + MAN_BITS)
   ) i_fpnew_rounding (
-    .abs_value_i             ( pre_round_abs           ),
-    .sign_i                  ( pre_round_sign          ),
-    .round_sticky_bits_i     ( round_sticky_bits       ),
-    .rnd_mode_i              ( rnd_mode_q              ),
-    .effective_subtraction_i ( effective_subtraction_q ),
-    .abs_rounded_o           ( rounded_abs             ),
-    .sign_o                  ( rounded_sign            ),
-    .exact_zero_o            ( result_zero             )
+      .abs_value_i            (pre_round_abs_fpx4),
+      .sign_i                 (pre_round_sign_fpx4),
+      .round_sticky_bits_i    (round_sticky_bits_fpx4),
+      .rnd_mode_i             (rnd_mode_fpx4),
+      .effective_subtraction_i(effective_subtraction_fpx4),
+      .abs_rounded_o          (rounded_abs_fpx4),
+      .sign_o                 (rounded_sign_fpx4),
+      .exact_zero_o           (result_zero_fpx4)
   );
 
   // Classification after rounding
-  assign uf_after_round = rounded_abs[EXP_BITS+MAN_BITS-1:MAN_BITS] == '0; // exponent = 0
-  assign of_after_round = rounded_abs[EXP_BITS+MAN_BITS-1:MAN_BITS] == '1; // exponent all ones
+  assign uf_after_round_fpx4 = rounded_abs_fpx4[EXP_BITS+MAN_BITS-1:MAN_BITS] == '0;  // exponent = 0
+  assign of_after_round_fpx4 = rounded_abs_fpx4[EXP_BITS+MAN_BITS-1:MAN_BITS] == '1;  // exponent all ones
 
   // -----------------
   // Result selection
   // -----------------
-  logic [WIDTH-1:0]     regular_result;
-  fpnew_pkg::status_t   regular_status;
+  logic               [WIDTH-1:0] regular_result_fpx4;
+  fpnew_pkg::status_t             regular_status_fpx4;
 
   // Assemble regular result
-  assign regular_result    = {rounded_sign, rounded_abs};
-  assign regular_status.NV = 1'b0; // only valid cases are handled in regular path
-  assign regular_status.DZ = 1'b0; // no divisions
-  assign regular_status.OF = of_before_round | of_after_round;   // rounding can introduce overflow
-  assign regular_status.UF = uf_after_round & regular_status.NX; // only inexact results raise UF
-  assign regular_status.NX = (| round_sticky_bits) | of_before_round | of_after_round;
+  assign regular_result_fpx4 = {rounded_sign_fpx4, rounded_abs_fpx4};
+  assign regular_status_fpx4.NV = 1'b0;  // only valid cases are handled in regular path
+  assign regular_status_fpx4.DZ = 1'b0;  // no divisions
+  assign regular_status_fpx4.OF = of_before_round_fpx4 | of_after_round_fpx4;   // rounding can introduce overflow
+  assign regular_status_fpx4.UF = uf_after_round_fpx4 & regular_status_fpx4.NX; // only inexact results raise UF
+  assign regular_status_fpx4.NX = (| round_sticky_bits_fpx4) | of_before_round_fpx4 | of_after_round_fpx4;
 
   // Final results for output pipeline
-  fp_t                result_d;
-  fpnew_pkg::status_t status_d;
+  fp_t                result_fpx4;
+  fpnew_pkg::status_t status_fpx4;
 
   // Select output depending on special case detection
-  assign result_d = result_is_special_q ? special_result_q : regular_result;
-  assign status_d = result_is_special_q ? special_status_q : regular_status;
+  assign result_fpx4     = result_is_special_fpx4 ? special_result_fpx4 : regular_result_fpx4;
+  assign status_fpx4     = result_is_special_fpx4 ? special_status_fpx4 : regular_status_fpx4;
 
-  // ----------------
-  // Output Pipeline
-  // ----------------
-  // Output pipeline signals, index i holds signal after i register stages
-  fp_t                [0:NUM_OUT_REGS] out_pipe_result_q;
-  fpnew_pkg::status_t [0:NUM_OUT_REGS] out_pipe_status_q;
-  TagType             [0:NUM_OUT_REGS] out_pipe_tag_q;
-  AuxType             [0:NUM_OUT_REGS] out_pipe_aux_q;
-  logic               [0:NUM_OUT_REGS] out_pipe_valid_q;
-  // Ready signal is combinatorial for all stages
-  logic [0:NUM_OUT_REGS] out_pipe_ready;
-
-  // Input stage: First element of pipeline is taken from inputs
-  assign out_pipe_result_q[0] = result_d;
-  assign out_pipe_status_q[0] = status_d;
-  assign out_pipe_tag_q[0]    = mid_pipe_tag_q[NUM_MID_REGS];
-  assign out_pipe_aux_q[0]    = mid_pipe_aux_q[NUM_MID_REGS];
-  assign out_pipe_valid_q[0]  = mid_pipe_valid_q[NUM_MID_REGS];
-  // Input stage: Propagate pipeline ready signal to inside pipe
-  assign mid_pipe_ready[NUM_MID_REGS] = out_pipe_ready[0];
-  // Generate the register stages
-  for (genvar i = 0; i < NUM_OUT_REGS; i++) begin : gen_output_pipeline
-    // Internal register enable for this stage
-    logic reg_ena;
-    // Determine the ready signal of the current stage - advance the pipeline:
-    // 1. if the next stage is ready for our data
-    // 2. if the next stage only holds a bubble (not valid) -> we can pop it
-    assign out_pipe_ready[i] = out_pipe_ready[i+1] | ~out_pipe_valid_q[i+1];
-    // Valid: enabled by ready signal, synchronous clear with the flush signal
-    `FFLARNC(out_pipe_valid_q[i+1], out_pipe_valid_q[i], out_pipe_ready[i], flush_i, 1'b0, clk_i, rst_ni)
-    // Enable register if pipleine ready and a valid data item is present
-    assign reg_ena = out_pipe_ready[i] & out_pipe_valid_q[i];
-    // Generate the pipeline registers within the stages, use enable-registers
-    `FFL(out_pipe_result_q[i+1], out_pipe_result_q[i], reg_ena, '0)
-    `FFL(out_pipe_status_q[i+1], out_pipe_status_q[i], reg_ena, '0)
-    `FFL(out_pipe_tag_q[i+1],    out_pipe_tag_q[i],    reg_ena, TagType'('0))
-    `FFL(out_pipe_aux_q[i+1],    out_pipe_aux_q[i],    reg_ena, AuxType'('0))
-  end
   // Output stage: Ready travels backwards from output side, driven by downstream circuitry
-  assign out_pipe_ready[NUM_OUT_REGS] = out_ready_i;
+  assign in_ready_o      = out_ready_i;
   // Output stage: assign module outputs
-  assign result_o        = out_pipe_result_q[NUM_OUT_REGS];
-  assign status_o        = out_pipe_status_q[NUM_OUT_REGS];
-  assign extension_bit_o = 1'b1; // always NaN-Box result
-  assign tag_o           = out_pipe_tag_q[NUM_OUT_REGS];
-  assign aux_o           = out_pipe_aux_q[NUM_OUT_REGS];
-  assign out_valid_o     = out_pipe_valid_q[NUM_OUT_REGS];
-  assign busy_o          = (| {inp_pipe_valid_q, mid_pipe_valid_q, out_pipe_valid_q});
+  assign result_o        = result_fpx4;
+  assign status_o        = status_fpx4;
+  assign extension_bit_o = 1'b1;  // always NaN-Box result
+  assign tag_o           = tag_fpx4;
+  assign aux_o           = aux_fpx4;
+  assign out_valid_o     = valid_fpx4;
+  assign busy_o          = 'b0;
 endmodule
