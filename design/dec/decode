@@ -133,15 +133,13 @@ remw =        [0000001..........110.....0111011]
 remu =       [0000001..........111.....0110011]
 remuw =       [0000001..........111.....0111011]
 
-# New FPU Instructions
-# FMA Unit
-fmadd.s     = [.....00.................1000011]
-fmsub.s     = [.....00.................1000111]
-fnmsub.s    = [.....00.................1001011]
-fnmadd.s    = [.....00.................1001111]
-fadd.s      = [0000000.................1010011]
-fsub.s      = [0000100.................1010011] 
-fmul.s      = [0001000.................1010011]
+fmadd_s     = [.....00..................1000011]
+fmsub_s     = [.....00..................1000111]
+fnmsub_s    = [.....00..................1001011]
+fnmadd_s    = [.....00..................1001111]
+fadd_s      = [0000000..................1010011]
+fsub_s      = [0000100..................1010011] 
+fmul_s      = [0001000..................1010011]
 
 .input
 
@@ -241,24 +239,23 @@ rv32i = {
       fpu_rs3
       fpu_rd
       fpu_op_mod
-      fpu_src_fp32
-      fpu_dst_fp32
       fpu_fmadd
       fpu_fnmsub
       fpu_add 
       fpu_mul
-
+      fpu_src_fp32
+      fpu_dst_fp32
 }
 
 .decode
 
-rv32i[fmadd.s]	= {fpu fpu_rs1 fpu_rs2 fpu_rs3 fpu_rd fpu_fmadd}
-rv32i[fmsub.s]	= {fpu fpu_rs1 fpu_rs2 fpu_rs3 fpu_rd fpu_fmadd fpu_op_mod}
-rv32i[fnmsub.s]   = {fpu fpu_rs1 fpu_rs2 fpu_rs3 fpu_rd fpu_fnmsub}   
-rv32i[fnmadd.s]	= {fpu fpu_rs1 fpu_rs2 fpu_rs3 fpu_rd fpu_fnmsub fpu_op_mod}
-rv32i[fadd.s]	= {fpu fpu_rs1 fpu_rs2 fpu_rd fpu_add}
-rv32i[fsub.s]	= {fpu fpu_rs1 fpu_rs2 fpu_rd fpu_add fpu_op_mod}
-rv32i[fmul.s]	= {fpu fpu_rs1 fpu_rs2 fpu_rd fpu_mul}
+rv32i[fmadd_s] = {fpu fpu_src_fp32 fpu_dst_fp32 fpu_rs1 fpu_rs2 fpu_rs3 fpu_rd fpu_fmadd}
+rv32i[fmsub_s] = {fpu fpu_src_fp32 fpu_dst_fp32 fpu_rs1 fpu_rs2 fpu_rs3 fpu_rd fpu_fmadd fpu_op_mod}
+rv32i[fnmsub_s]  = {fpu fpu_src_fp32 fpu_dst_fp32 fpu_rs1 fpu_rs2 fpu_rs3 fpu_rd fpu_fnmsub}   
+rv32i[fnmadd_s] = {fpu fpu_src_fp32 fpu_dst_fp32 fpu_rs1 fpu_rs2 fpu_rs3 fpu_rd fpu_fnmsub fpu_op_mod}
+rv32i[fadd_s] = {fpu fpu_src_fp32 fpu_dst_fp32 fpu_rs1 fpu_rs2 fpu_rd fpu_add}
+rv32i[fsub_s] = {fpu fpu_src_fp32 fpu_dst_fp32 fpu_rs1 fpu_rs2 fpu_rd fpu_add fpu_op_mod}
+rv32i[fmul_s] = {fpu fpu_src_fp32 fpu_dst_fp32 fpu_rs1 fpu_rs2 fpu_rd fpu_mul}
 
 rv32i[mul]    = { mul rs1 rs2 rd low }
 rv32i[mulw]    = { mul alu_half rs1 rs2 rd low }

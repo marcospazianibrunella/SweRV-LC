@@ -16,6 +16,8 @@
 `include "common_defines.vh"
 
 localparam XLEN = `RV_XLEN;
+/* TODO: Export FLEN to swerv_config script */
+localparam FLEN = 32;
 
 localparam TOTAL_INT = `RV_PIC_TOTAL_INT_PLUS1;
 

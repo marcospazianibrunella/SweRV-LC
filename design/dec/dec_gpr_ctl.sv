@@ -53,7 +53,7 @@ module dec_gpr_ctl #(parameter GPR_BANKS      = 1,
     input  logic        scan_mode
 );
 
-   logic [GPR_BANKS-1:0][31:1] [XLEN-1:0] gpr_out;     // XLEN-1 x 32 bit GPRs
+   logic [GPR_BANKS-1:0][31:1] [XLEN-1:0] gpr_out;     // XLEN-1 x 64 bit GPRs
    logic [31:1] [XLEN-1:0] gpr_in;
    logic [31:1] w0v,w1v,w2v;
    logic [31:1] gpr_wr_en;

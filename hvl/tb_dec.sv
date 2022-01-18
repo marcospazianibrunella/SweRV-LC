@@ -363,6 +363,13 @@ module tb_dec
   /* output */ logic dec_tlu_dccm_clk_override;  // override DCCM clock domain gating
   /* output */ logic dec_tlu_icm_clk_override;  // override ICCM clock domain gating
 
+  /* output */ logic [FLEN-1:0] fpr_i0_rs1_d;
+  /* output */ logic [FLEN-1:0] fpr_i0_rs2_d;
+  /* output */ logic [FLEN-1:0] fpr_i0_rs3_d;
+  /* output */ logic [FLEN-1:0] fpr_i1_rs1_d;
+  /* output */ logic [FLEN-1:0] fpr_i1_rs2_d;
+  /* output */ logic [FLEN-1:0] fpr_i1_rs3_d;
+
   /* input */ logic scan_mode = 0;
 
   dec DUT_i (.*);
@@ -374,6 +381,8 @@ module tb_dec
 
   /* Main Sim Loop */
   initial begin
+    ifu_i0_instr = $random;
+    ifu_i1_instr = $random;
     ifu_miss_state_idle = 1;
     @(posedge clk);
     @(posedge clk);
@@ -397,7 +406,7 @@ module tb_dec
     ifu_pmu_ic_miss = 1;
     ifu_pmu_fetch_stall = 1;
     @(posedge clk);
-    ifu_pmu_ic_miss = 0;
+    ifu_pmu_ic_miss  = 0;
     ifu_pmu_bus_trxn = 1;
     @(posedge clk);
     @(posedge clk);

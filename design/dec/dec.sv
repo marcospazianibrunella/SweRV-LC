@@ -140,9 +140,9 @@ module dec (
 
     input logic [15:0] ifu_illegal_inst,  // 16b opcode for illegal inst
 
-    input logic        exu_div_stall,   // stall decode for div executing
+    input logic            exu_div_stall,   // stall decode for div executing
     input logic [XLEN-1:0] exu_div_result,  // final div result
-    input logic        exu_div_finish,  // cycle div finishes
+    input logic            exu_div_finish,  // cycle div finishes
 
     input logic [XLEN-1:0] exu_mul_result_e3,  // 32b mul result
 
@@ -265,6 +265,13 @@ module dec (
     output logic [XLEN-1:0] gpr_i1_rs1_d,
     output logic [XLEN-1:0] gpr_i1_rs2_d,
 
+    output logic [FLEN-1:0] fpr_i0_rs1_d,  
+    output logic [FLEN-1:0] fpr_i0_rs2_d,  
+    output logic [FLEN-1:0] fpr_i0_rs3_d,  
+    output logic [FLEN-1:0] fpr_i1_rs1_d,
+    output logic [FLEN-1:0] fpr_i1_rs2_d,
+    output logic [FLEN-1:0] fpr_i1_rs3_d,
+
     output logic [XLEN-1:0] dec_i0_immed_d,  // immediate data
     output logic [XLEN-1:0] dec_i1_immed_d,
 
@@ -291,8 +298,8 @@ module dec (
     output logic [XLEN-1:0] i0_rs2_bypass_data_d,  // rs2 bypass data
     output logic [XLEN-1:0] i1_rs1_bypass_data_d,
     output logic [XLEN-1:0] i1_rs2_bypass_data_d,
-    output logic        dec_ib3_valid_d,       // ib3 buffer valid
-    output logic        dec_ib2_valid_d,       // ib2 buffer valid
+    output logic            dec_ib3_valid_d,       // ib3 buffer valid
+    output logic            dec_ib2_valid_d,       // ib2 buffer valid
 
     output lsu_pkt_t lsu_p,  // lsu packet
     output mul_pkt_t mul_p,  // mul packet
@@ -323,23 +330,23 @@ module dec (
     output logic        dec_div_decode_e4,   // div at e4 stage
     output logic [31:1] pred_correct_npc_e2, // npc if prediction is correct at e2 stage
 
-    output logic        dec_i0_rs1_bypass_en_e3,  // rs1 bypass enable e3
-    output logic        dec_i0_rs2_bypass_en_e3,  // rs2 bypass enable e3
-    output logic        dec_i1_rs1_bypass_en_e3,
-    output logic        dec_i1_rs2_bypass_en_e3,
+    output logic            dec_i0_rs1_bypass_en_e3,  // rs1 bypass enable e3
+    output logic            dec_i0_rs2_bypass_en_e3,  // rs2 bypass enable e3
+    output logic            dec_i1_rs1_bypass_en_e3,
+    output logic            dec_i1_rs2_bypass_en_e3,
     output logic [XLEN-1:0] i0_rs1_bypass_data_e3,    // rs1 bypass data e3
     output logic [XLEN-1:0] i0_rs2_bypass_data_e3,    // rs2 bypass data e3
     output logic [XLEN-1:0] i1_rs1_bypass_data_e3,
     output logic [XLEN-1:0] i1_rs2_bypass_data_e3,
-    output logic        dec_i0_sec_decode_e3,     // secondary decode e3
-    output logic        dec_i1_sec_decode_e3,
-    output logic [31:1] dec_i0_pc_e3,             // pc at e3
-    output logic [31:1] dec_i1_pc_e3,
+    output logic            dec_i0_sec_decode_e3,     // secondary decode e3
+    output logic            dec_i1_sec_decode_e3,
+    output logic [    31:1] dec_i0_pc_e3,             // pc at e3
+    output logic [    31:1] dec_i1_pc_e3,
 
-    output logic        dec_i0_rs1_bypass_en_e2,  // rs1 bypass enable e2
-    output logic        dec_i0_rs2_bypass_en_e2,  // rs2 bypass enable e2
-    output logic        dec_i1_rs1_bypass_en_e2,
-    output logic        dec_i1_rs2_bypass_en_e2,
+    output logic            dec_i0_rs1_bypass_en_e2,  // rs1 bypass enable e2
+    output logic            dec_i0_rs2_bypass_en_e2,  // rs2 bypass enable e2
+    output logic            dec_i1_rs1_bypass_en_e2,
+    output logic            dec_i1_rs2_bypass_en_e2,
     output logic [XLEN-1:0] i0_rs1_bypass_data_e2,    // rs1 bypass data e2
     output logic [XLEN-1:0] i0_rs2_bypass_data_e2,    // rs2 bypass data e2
     output logic [XLEN-1:0] i1_rs1_bypass_data_e2,
@@ -364,8 +371,8 @@ module dec (
     output logic dec_tlu_i0_valid_e4,  // slot 0 instruction is valid at e4
     output logic dec_tlu_i1_valid_e4,  // slot 1 instruction is valid at e4, implies i0_valid_e4
 
-    output logic [XLEN-1:0] i0_result_e2,    // i0 result data e2
-    output logic [31:0] dec_tlu_mrac_ff, // CSR for memory region control
+    output logic [XLEN-1:0] i0_result_e2,  // i0 result data e2
+    output logic [31:0] dec_tlu_mrac_ff,  // CSR for memory region control
 
     output logic [31:1] dec_tlu_i0_pc_e4,  // pc e4
     output logic [31:1] dec_tlu_i1_pc_e4,
@@ -410,6 +417,8 @@ module dec (
 
   localparam GPR_BANKS = 1;
   localparam GPR_BANKS_LOG2 = (GPR_BANKS == 1) ? 1 : $clog2(GPR_BANKS);
+  localparam FPR_BANKS = 1;
+  localparam FPR_BANKS_LOG2 = (FPR_BANKS == 1) ? 1 : $clog2(FPR_BANKS);
 
   logic       dec_tlu_dec_clk_override;  // to and from dec blocks
   logic       clk_override;
@@ -427,48 +436,56 @@ module dec (
   logic       dec_i0_rs1_en_d;
   logic       dec_i0_rs2_en_d;
   logic       dec_fence_pending;  // tell TLU to stall DMA
+  logic       dec_i0_fpu_rs1_en_d;
+  logic       dec_i0_fpu_rs2_en_d;
+  logic       dec_i0_fpu_rs3_en_d;
 
   logic [4:0] dec_i0_rs1_d;
   logic [4:0] dec_i0_rs2_d;
+  logic [4:0] dec_i0_rs3_d;
 
 
   logic       dec_i1_rs1_en_d;
   logic       dec_i1_rs2_en_d;
+  logic       dec_i1_fpu_rs1_en_d;
+  logic       dec_i1_fpu_rs2_en_d;
+  logic       dec_i1_fpu_rs3_en_d;
 
   logic [4:0] dec_i1_rs1_d;
   logic [4:0] dec_i1_rs2_d;
+  logic [4:0] dec_i1_rs3_d;
 
 
   logic [31:0] dec_i0_instr_d, dec_i1_instr_d;
 
-  logic             dec_tlu_pipelining_disable;
-  logic             dec_tlu_dual_issue_disable;
+  logic                 dec_tlu_pipelining_disable;
+  logic                 dec_tlu_dual_issue_disable;
 
 
-  logic      [ 4:0] dec_i0_waddr_wb;
-  logic             dec_i0_wen_wb;
+  logic      [     4:0] dec_i0_waddr_wb;
+  logic                 dec_i0_wen_wb;
   logic      [XLEN-1:0] dec_i0_wdata_wb;
 
-  logic      [ 4:0] dec_i1_waddr_wb;
-  logic             dec_i1_wen_wb;
+  logic      [     4:0] dec_i1_waddr_wb;
+  logic                 dec_i1_wen_wb;
   logic      [XLEN-1:0] dec_i1_wdata_wb;
 
-  logic             dec_csr_wen_wb;  // csr write enable at wb
-  logic      [11:0] dec_csr_rdaddr_d;  // read address for csr
-  logic      [11:0] dec_csr_wraddr_wb;  // write address for csryes
+  logic                 dec_csr_wen_wb;  // csr write enable at wb
+  logic      [    11:0] dec_csr_rdaddr_d;  // read address for csr
+  logic      [    11:0] dec_csr_wraddr_wb;  // write address for csryes
 
-  logic      [31:0] dec_csr_wrdata_wb;  // csr write data at wb
+  logic      [    31:0] dec_csr_wrdata_wb;  // csr write data at wb
 
-  logic      [31:0] dec_csr_rddata_d;  // csr read data at wb
-  logic             dec_csr_legal_d;  // csr indicates legal operation
+  logic      [    31:0] dec_csr_rddata_d;  // csr read data at wb
+  logic                 dec_csr_legal_d;  // csr indicates legal operation
 
-  logic             dec_csr_wen_unq_d;  // valid csr with write - for csr legal
-  logic             dec_csr_any_unq_d;  // valid csr - for csr legal
-  logic             dec_csr_stall_int_ff;  // csr is mie/mstatus
+  logic                 dec_csr_wen_unq_d;  // valid csr with write - for csr legal
+  logic                 dec_csr_any_unq_d;  // valid csr - for csr legal
+  logic                 dec_csr_stall_int_ff;  // csr is mie/mstatus
 
 
 
-  trap_pkt_t        dec_tlu_packet_e4;
+  trap_pkt_t            dec_tlu_packet_e4;
 
   logic dec_i0_pc4_d, dec_i1_pc4_d;
   logic                         dec_tlu_presync_d;
@@ -523,11 +540,11 @@ module dec (
   assign wr_bank_id = '0;
 
 
-
+  /* Integer Register File */
   dec_gpr_ctl #(
       .GPR_BANKS(GPR_BANKS),
       .GPR_BANKS_LOG2(GPR_BANKS_LOG2)
-  ) arf (
+  ) int_rf (
       .*,
       // inputs
       .raddr0(dec_i0_rs1_d[4:0]),
@@ -554,6 +571,43 @@ module dec (
       .rd1(gpr_i0_rs2_d[XLEN-1:0]),
       .rd2(gpr_i1_rs1_d[XLEN-1:0]),
       .rd3(gpr_i1_rs2_d[XLEN-1:0])
+  );
+
+  /* Floating-Point Register File */
+  dec_fpr_ctl #(
+      .FPR_BANKS(FPR_BANKS),
+      .FPR_BANKS_LOG2(FPR_BANKS_LOG2)
+  ) fp_rf (
+      .*,
+      // inputs
+      .raddr0(dec_i0_rs1_d[4:0]),
+      .rden0 (dec_i0_fpu_rs1_en_d),
+      .raddr1(dec_i0_rs2_d[4:0]),
+      .rden1 (dec_i0_fpu_rs2_en_d),
+      .raddr2(dec_i1_rs1_d[4:0]),
+      .rden2 (dec_i1_fpu_rs1_en_d),
+      .raddr3(dec_i1_rs2_d[4:0]),
+      .rden3 (dec_i1_fpu_rs2_en_d),
+      .raddr4(dec_i0_rs3_d[4:0]),
+      .rden4 (dec_i0_fpu_rs3_en_d),
+      .raddr5(dec_i1_rs3_d[4:0]),
+      .rden5 (dec_i1_fpu_rs3_en_d),
+
+      /* TODO: Finish Here */
+      .waddr0(dec_i0_waddr_wb[4:0]),
+      .wen0(dec_i0_wen_wb),
+      .wd0(dec_i0_wdata_wb[XLEN-1:0]),
+      .waddr1(dec_i1_waddr_wb[4:0]),
+      .wen1(dec_i1_wen_wb),
+      .wd1(dec_i1_wdata_wb[XLEN-1:0]),
+
+      // outputs
+      .rd0(fpr_i0_rs1_d[FLEN-1:0]),
+      .rd1(fpr_i0_rs2_d[FLEN-1:0]),
+      .rd2(fpr_i1_rs1_d[FLEN-1:0]),
+      .rd3(fpr_i1_rs2_d[FLEN-1:0]),
+      .rd4(fpr_i0_rs3_d[FLEN-1:0]),
+      .rd5(fpr_i1_rs3_d[FLEN-1:0])
   );
 
   // Trigger
