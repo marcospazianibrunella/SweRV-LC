@@ -1,6 +1,5 @@
 
 //`include "global.svh"
-
 module tb_dec
   import swerv_types::*;
 ;
@@ -370,6 +369,8 @@ module tb_dec
 
   /* input */ logic scan_mode = 0;
 
+  fpu_instr_t fpu_instr;
+
   dec DUT_i (.*);
 
   /* Clock Generation */
@@ -379,8 +380,17 @@ module tb_dec
 
   /* Main Sim Loop */
   initial begin
-    ifu_i0_instr = $random;
-    ifu_i1_instr = $random;
+
+    fpu_instr.pad2 = 2'b00;
+    fpu_instr.vld_32 = 2'b11;
+    fpu_instr.rs3 = $random;
+    fpu_instr.rs2 = $random;
+    fpu_instr.rs1 = $random;
+    fpu_instr.rd = $random;
+    fpu_instr.rnd_mode = 2'b00;
+    fpu_instr.opcode = 5'b10001;
+
+    ifu_i0_instr = fpu_instr;
     ifu_miss_state_idle = 1;
     @(posedge clk);
     @(posedge clk);

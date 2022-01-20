@@ -357,4 +357,16 @@ package swerv_types;
   } cache_debug_pkt_t;
 
 
+  /* For Debug Purpose */
+  typedef struct packed {
+    logic [4:0] rs3;
+    logic [1:0] pad2;
+    logic [4:0] rs2;
+    logic [4:0] rs1;
+    logic [2:0] rnd_mode;
+    logic [4:0] rd;
+    logic [4:0] opcode;
+    logic [1:0] vld_32;
+  } fpu_instr_t;
+
 endpackage  // swerv_types

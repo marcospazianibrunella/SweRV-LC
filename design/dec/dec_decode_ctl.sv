@@ -1193,7 +1193,7 @@ module dec_decode_ctl
 
   /* Creating FPU Packet */
   assign fpu_p.valid = i0_dp.fpu | i1_dp.fpu;
-  assign fpu_p.rnd_mode = i0[14:12];
+  assign fpu_p.rnd_mode = i0_dp.fpu ? i0[14:12] : i1[14:12];
 
   assign fpu_p.op = (i0_dp.fpu) ? ({4{i0_dp.fpu_fmadd}} & 4'b0000) |  /* FMADD */
       ({4{i0_dp.fpu_fnmsub}} & 4'b0001) |  /* FNMSUB */
