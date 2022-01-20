@@ -131,27 +131,25 @@ module dec_decode_ctl
 
     output logic dec_i0_rs1_en_d,  // rs1 enable at decode
     output logic dec_i0_rs2_en_d,
-    
-    output logic dec_i0_fpu_rs1_en_d,  /* FPU Read Enable Signals for power reduction on the FP Register File */
-    output logic dec_i0_fpu_rs2_en_d,
-    output logic dec_i0_fpu_rs3_en_d,
 
     output logic [4:0] dec_i0_rs1_d,  // rs1 logical source
     output logic [4:0] dec_i0_rs2_d,
-    output logic [4:0] dec_i0_rs3_d,
+
+    output logic dec_fpu_rs1_en_d,  /* FPU Read Enable Signals for power reduction on the FP Register File */
+    output logic dec_fpu_rs2_en_d,
+    output logic dec_fpu_rs3_en_d,
+    
+    output logic [4:0] dec_fpu_rs1_d,  /* FPU Read Enable Signals for power reduction on the FP Register File */
+    output logic [4:0] dec_fpu_rs2_d,
+    output logic [4:0] dec_fpu_rs3_d,
 
     output logic [XLEN-1:0] dec_i0_immed_d,  // 64b immediate data decode
 
+    output logic [4:0] dec_i1_rs1_d,  // rs1 logical source
+    output logic [4:0] dec_i1_rs2_d,
+
     output logic dec_i1_rs1_en_d,
     output logic dec_i1_rs2_en_d,
-    
-    output logic dec_i1_fpu_rs1_en_d,  /* FPU Read Enable Signals for power reduction on the FP Register File */
-    output logic dec_i1_fpu_rs2_en_d,
-    output logic dec_i1_fpu_rs3_en_d,
-
-    output logic [4:0] dec_i1_rs1_d,
-    output logic [4:0] dec_i1_rs2_d,
-    output logic [4:0] dec_i1_rs3_d,
 
     output logic [XLEN-1:0] dec_i1_immed_d,
 
@@ -196,6 +194,8 @@ module dec_decode_ctl
     output lsu_pkt_t lsu_p,  // load/store packet
 
     output mul_pkt_t mul_p,  // multiply packet
+
+    output fpu_pkt_t fpu_p,  // FPU packet
 
     output div_pkt_t div_p,  // divide packet
 
@@ -1191,6 +1191,22 @@ module dec_decode_ctl
   assign mul_p.load_mul_rs1_bypass_e1 = load_mul_rs1_bypass_e1;
   assign mul_p.load_mul_rs2_bypass_e1 = load_mul_rs2_bypass_e1;
 
+  /* Creating FPU Packet */
+  assign fpu_p.valid = i0_dp.fpu | i1_dp.fpu;
+  assign fpu_p.rnd_mode = i0[14:12];
+
+  assign fpu_p.op = (i0_dp.fpu) ? ({4{i0_dp.fpu_fmadd}} & 4'b0000) |  /* FMADD */
+      ({4{i0_dp.fpu_fnmsub}} & 4'b0001) |  /* FNMSUB */
+      ({4{i0_dp.fpu_add}} & 4'b0010) |  /* ADD */
+      ({4{i0_dp.fpu_mul}} & 4'b0011)  /* MUL */
+      : ({4{i1_dp.fpu_fmadd}} & 4'b0000) |  /* FMADD */
+      ({4{i1_dp.fpu_fnmsub}} & 4'b0001) |  /* FNMSUB */
+      ({4{i1_dp.fpu_add}} & 4'b0010) |  /* ADD */
+      ({4{i1_dp.fpu_mul}} & 4'b0011);  /* MUL */
+
+  assign fpu_p.op_mod = (i0_dp.fpu) ? i0_dp.fpu_op_mod : i1_dp.fpu_op_mod;
+
+
 
   assign lsu_p.valid = lsu_decode_d;
 
@@ -1214,8 +1230,6 @@ module dec_decode_ctl
 
   // defined register packet
 
-  /* Start implementing F-ext logic here */
-
   assign i0r.rs1[4:0] = i0[19:15];
   assign i0r.rs2[4:0] = i0[24:20];
   assign i0r.rs3[4:0] = i0[31:27];
@@ -1231,13 +1245,16 @@ module dec_decode_ctl
   assign dec_i0_rs2_en_d = i0_dp.rs2 & (i0r.rs2[4:0] != 5'd0);
   assign i0_rd_en_d = i0_dp.rd & (i0r.rd[4:0] != 5'd0);
 
-  assign dec_i0_fpu_rs1_en_d = i0_dp.fpu_rs1;   // if rs1_en=0 then read will be all 0's
-  assign dec_i0_fpu_rs2_en_d = i0_dp.fpu_rs2; 
-  assign dec_i0_fpu_rs3_en_d = i0_dp.fpu_rs3; 
+  assign dec_fpu_rs1_en_d = i0_dp.fpu_rs1 | i1_dp.fpu_rs1;  // if rs1_en=0 then read will be all 0's
+  assign dec_fpu_rs2_en_d = i0_dp.fpu_rs2 | i1_dp.fpu_rs2;
+  assign dec_fpu_rs3_en_d = i0_dp.fpu_rs3 | i1_dp.fpu_rs3;
+  
+  assign dec_fpu_rs1_d = (i0_dp.fpu) ? i0r.rs1 : i1r.rs1;  // if rs1_en=0 then read will be all 0's
+  assign dec_fpu_rs2_d = (i0_dp.fpu) ? i0r.rs2 : i1r.rs2;
+  assign dec_fpu_rs3_d = (i0_dp.fpu) ? i0r.rs3 : i1r.rs3;
 
   assign dec_i0_rs1_d[4:0] = i0r.rs1[4:0];
   assign dec_i0_rs2_d[4:0] = i0r.rs2[4:0];
-  assign dec_i0_rs3_d[4:0] = i0r.rs3[4:0];
   assign i0_rd_d[4:0] = i0r.rd[4:0];
 
 
@@ -1395,13 +1412,8 @@ module dec_decode_ctl
   assign dec_i1_rs2_en_d = i1_dp.rs2 & (i1r.rs2[4:0] != 5'd0);
   assign i1_rd_en_d = i1_dp.rd & (i1r.rd[4:0] != 5'd0);
 
-  assign dec_i1_fpu_rs1_en_d = i1_dp.fpu_rs1;   // if rs1_en=0 then read will be all 0's
-  assign dec_i1_fpu_rs2_en_d = i1_dp.fpu_rs2; 
-  assign dec_i1_fpu_rs3_en_d = i1_dp.fpu_rs3;
-
   assign dec_i1_rs1_d[4:0] = i1r.rs1[4:0];
   assign dec_i1_rs2_d[4:0] = i1r.rs2[4:0];
-  assign dec_i1_rs3_d[4:0] = i1r.rs3[4:0];
   assign i1_rd_d[4:0] = i1r.rd[4:0];
 
   assign dec_i1_immed_d[63:0] = ({64{i1_dp.imm12}} & {

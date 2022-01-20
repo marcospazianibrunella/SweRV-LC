@@ -265,12 +265,9 @@ module dec (
     output logic [XLEN-1:0] gpr_i1_rs1_d,
     output logic [XLEN-1:0] gpr_i1_rs2_d,
 
-    output logic [FLEN-1:0] fpr_i0_rs1_d,  
-    output logic [FLEN-1:0] fpr_i0_rs2_d,  
-    output logic [FLEN-1:0] fpr_i0_rs3_d,  
-    output logic [FLEN-1:0] fpr_i1_rs1_d,
-    output logic [FLEN-1:0] fpr_i1_rs2_d,
-    output logic [FLEN-1:0] fpr_i1_rs3_d,
+    output logic [FLEN-1:0] fpr_rs1_d,
+    output logic [FLEN-1:0] fpr_rs2_d,
+    output logic [FLEN-1:0] fpr_rs3_d,
 
     output logic [XLEN-1:0] dec_i0_immed_d,  // immediate data
     output logic [XLEN-1:0] dec_i1_immed_d,
@@ -303,6 +300,7 @@ module dec (
 
     output lsu_pkt_t lsu_p,  // lsu packet
     output mul_pkt_t mul_p,  // mul packet
+    output fpu_pkt_t fpu_p,  // fpu packet
     output div_pkt_t div_p,  // div packet
 
     output logic [11:0] dec_lsu_offset_d,  // 12b offset for load/store addresses
@@ -436,25 +434,19 @@ module dec (
   logic       dec_i0_rs1_en_d;
   logic       dec_i0_rs2_en_d;
   logic       dec_fence_pending;  // tell TLU to stall DMA
-  logic       dec_i0_fpu_rs1_en_d;
-  logic       dec_i0_fpu_rs2_en_d;
-  logic       dec_i0_fpu_rs3_en_d;
+  logic       dec_fpu_rs1_en_d;
+  logic       dec_fpu_rs2_en_d;
+  logic       dec_fpu_rs3_en_d;
 
   logic [4:0] dec_i0_rs1_d;
   logic [4:0] dec_i0_rs2_d;
-  logic [4:0] dec_i0_rs3_d;
-
-
-  logic       dec_i1_rs1_en_d;
-  logic       dec_i1_rs2_en_d;
-  logic       dec_i1_fpu_rs1_en_d;
-  logic       dec_i1_fpu_rs2_en_d;
-  logic       dec_i1_fpu_rs3_en_d;
-
   logic [4:0] dec_i1_rs1_d;
   logic [4:0] dec_i1_rs2_d;
-  logic [4:0] dec_i1_rs3_d;
 
+
+  logic [4:0] dec_fpu_rs1_d;
+  logic [4:0] dec_fpu_rs2_d;
+  logic [4:0] dec_fpu_rs3_d;
 
   logic [31:0] dec_i0_instr_d, dec_i1_instr_d;
 
@@ -580,18 +572,12 @@ module dec (
   ) fp_rf (
       .*,
       // inputs
-      .raddr0(dec_i0_rs1_d[4:0]),
-      .rden0 (dec_i0_fpu_rs1_en_d),
-      .raddr1(dec_i0_rs2_d[4:0]),
-      .rden1 (dec_i0_fpu_rs2_en_d),
-      .raddr2(dec_i1_rs1_d[4:0]),
-      .rden2 (dec_i1_fpu_rs1_en_d),
-      .raddr3(dec_i1_rs2_d[4:0]),
-      .rden3 (dec_i1_fpu_rs2_en_d),
-      .raddr4(dec_i0_rs3_d[4:0]),
-      .rden4 (dec_i0_fpu_rs3_en_d),
-      .raddr5(dec_i1_rs3_d[4:0]),
-      .rden5 (dec_i1_fpu_rs3_en_d),
+      .raddr0(dec_fpu_rs1_d[4:0]),
+      .rden0 (dec_fpu_rs1_en_d),
+      .raddr1(dec_fpu_rs2_d[4:0]),
+      .rden1 (dec_fpu_rs2_en_d),
+      .raddr2(dec_fpu_rs3_d[4:0]),
+      .rden2 (dec_fpu_rs3_en_d),
 
       /* TODO: Finish Here */
       .waddr0(dec_i0_waddr_wb[4:0]),
@@ -602,12 +588,9 @@ module dec (
       .wd1(dec_i1_wdata_wb[XLEN-1:0]),
 
       // outputs
-      .rd0(fpr_i0_rs1_d[FLEN-1:0]),
-      .rd1(fpr_i0_rs2_d[FLEN-1:0]),
-      .rd2(fpr_i1_rs1_d[FLEN-1:0]),
-      .rd3(fpr_i1_rs2_d[FLEN-1:0]),
-      .rd4(fpr_i0_rs3_d[FLEN-1:0]),
-      .rd5(fpr_i1_rs3_d[FLEN-1:0])
+      .rd0(fpr_rs1_d[FLEN-1:0]),
+      .rd1(fpr_rs2_d[FLEN-1:0]),
+      .rd2(fpr_rs3_d[FLEN-1:0])
   );
 
   // Trigger

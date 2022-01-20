@@ -255,6 +255,7 @@ module tb_dec
 
   /* output */ lsu_pkt_t lsu_p;  // lsu packet
   /* output */ mul_pkt_t mul_p;  // mul packet
+  /* output */ fpu_pkt_t fpu_p;  // mul packet
   /* output */ div_pkt_t div_p;  // div packet
 
   /* output */ logic [11:0] dec_lsu_offset_d;  // 12b offset for load/store addresses
@@ -363,12 +364,9 @@ module tb_dec
   /* output */ logic dec_tlu_dccm_clk_override;  // override DCCM clock domain gating
   /* output */ logic dec_tlu_icm_clk_override;  // override ICCM clock domain gating
 
-  /* output */ logic [FLEN-1:0] fpr_i0_rs1_d;
-  /* output */ logic [FLEN-1:0] fpr_i0_rs2_d;
-  /* output */ logic [FLEN-1:0] fpr_i0_rs3_d;
-  /* output */ logic [FLEN-1:0] fpr_i1_rs1_d;
-  /* output */ logic [FLEN-1:0] fpr_i1_rs2_d;
-  /* output */ logic [FLEN-1:0] fpr_i1_rs3_d;
+  /* output */ logic [FLEN-1:0] fpr_rs1_d;
+  /* output */ logic [FLEN-1:0] fpr_rs2_d;
+  /* output */ logic [FLEN-1:0] fpr_rs3_d;
 
   /* input */ logic scan_mode = 0;
 

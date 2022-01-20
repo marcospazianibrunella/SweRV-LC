@@ -322,6 +322,13 @@ package swerv_types;
 
   typedef struct packed {
     logic valid;
+    logic [2:0] rnd_mode;
+    logic [3:0] op;
+    logic op_mod;
+  } fpu_pkt_t;
+
+  typedef struct packed {
+    logic valid;
     logic unsign;
     logic rem;
   } div_pkt_t;
