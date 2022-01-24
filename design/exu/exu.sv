@@ -359,7 +359,6 @@ module exu
    rvdffe #(XLEN) csr_rs1_ff (.*, .en(i0_e1_data_en), .din(csr_rs1_in_d[XLEN-1:0]), .dout(exu_csr_rs1_e1[XLEN-1:0]));
 
  /* -----> FMA <----- */
-   logic [4:0] fpu_fma_result_e3;
    logic                  [      2:0][FMA_OPERAND_WIDTH-1:0] fma_operands = 0;  // 3 operands
 
    always_comb begin

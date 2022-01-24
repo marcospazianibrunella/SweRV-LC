@@ -158,8 +158,10 @@ package swerv_types;
     logic i0secondary;
     logic [1:0] i0rs1bype2;
     logic [1:0] i0rs2bype2;
+    logic [1:0] i0rs3bype2;
     logic [3:0] i0rs1bype3;
     logic [3:0] i0rs2bype3;
+    logic [3:0] i0rs3bype3;
     logic [4:0] i1rd;
     logic i1mul;
     logic i1load;
@@ -173,8 +175,10 @@ package swerv_types;
     logic i1secondary;
     logic [1:0] i1rs1bype2;
     logic [1:0] i1rs2bype2;
-    logic [6:0] i1rs1bype3;
-    logic [6:0] i1rs2bype3;
+    logic [1:0] i1rs3bype2;
+    logic [7:0] i1rs1bype3;
+    logic [7:0] i1rs2bype3;
+    logic [7:0] i1rs3bype3;
   } dest_pkt_t;
 
   typedef struct packed {
