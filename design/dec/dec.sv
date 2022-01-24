@@ -586,7 +586,7 @@ module dec (
 
       .waddr0(dec_fpu_waddr_wb[4:0]),
       .wen0(dec_fpu_wen_wb),
-      .wd0(dec_fpu_wdata_wb[XLEN-1:0]),
+      .wd0(dec_fpu_wdata_wb[FLEN-1:0]),
       /* Out-of-pipe port */
       .waddr1('b0),
       .wen1('b0),
