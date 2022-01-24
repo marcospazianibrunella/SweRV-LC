@@ -75,6 +75,11 @@ module exu
    input logic        dec_i0_div_d,                                    // Select for Divide GPR value
    input logic        dec_i1_div_d,                                    // Select for Divide GPR value
 
+   /* FPU GPRs */
+   input logic [FLEN-1:0] fpr_rs1_d,
+   input logic [FLEN-1:0] fpr_rs2_d,
+   input logic [FLEN-1:0] fpr_rs3_d,
+   
    input logic [XLEN-1:0] gpr_i0_rs1_d,                                    // DEC data gpr
    input logic [XLEN-1:0] gpr_i0_rs2_d,                                    // DEC data gpr
    input logic [XLEN-1:0] dec_i0_immed_d,                                  // DEC data immediate
@@ -126,7 +131,7 @@ module exu
    output logic        exu_i0_flush_final,                             // I0 flush to DEC
    output logic        exu_i1_flush_final,                             // I1 flush to DEC
 
-
+   input fpu_pkt_t  fpu_p,                                             // DEC {valid, operand signs, low, operand bypass}
 
    input mul_pkt_t  mul_p,                                             // DEC {valid, operand signs, low, operand bypass}
 
@@ -146,6 +151,7 @@ module exu
    output logic [31:1]  exu_flush_path_final,                          // Target for the oldest flush source
 
    output logic [XLEN-1:0] exu_mul_result_e3,                              // Multiply result
+   output logic [FLEN-1:0] fpu_fma_result_e3,                              // FMA result
 
    output logic [XLEN-1:0]  exu_div_result,                                // Divide result
    output logic exu_div_finish,                                        // Divide is finished
@@ -208,6 +214,8 @@ module exu
 
    );
 
+   localparam fpnew_pkg::fp_format_e FpFormat = fpnew_pkg::fp_format_e'(0);
+   localparam int unsigned FMA_OPERAND_WIDTH = fpnew_pkg::fp_width(FpFormat);  // do not change
 
    logic [XLEN-1:0] i0_rs1_d,i0_rs2_d,i1_rs1_d,i1_rs2_d;
 
@@ -317,6 +325,8 @@ module exu
                                  ({XLEN{  dec_i1_rs2_bypass_en_d & ~dec_i0_mul_d & dec_i1_mul_d}} & i1_rs2_bypass_data_d[XLEN-1:0]);
 
 
+                                 /* TODO: Add here logic for FPU Bypass, operand selection has already been done in the decode stage */
+
 
    assign div_rs1_d[XLEN-1:0]      = ({XLEN{ ~dec_i0_rs1_bypass_en_d &  dec_i0_div_d               }} & gpr_i0_rs1_d[XLEN-1:0]) |
                                  ({XLEN{ ~dec_i1_rs1_bypass_en_d & ~dec_i0_div_d & dec_i1_div_d}} & gpr_i1_rs1_d[XLEN-1:0]) |
@@ -348,6 +358,55 @@ module exu
 
    rvdffe #(XLEN) csr_rs1_ff (.*, .en(i0_e1_data_en), .din(csr_rs1_in_d[XLEN-1:0]), .dout(exu_csr_rs1_e1[XLEN-1:0]));
 
+ /* -----> FMA <----- */
+   logic [4:0] fpu_fma_result_e3;
+   logic                  [      2:0][FMA_OPERAND_WIDTH-1:0] fma_operands = 0;  // 3 operands
+
+   always_comb begin
+      if (fpu_p.op == 4'b0010) begin /* ADD and SUB operand switch */
+      fma_operands[0] = fpr_rs3_d;
+      fma_operands[1] = fpr_rs1_d;
+      fma_operands[2] = fpr_rs2_d;
+
+   end else begin
+      fma_operands[0] = fpr_rs1_d;
+      fma_operands[1] = fpr_rs2_d;
+      fma_operands[2] = fpr_rs3_d;
+   end
+   end
+
+   fpnew_fma #(
+      .FpFormat    (fpnew_pkg::fp_format_e'(0)) /* FP32 */
+  )
+  fma_e1 (
+      .clk_i(clk),
+      .rst_ni(rst_l),
+      /* Manage flip of operands for ADD and SUB */
+      .operands_i(fma_operands),       // 3 operands
+      .is_boxed_i({1'b1,1'b1,1'b1}),       // 3 operands
+      .rnd_mode_i(fpnew_pkg::roundmode_e'(fpu_p.rnd_mode)),
+      .op_i(fpnew_pkg::operation_e'(fpu_p.op)),
+      .op_mod_i(fpu_p.op_mod),
+      .tag_i('b0),
+      .aux_i('b0),
+      
+      .in_valid_i(fpu_p.valid),
+      .in_ready_o(),
+      .flush_i(~rst_l),
+      
+      .result_o(fpu_fma_result_e3),
+      .status_o(fpu_fflags),
+      .extension_bit_o(),
+      .tag_o(),
+      .aux_o(),
+      
+      .out_valid_o(),
+      .out_ready_i(),
+      
+      .busy_o()
+   );
+
+   /* -------------------------------- */
 
    exu_mul_ctl mul_e1    (.*,
                           .clk_override  ( clk_override                ),   // I

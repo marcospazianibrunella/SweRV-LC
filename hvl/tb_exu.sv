@@ -114,6 +114,7 @@ module tb_exu
   /* output */ logic exu_i0_flush_final;  // I0 flush to DEC
   /* output */ logic exu_i1_flush_final;  // I1 flush to DEC
 
+  /* input */ fpu_pkt_t fpu_p = 0;
   /* input */ mul_pkt_t mul_p = 0;  // DEC {valid = 0; operand signs = 0; low = 0; operand bypass}
 
   /* input */ div_pkt_t div_p = 0;  // DEC {valid = 0; unsigned = 0; rem}
@@ -184,6 +185,10 @@ module tb_exu
   /* output */ logic exu_pmu_i1_br_ataken;  // to PMU - I1 E4 taken
   /* output */ logic exu_pmu_i1_pc4;  // to PMU - I1 E4 PC
 
+  /* input */ logic [FLEN-1:0] fpr_rs1_d = 0;
+  /* input */ logic [FLEN-1:0] fpr_rs2_d = 0;
+  /* input */ logic [FLEN-1:0] fpr_rs3_d = 0;
+
   exu DUT_i (.*);
 
   /* Clock Generation */
@@ -204,7 +209,7 @@ module tb_exu
     @(posedge clk);
     dec_i0_div_d = '1;
     div_p.valid  = '1;
-    div_p.unsign  = '1;
+    div_p.unsign = '1;
     gpr_i0_rs1_d = 'h100;
     gpr_i0_rs2_d = 'h2;
 

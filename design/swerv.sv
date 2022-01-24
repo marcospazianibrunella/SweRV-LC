@@ -603,6 +603,13 @@ module swerv
   logic [XLEN-1:0] gpr_i1_rs1_d;
   logic [XLEN-1:0] gpr_i1_rs2_d;
 
+  logic [FLEN-1:0] fpr_rs1_d;
+  logic [FLEN-1:0] fpr_rs2_d;
+  logic [FLEN-1:0] fpr_rs3_d;
+  logic [FLEN-1:0] fpu_fma_result_e3;
+
+  fpu_pkt_t fpu_p;
+
   logic [XLEN-1:0] i0_rs1_bypass_data_d;
   logic [XLEN-1:0] i0_rs2_bypass_data_d;
   logic [XLEN-1:0] i1_rs1_bypass_data_d;

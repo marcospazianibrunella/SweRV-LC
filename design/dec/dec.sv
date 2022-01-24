@@ -145,6 +145,8 @@ module dec (
     input logic            exu_div_finish,  // cycle div finishes
 
     input logic [XLEN-1:0] exu_mul_result_e3,  // 32b mul result
+    input logic [FLEN-1:0] fpu_fma_result_e3,
+
 
     input logic [XLEN-1:0] exu_csr_rs1_e1,  // rs1 for csr instruction
 
@@ -453,6 +455,9 @@ module dec (
   logic                 dec_tlu_pipelining_disable;
   logic                 dec_tlu_dual_issue_disable;
 
+  logic      [     4:0] dec_fpu_waddr_wb;
+  logic                 dec_fpu_wen_wb;
+  logic      [FLEN-1:0] dec_fpu_wdata_wb;
 
   logic      [     4:0] dec_i0_waddr_wb;
   logic                 dec_i0_wen_wb;
@@ -579,13 +584,13 @@ module dec (
       .raddr2(dec_fpu_rs3_d[4:0]),
       .rden2 (dec_fpu_rs3_en_d),
 
-      /* TODO: Finish Here */
-      .waddr0(dec_i0_waddr_wb[4:0]),
-      .wen0(dec_i0_wen_wb),
-      .wd0(dec_i0_wdata_wb[XLEN-1:0]),
-      .waddr1(dec_i1_waddr_wb[4:0]),
-      .wen1(dec_i1_wen_wb),
-      .wd1(dec_i1_wdata_wb[XLEN-1:0]),
+      .waddr0(dec_fpu_waddr_wb[4:0]),
+      .wen0(dec_fpu_wen_wb),
+      .wd0(dec_fpu_wdata_wb[XLEN-1:0]),
+      /* Out-of-pipe port */
+      .waddr1('b0),
+      .wen1('b0),
+      .wd1('b0),
 
       // outputs
       .rd0(fpr_rs1_d[FLEN-1:0]),

@@ -91,6 +91,8 @@ module dec_decode_ctl
     input logic dec_tlu_postsync_d,      // CSR ops that need to be postsync'd
 
     input logic [XLEN-1:0] exu_mul_result_e3,  // multiply result
+    input logic [FLEN-1:0] fpu_fma_result_e3,
+
 
     input logic dec_i0_pc4_d,  // inst is 4B inst else 2B
     input logic dec_i1_pc4_d,
@@ -138,7 +140,7 @@ module dec_decode_ctl
     output logic dec_fpu_rs1_en_d,  /* FPU Read Enable Signals for power reduction on the FP Register File */
     output logic dec_fpu_rs2_en_d,
     output logic dec_fpu_rs3_en_d,
-    
+
     output logic [4:0] dec_fpu_rs1_d,  /* FPU Read Enable Signals for power reduction on the FP Register File */
     output logic [4:0] dec_fpu_rs2_d,
     output logic [4:0] dec_fpu_rs3_d,
@@ -182,6 +184,10 @@ module dec_decode_ctl
     output logic [     4:0] dec_i1_waddr_wb,
     output logic            dec_i1_wen_wb,
     output logic [XLEN-1:0] dec_i1_wdata_wb,
+
+    output logic [     4:0] dec_fpu_waddr_wb,
+    output logic            dec_fpu_wen_wb,
+    output logic [FLEN-1:0] dec_fpu_wdata_wb,  /* OK */
 
     output logic dec_i0_select_pc_d,  // i0 select pc for rs1 - branches
     output logic dec_i1_select_pc_d,
@@ -362,6 +368,11 @@ module dec_decode_ctl
 
   logic [XLEN-1:0] i0_result_e3_final, i1_result_e3_final;
   logic [XLEN-1:0] i0_result_wb_raw, i1_result_wb_raw;
+  
+  logic [FLEN-1:0] fpu_result_e3_final;
+  logic [FLEN-1:0] fpu_result_e4, fpu_result_e4_final;
+  logic [FLEN-1:0] fpu_result_wb_raw;
+  
   logic [12:1] last_br_immed_d;
   logic        i1_depend_i0_d;
   logic
@@ -1248,7 +1259,7 @@ module dec_decode_ctl
   assign dec_fpu_rs1_en_d = i0_dp.fpu_rs1 | i1_dp.fpu_rs1;  // if rs1_en=0 then read will be all 0's
   assign dec_fpu_rs2_en_d = i0_dp.fpu_rs2 | i1_dp.fpu_rs2;
   assign dec_fpu_rs3_en_d = i0_dp.fpu_rs3 | i1_dp.fpu_rs3;
-  
+
   assign dec_fpu_rs1_d = (i0_dp.fpu) ? i0r.rs1 : i1r.rs1;  // if rs1_en=0 then read will be all 0's
   assign dec_fpu_rs2_d = (i0_dp.fpu) ? i0r.rs2 : i1r.rs2;
   assign dec_fpu_rs3_d = (i0_dp.fpu) ? i0r.rs3 : i1r.rs3;
@@ -2623,6 +2634,10 @@ module dec_decode_ctl
   assign     i0_wen_wb = wbd.i0v & ~(~dec_tlu_i1_kill_writeb_wb & ~i1_load_kill_wen & wbd.i0v & wbd.i1v & (wbd.i0rd[4:0] == wbd.i1rd[4:0])) & ~dec_tlu_i0_kill_writeb_wb;
   assign dec_i0_wen_wb = i0_wen_wb & ~i0_load_kill_wen;  // don't write a nonblock load 1st time down the pipe
 
+  assign dec_fpu_wen_wb = (wbd.i0v & wbd.i0fpu) | (wbd.i1v & wbd.i1fpu);
+
+  assign dec_fpu_waddr_wb[4:0] = (wbd.i0v & wbd.i0fpu) ? wbd.i0rd[4:0] : wbd.i1rd;
+
   assign dec_i0_wdata_wb = i0_result_wb;
 
   assign dec_i1_waddr_wb[4:0] = wbd.i1rd[4:0];
@@ -2631,6 +2646,8 @@ module dec_decode_ctl
   assign dec_i1_wen_wb = i1_wen_wb & ~i1_load_kill_wen;
 
   assign dec_i1_wdata_wb = i1_result_wb;
+
+  assign dec_fpu_wdata_wb = fpu_result_wb;
 
   // divide stuff
 
@@ -2715,6 +2732,7 @@ module dec_decode_ctl
 
   assign i1_result_e3_final = (e3d.i1v & e3d.i1load) ? lsu_result_dc3 : (e3d.i1v & e3d.i1mul) ? exu_mul_result_e3 : i1_result_e3;
 
+  assign fpu_result_e3_final = fpu_fma_result_e3;
 
 
   rvdffe #(XLEN) i0e4resultff (
@@ -2730,11 +2748,20 @@ module dec_decode_ctl
       .dout(i1_result_e4)
   );
 
+  rvdffe #(XLEN) fpuresultff (
+      .*,
+      .en  (i0_e4_data_en | i1_e4_data_en),
+      .din (fpu_result_e3_final),
+      .dout(fpu_result_e4)
+  );
+
   assign i0_result_e4_final =
                                      (          e4d.i0secondary) ? exu_i0_result_e4 : (e4d.i0v & e4d.i0load) ? lsu_result_corr_dc4 : i0_result_e4;
 
   assign i1_result_e4_final =
                                      (e4d.i1v & e4d.i1secondary) ? exu_i1_result_e4 : (e4d.i1v & e4d.i1load) ? lsu_result_corr_dc4 :i1_result_e4;
+
+  assign fpu_result_e4_final = fpu_result_e4;
 
   rvdffe #(XLEN) i0wbresultff (
       .*,
@@ -2749,9 +2776,18 @@ module dec_decode_ctl
       .dout(i1_result_wb_raw)
   );
 
-  assign i0_result_wb = (div_wen_wb) ? exu_div_result : i0_result_wb_raw;
+  rvdffe #(XLEN) fpuwbresultff (
+      .*,
+      .en  (i0_wb_data_en | i1_wb_data_en),
+      .din (fpu_result_e4_final),
+      .dout(fpu_result_wb_raw)
+  );
 
-  assign i1_result_wb = i1_result_wb_raw;
+  assign i0_result_wb  = (div_wen_wb) ? exu_div_result : i0_result_wb_raw;
+
+  assign i1_result_wb  = i1_result_wb_raw;
+
+  assign fpu_result_wb = fpu_result_wb_raw;
 
 
   rvdffe #(12) e1brpcff (
