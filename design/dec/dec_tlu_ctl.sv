@@ -2668,7 +2668,11 @@ assign dec_csr_legal_d = ( dec_csr_any_unq_d &
                            ~(dec_csr_wen_unq_d & (csr_mvendorid | csr_marchid | csr_mimpid | csr_mhartid | csr_mdseac | csr_meihap)) // that's not a write to a RO CSR
                            );
    // CSR read mux
-assign dec_csr_rddata_d[31:0] = ( ({32{csr_misa}}      & 32'h40001104) |
+assign dec_csr_rddata_d[31:0] = ( 
+                                  ({32{csr_fflags}}    & 32'hdeadbeef) | /* To Attach to correct Register */
+                                  ({32{csr_frm}}       & 32'hcafebabe) | /* To Attach to correct Register */
+                                  ({32{csr_fcsr}}      & 32'hf00dbabe) | /* To Attach to correct Register */
+                                  ({32{csr_misa}}      & 32'h40001104) |
                                   ({32{csr_mvendorid}} & 32'h00000045) |
                                   ({32{csr_marchid}}   & 32'h0000000b) |
                                   ({32{csr_mimpid}}    & 32'h6) |
