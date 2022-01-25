@@ -371,7 +371,7 @@ module dec_decode_ctl
   
   logic [FLEN-1:0] fpu_result_e3_final;
   logic [FLEN-1:0] fpu_result_e4, fpu_result_e4_final;
-  logic [FLEN-1:0] fpu_result_wb_raw;
+  logic [FLEN-1:0] fpu_result_wb_raw, fpu_result_wb;
   
   logic [12:1] last_br_immed_d;
   logic        i1_depend_i0_d;
