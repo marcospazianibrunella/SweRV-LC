@@ -2231,6 +2231,9 @@ module dec_tlu_ctl
 // 2) espresso -Dso -oeqntott csrlegal.e | addassign -pre out. > csrlegal_equation
 
 
+   logic csr_fflags;
+   logic csr_frm;
+   logic csr_fcsr;
    logic csr_misa;
    logic csr_mvendorid;
    logic csr_marchid;
@@ -2259,7 +2262,6 @@ module dec_tlu_ctl
    logic csr_meicurpl;
    logic csr_meicidpl;
    logic csr_dcsr;
-   logic csr_fcsr;
    logic csr_mpmc;
    logic csr_mcgc;
    logic csr_mcpc;
@@ -2306,7 +2308,14 @@ module dec_tlu_ctl
    logic valid_only;
    logic presync;
    logic postsync;
-   assign csr_misa = (!dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[6]
+
+   assign csr_fflags = (!dec_csr_rdaddr_d[8]&!dec_csr_rdaddr_d[1]);
+   
+   assign csr_frm = (!dec_csr_rdaddr_d[8]&!dec_csr_rdaddr_d[0]);
+   
+   assign csr_fcsr = (!dec_csr_rdaddr_d[8]&dec_csr_rdaddr_d[1]&dec_csr_rdaddr_d[0]);
+   
+   assign csr_misa = (!dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[8]&!dec_csr_rdaddr_d[6]
        &!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[2]&dec_csr_rdaddr_d[0]);
    
    assign csr_mvendorid = (dec_csr_rdaddr_d[10]&!dec_csr_rdaddr_d[7]
@@ -2322,7 +2331,8 @@ module dec_tlu_ctl
        &dec_csr_rdaddr_d[2]);
    
    assign csr_mstatus = (!dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[6]
-       &!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[2]&!dec_csr_rdaddr_d[0]);
+       &!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[2]&!dec_csr_rdaddr_d[1]
+       &!dec_csr_rdaddr_d[0]);
    
    assign csr_mtvec = (!dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[5]
        &!dec_csr_rdaddr_d[4]&dec_csr_rdaddr_d[2]&dec_csr_rdaddr_d[0]);
@@ -2340,7 +2350,7 @@ module dec_tlu_ctl
        &!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]
        &!dec_csr_rdaddr_d[2]&!dec_csr_rdaddr_d[1]);
    
-   assign csr_minstretl = (!dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[6]
+   assign csr_minstretl = (dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[7]
        &!dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]
        &dec_csr_rdaddr_d[1]&!dec_csr_rdaddr_d[0]);
    
@@ -2394,8 +2404,6 @@ module dec_tlu_ctl
    
    assign csr_dcsr = (dec_csr_rdaddr_d[10]&!dec_csr_rdaddr_d[6]&dec_csr_rdaddr_d[5]
        &dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[0]);
-   
-   assign csr_fcsr = (dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[6]&dec_csr_rdaddr_d[4]);
    
    assign csr_mpmc = (dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[4]&dec_csr_rdaddr_d[2]
        &dec_csr_rdaddr_d[1]);
@@ -2468,8 +2476,8 @@ module dec_tlu_ctl
        &!dec_csr_rdaddr_d[3]&dec_csr_rdaddr_d[2]&dec_csr_rdaddr_d[1]
        &!dec_csr_rdaddr_d[0]);
    
-   assign csr_mgpmc = (!dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[5]
-       &dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[2]&!dec_csr_rdaddr_d[1]);
+   assign csr_mgpmc = (dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]&dec_csr_rdaddr_d[4]
+       &!dec_csr_rdaddr_d[2]&!dec_csr_rdaddr_d[1]);
    
    assign csr_mitctl0 = (dec_csr_rdaddr_d[6]&dec_csr_rdaddr_d[4]
        &dec_csr_rdaddr_d[2]&!dec_csr_rdaddr_d[1]&!dec_csr_rdaddr_d[0]);
@@ -2534,32 +2542,31 @@ module dec_tlu_ctl
        &dec_csr_rdaddr_d[3]) | (!dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[4]);
    
    assign presync = (dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[4]&dec_csr_rdaddr_d[3]
-       &dec_csr_rdaddr_d[0]) | (dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[4]
-       &!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]&!dec_csr_rdaddr_d[1]
-       &dec_csr_rdaddr_d[0]) | (!dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]
+       &dec_csr_rdaddr_d[0]) | (dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]
+       &dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[2]&!dec_csr_rdaddr_d[1]) | (
+       dec_csr_rdaddr_d[8]&!dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]
        &!dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]
-       &dec_csr_rdaddr_d[1]) | (dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[4]
-       &!dec_csr_rdaddr_d[3]&dec_csr_rdaddr_d[1]&!dec_csr_rdaddr_d[0]) | (
-       dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]
-       &dec_csr_rdaddr_d[2]&!dec_csr_rdaddr_d[1]) | (dec_csr_rdaddr_d[7]
-       &!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]
-       &!dec_csr_rdaddr_d[2]&dec_csr_rdaddr_d[1]) | (!dec_csr_rdaddr_d[11]
-       &!dec_csr_rdaddr_d[5]&dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[2]
-       &!dec_csr_rdaddr_d[1]);
+       &dec_csr_rdaddr_d[1]) | (dec_csr_rdaddr_d[10]&!dec_csr_rdaddr_d[4]
+       &!dec_csr_rdaddr_d[3]&dec_csr_rdaddr_d[0]) | (dec_csr_rdaddr_d[11]
+       &!dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]&dec_csr_rdaddr_d[1]
+       &!dec_csr_rdaddr_d[0]) | (dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[4]
+       &!dec_csr_rdaddr_d[3]&dec_csr_rdaddr_d[2]&!dec_csr_rdaddr_d[1]) | (
+       dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[4]
+       &!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]&dec_csr_rdaddr_d[1]);
    
    assign postsync = (dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[4]&dec_csr_rdaddr_d[3]
        &dec_csr_rdaddr_d[0]) | (!dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[5]
        &!dec_csr_rdaddr_d[4]&dec_csr_rdaddr_d[2]&dec_csr_rdaddr_d[0]) | (
        !dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]
-       &!dec_csr_rdaddr_d[2]&!dec_csr_rdaddr_d[0]) | (!dec_csr_rdaddr_d[7]
-       &dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[1]&dec_csr_rdaddr_d[0]) | (
-       dec_csr_rdaddr_d[10]&!dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]
+       &!dec_csr_rdaddr_d[2]&!dec_csr_rdaddr_d[1]&!dec_csr_rdaddr_d[0]) | (
+       !dec_csr_rdaddr_d[7]&dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[1]
        &dec_csr_rdaddr_d[0]) | (dec_csr_rdaddr_d[10]&!dec_csr_rdaddr_d[4]
-       &dec_csr_rdaddr_d[2]) | (!dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[7]
-       &!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]
-       &!dec_csr_rdaddr_d[1]) | (dec_csr_rdaddr_d[10]&!dec_csr_rdaddr_d[4]
-       &!dec_csr_rdaddr_d[3]&dec_csr_rdaddr_d[1]);
-       
+       &!dec_csr_rdaddr_d[3]&dec_csr_rdaddr_d[0]) | (dec_csr_rdaddr_d[10]
+       &!dec_csr_rdaddr_d[4]&dec_csr_rdaddr_d[2]) | (!dec_csr_rdaddr_d[11]
+       &dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[3]
+       &!dec_csr_rdaddr_d[2]&!dec_csr_rdaddr_d[1]) | (dec_csr_rdaddr_d[10]
+       &!dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]&dec_csr_rdaddr_d[1]);
+   
        logic legal_csr;
        assign legal_csr = (!dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]
            &dec_csr_rdaddr_d[8]&!dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[6]
@@ -2570,70 +2577,74 @@ module dec_tlu_ctl
            &!dec_csr_rdaddr_d[1]&!dec_csr_rdaddr_d[0]) | (dec_csr_rdaddr_d[11]
            &!dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]
            &!dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[0]) | (
-           !dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]
-           &dec_csr_rdaddr_d[8]&dec_csr_rdaddr_d[7]&dec_csr_rdaddr_d[6]
-           &dec_csr_rdaddr_d[5]&dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[2]
-           &!dec_csr_rdaddr_d[1]) | (!dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[10]
-           &dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]&!dec_csr_rdaddr_d[7]
-           &!dec_csr_rdaddr_d[6]&dec_csr_rdaddr_d[5]&dec_csr_rdaddr_d[2]) | (
-           !dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]
-           &dec_csr_rdaddr_d[8]&dec_csr_rdaddr_d[7]&dec_csr_rdaddr_d[6]
-           &dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]
-           &!dec_csr_rdaddr_d[0]) | (!dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[10]
+           !dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[10]&!dec_csr_rdaddr_d[9]
+           &!dec_csr_rdaddr_d[8]&!dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[6]
+           &!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]
+           &!dec_csr_rdaddr_d[2]&dec_csr_rdaddr_d[0]) | (!dec_csr_rdaddr_d[11]
+           &!dec_csr_rdaddr_d[10]&!dec_csr_rdaddr_d[9]&!dec_csr_rdaddr_d[8]
+           &!dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]
+           &!dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]
+           &dec_csr_rdaddr_d[1]) | (!dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[10]
            &dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]&dec_csr_rdaddr_d[7]
-           &!dec_csr_rdaddr_d[6]&dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[3]
-           &!dec_csr_rdaddr_d[2]&!dec_csr_rdaddr_d[1]) | (dec_csr_rdaddr_d[11]
-           &dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]&!dec_csr_rdaddr_d[7]
-           &!dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]&dec_csr_rdaddr_d[4]
-           &!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]&dec_csr_rdaddr_d[0]) | (
+           &dec_csr_rdaddr_d[6]&dec_csr_rdaddr_d[5]&dec_csr_rdaddr_d[4]
+           &!dec_csr_rdaddr_d[2]&!dec_csr_rdaddr_d[1]) | (!dec_csr_rdaddr_d[11]
+           &dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]
+           &dec_csr_rdaddr_d[7]&dec_csr_rdaddr_d[6]&dec_csr_rdaddr_d[4]
+           &!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]&!dec_csr_rdaddr_d[0]) | (
            !dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]
-           &dec_csr_rdaddr_d[8]&dec_csr_rdaddr_d[7]&dec_csr_rdaddr_d[6]
-           &!dec_csr_rdaddr_d[5]&dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]
+           &dec_csr_rdaddr_d[8]&dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[6]
+           &dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]
+           &!dec_csr_rdaddr_d[1]) | (!dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[10]
+           &dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]&dec_csr_rdaddr_d[7]
+           &dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]&dec_csr_rdaddr_d[4]
+           &!dec_csr_rdaddr_d[3]&dec_csr_rdaddr_d[2]) | (!dec_csr_rdaddr_d[11]
+           &!dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]
+           &!dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[6]&dec_csr_rdaddr_d[5]
            &dec_csr_rdaddr_d[2]) | (dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[9]
            &dec_csr_rdaddr_d[8]&!dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[6]
            &!dec_csr_rdaddr_d[5]&dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]
            &dec_csr_rdaddr_d[2]&!dec_csr_rdaddr_d[1]&!dec_csr_rdaddr_d[0]) | (
-           dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]
-           &dec_csr_rdaddr_d[8]&dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[5]
-           &!dec_csr_rdaddr_d[4]&dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]) | (
-           !dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]
-           &dec_csr_rdaddr_d[8]&!dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[6]
-           &dec_csr_rdaddr_d[5]&dec_csr_rdaddr_d[1]&dec_csr_rdaddr_d[0]) | (
-           !dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]
-           &dec_csr_rdaddr_d[8]&dec_csr_rdaddr_d[7]&dec_csr_rdaddr_d[6]
-           &!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[4]&dec_csr_rdaddr_d[3]
-           &!dec_csr_rdaddr_d[2]) | (dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[10]
+           dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]
+           &!dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]
+           &dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]
+           &dec_csr_rdaddr_d[0]) | (dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[10]
            &dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]&dec_csr_rdaddr_d[7]
            &!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[4]&dec_csr_rdaddr_d[3]
            &!dec_csr_rdaddr_d[1]&!dec_csr_rdaddr_d[0]) | (dec_csr_rdaddr_d[11]
-           &dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]&!dec_csr_rdaddr_d[7]
-           &!dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]&dec_csr_rdaddr_d[4]
-           &!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]&dec_csr_rdaddr_d[1]) | (
-           dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]
-           &dec_csr_rdaddr_d[8]&!dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]
-           &dec_csr_rdaddr_d[2]) | (!dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[10]
+           &!dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]
+           &dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[4]
+           &dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]) | (!dec_csr_rdaddr_d[11]
+           &dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]
+           &dec_csr_rdaddr_d[7]&dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]
+           &!dec_csr_rdaddr_d[4]&dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]) | (
+           dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]
+           &!dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]
+           &dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]
+           &dec_csr_rdaddr_d[1]) | (!dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[10]
            &dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]&dec_csr_rdaddr_d[7]
            &dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]&dec_csr_rdaddr_d[4]
            &!dec_csr_rdaddr_d[3]&dec_csr_rdaddr_d[1]) | (!dec_csr_rdaddr_d[11]
+           &!dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]
+           &!dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[6]&dec_csr_rdaddr_d[5]
+           &dec_csr_rdaddr_d[1]&dec_csr_rdaddr_d[0]) | (dec_csr_rdaddr_d[11]
+           &!dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]
+           &!dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]&dec_csr_rdaddr_d[2]) | (
+           !dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]
+           &dec_csr_rdaddr_d[8]&dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[6]
+           &dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]
+           &!dec_csr_rdaddr_d[2]&!dec_csr_rdaddr_d[0]) | (!dec_csr_rdaddr_d[11]
            &dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]
-           &dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[6]&dec_csr_rdaddr_d[5]
-           &!dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]
-           &!dec_csr_rdaddr_d[0]) | (dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]
-           &dec_csr_rdaddr_d[8]&dec_csr_rdaddr_d[7]&dec_csr_rdaddr_d[6]
-           &!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]
-           &!dec_csr_rdaddr_d[1]&!dec_csr_rdaddr_d[0]) | (dec_csr_rdaddr_d[11]
+           &dec_csr_rdaddr_d[7]&dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]
+           &!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[0]) | (dec_csr_rdaddr_d[11]
            &!dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]
            &!dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]&dec_csr_rdaddr_d[1]) | (
-           !dec_csr_rdaddr_d[11]&dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]
-           &dec_csr_rdaddr_d[8]&dec_csr_rdaddr_d[7]&dec_csr_rdaddr_d[6]
-           &!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[0]) | (
            !dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]
-           &dec_csr_rdaddr_d[8]&!dec_csr_rdaddr_d[7]&dec_csr_rdaddr_d[6]
-           &!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]
-           &!dec_csr_rdaddr_d[2]) | (!dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[10]
+           &dec_csr_rdaddr_d[8]&!dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[5]
+           &!dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[1]
+           &!dec_csr_rdaddr_d[0]) | (!dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[10]
            &dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]&!dec_csr_rdaddr_d[7]
-           &!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[4]&!dec_csr_rdaddr_d[3]
-           &!dec_csr_rdaddr_d[1]&!dec_csr_rdaddr_d[0]) | (!dec_csr_rdaddr_d[11]
+           &dec_csr_rdaddr_d[6]&!dec_csr_rdaddr_d[5]&!dec_csr_rdaddr_d[4]
+           &!dec_csr_rdaddr_d[3]&!dec_csr_rdaddr_d[2]) | (!dec_csr_rdaddr_d[11]
            &!dec_csr_rdaddr_d[10]&dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]
            &!dec_csr_rdaddr_d[7]&!dec_csr_rdaddr_d[6]&dec_csr_rdaddr_d[5]
            &dec_csr_rdaddr_d[3]) | (dec_csr_rdaddr_d[11]&!dec_csr_rdaddr_d[10]
@@ -2645,7 +2656,8 @@ module dec_tlu_ctl
            &dec_csr_rdaddr_d[9]&dec_csr_rdaddr_d[8]&!dec_csr_rdaddr_d[6]
            &!dec_csr_rdaddr_d[5]&dec_csr_rdaddr_d[4]);
        
-          
+           
+       
 
 assign dec_tlu_presync_d = presync & dec_csr_any_unq_d & ~dec_csr_wen_unq_d;
 assign dec_tlu_postsync_d = (postsync & dec_csr_any_unq_d) | rfpc_postsync;

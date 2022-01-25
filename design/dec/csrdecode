@@ -1,5 +1,8 @@
 .definition
 
+csr_fflags  =       [000000000001] 
+csr_frm  =          [000000000010] 
+csr_fcsr  =         [000000000011] 
 csr_misa =          [001100000001]
 csr_mvendorid =     [111100010001]
 csr_marchid =       [111100010010]
@@ -29,7 +32,6 @@ csr_meicpct =       [101111001010]
 csr_meicurpl =      [101111001100]
 csr_meicidpl =      [101111001011]
 csr_dcsr =          [011110110000]
-csr_fcsr =          [111111010000]
 csr_dpc =           [011110110001]
 csr_dicawics =      [011111001000]
 csr_dicad0 =        [011111001001]
@@ -94,6 +96,9 @@ csr = {
 .output
 
 csr = {
+     csr_fflags
+     csr_frm
+     csr_fcsr
      csr_misa
      csr_mvendorid
      csr_marchid
@@ -122,7 +127,6 @@ csr = {
      csr_meicurpl
      csr_meicidpl
      csr_dcsr
-     csr_fcsr
      csr_mpmc
      csr_mcgc
      csr_mcpc
@@ -173,6 +177,9 @@ csr_dicago
 
 .decode
 
+csr[ csr_fflags    ] = {  csr_fflags      }
+csr[ csr_frm       ] = {  csr_frm      }
+csr[ csr_fcsr      ] = {  csr_fcsr      }
 csr[ csr_misa      ] = {  csr_misa      }
 csr[ csr_mvendorid ] = {  csr_mvendorid }
 csr[ csr_marchid   ] = {  csr_marchid   }
@@ -206,7 +213,6 @@ csr[ csr_mgpmc     ] = {  csr_mgpmc presync postsync }
 csr[ csr_mcpc      ] = {  csr_mcpc presync postsync }
 csr[ csr_mfdc      ] = {  csr_mfdc presync postsync }
 csr[ csr_dcsr      ] = {  csr_dcsr      }
-csr[ csr_fcsr      ] = {  csr_fcsr      }
 csr[ csr_dpc       ] = {  csr_dpc       }
 csr[ csr_mtsel     ] = {  csr_mtsel     }
 csr[ csr_mtdata1   ] = {  csr_mtdata1  presync postsync }

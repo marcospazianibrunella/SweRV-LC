@@ -21,7 +21,11 @@ view=csr
 # csr_dpc
 011110110001 1
 # csr_fcsr
-111111010000 1
+000000000011 1
+# csr_fflags
+000000000001 1
+# csr_frm
+000000000010 1
 # csr_marchid
 111100010010 1
 # csr_mcause
