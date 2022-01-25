@@ -59,18 +59,19 @@ logic fpu_fmadd;
 logic fpu_fnmsub;
 logic fpu_add;
 logic fpu_mul;
+logic fpu_mv;
 logic fpu_src_fp32;
 logic fpu_dst_fp32;
 assign out.alu = (!i[25]&i[5]&i[4]) | (!i[6]&!i[5]&i[4]) | (!i[6]&i[2]) | (i[6]&i[5]);
 
 assign out.alu_half = (i[4]&i[3]);
 
-assign out.rs1 = (!i[14]&!i[13]&i[5]&!i[2]) | (!i[13]&i[11]&i[5]&!i[2]) | (i[19]
-    &i[13]&i[5]&!i[2]) | (!i[13]&i[10]&i[5]&!i[2]) | (i[18]&i[13]&i[5]
-    &!i[2]) | (!i[13]&i[9]&i[5]&!i[2]) | (i[17]&i[13]&i[5]&!i[2]) | (
-    !i[13]&i[8]&i[5]&!i[2]) | (i[16]&i[13]&i[5]&!i[2]) | (!i[13]&i[7]
-    &i[5]&!i[2]) | (i[15]&i[13]&i[5]&!i[2]) | (i[5]&!i[4]&!i[3]) | (!i[6]
-    &!i[2]);
+assign out.rs1 = (i[29]&!i[5]&i[4]&!i[2]) | (!i[14]&!i[13]&i[5]&!i[2]) | (!i[13]
+    &i[11]&i[5]&!i[2]) | (i[19]&i[13]&i[5]&!i[2]) | (!i[13]&i[10]&i[5]
+    &!i[2]) | (i[18]&i[13]&i[5]&!i[2]) | (!i[13]&i[9]&i[5]&!i[2]) | (
+    i[17]&i[13]&i[5]&!i[2]) | (!i[13]&i[8]&i[5]&!i[2]) | (i[16]&i[13]
+    &i[5]&!i[2]) | (!i[13]&i[7]&i[5]&!i[2]) | (i[15]&i[13]&i[5]&!i[2]) | (
+    i[5]&!i[4]&!i[3]) | (!i[6]&!i[2]);
 
 assign out.rs2 = (!i[6]&i[5]&!i[2]) | (i[5]&!i[4]&!i[2]);
 
@@ -182,7 +183,7 @@ assign out.ebreak = (!i[22]&i[20]&!i[13]&!i[12]&i[6]&i[5]&i[4]);
 
 assign out.ecall = (!i[21]&!i[20]&!i[13]&!i[12]&i[6]&i[5]&i[4]);
 
-assign out.mret = (i[29]&!i[13]&!i[12]&i[6]&i[4]);
+assign out.mret = (i[21]&!i[13]&!i[12]&i[6]&i[5]&i[4]);
 
 assign out.mul = (i[25]&!i[14]&!i[6]&i[5]&i[4]&!i[2]);
 
@@ -206,9 +207,9 @@ assign out.pm_alu = (i[28]&i[22]&!i[13]&!i[12]&i[5]&i[4]) | (i[4]&i[2]) | (!i[6]
 
 assign out.fpu = (i[6]&!i[5]);
 
-assign out.fpu_rs1 = (i[6]&!i[5]);
+assign out.fpu_rs1 = (!i[29]&i[6]&!i[5]) | (i[6]&!i[5]&!i[4]);
 
-assign out.fpu_rs2 = (i[6]&!i[5]);
+assign out.fpu_rs2 = (!i[29]&i[6]&!i[5]) | (i[6]&!i[5]&!i[4]);
 
 assign out.fpu_rs3 = (i[6]&!i[5]&!i[4]);
 
@@ -222,7 +223,9 @@ assign out.fpu_fnmsub = (i[6]&!i[5]&i[3]);
 
 assign out.fpu_add = (!i[28]&i[6]&!i[5]&i[4]);
 
-assign out.fpu_mul = (i[28]&i[6]&!i[5]&i[4]);
+assign out.fpu_mul = (!i[29]&i[28]&i[6]&!i[5]&i[4]);
+
+assign out.fpu_mv = (i[30]&i[6]&!i[5]&i[4]);
 
 assign out.fpu_src_fp32 = (i[6]&!i[5]);
 

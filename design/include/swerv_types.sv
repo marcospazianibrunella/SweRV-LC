@@ -309,6 +309,7 @@ package swerv_types;
     logic fpu_fnmsub;
     logic fpu_add;
     logic fpu_mul;
+    logic fpu_mv;
     logic legal;
   } dec_pkt_t;
 

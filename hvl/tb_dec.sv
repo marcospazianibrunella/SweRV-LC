@@ -367,6 +367,8 @@ module tb_dec
   /* output */ logic [FLEN-1:0] fpr_rs2_d;
   /* output */ logic [FLEN-1:0] fpr_rs3_d;
 
+  /* input */ logic [FLEN-1:0] fpu_fma_result_e3;
+
   /* input */ logic scan_mode = 0;
 
   fpu_instr_t fpu_instr;
@@ -381,16 +383,7 @@ module tb_dec
   /* Main Sim Loop */
   initial begin
 
-    fpu_instr.pad2 = 2'b00;
-    fpu_instr.vld_32 = 2'b11;
-    fpu_instr.rs3 = $random;
-    fpu_instr.rs2 = $random;
-    fpu_instr.rs1 = $random;
-    fpu_instr.rd = $random;
-    fpu_instr.rnd_mode = 2'b00;
-    fpu_instr.opcode = 5'b10001;
-
-    ifu_i0_instr = fpu_instr;
+    ifu_i0_instr = 32'b11110_00_00000_11011_000_10101_10100_11;
     ifu_miss_state_idle = 1;
     @(posedge clk);
     @(posedge clk);
