@@ -50,9 +50,9 @@ module dec_fpr_ctl #(
 );
 
   logic [FPR_BANKS-1:0][31:1] [FLEN-1:0] fpr_out;     // FLEN-1 x 64 bit FPRs
-  logic [31:1] [FLEN-1:0] fpr_in;
-  logic [31:1] w0v, w1v;
-  logic [31:1] fpr_wr_en;
+  logic [31:0] [FLEN-1:0] fpr_in;
+  logic [31:0] w0v, w1v;
+  logic [31:0] fpr_wr_en;
   logic [FPR_BANKS-1:0][31:1] fpr_bank_wr_en;
   logic [FPR_BANKS_LOG2-1:0] fpr_bank_id;
 
@@ -66,10 +66,10 @@ module dec_fpr_ctl #(
   );
 
   // FPR Write Enables for power savings
-  assign fpr_wr_en[31:1] = (w0v[31:1] | w1v[31:1]);
+  assign fpr_wr_en[31:0] = (w0v[31:0] | w1v[31:0]);
   for (genvar i = 0; i < FPR_BANKS; i++) begin : fpr_banks
-    assign fpr_bank_wr_en[i][31:1] = fpr_wr_en[31:1] & {31{fpr_bank_id[FPR_BANKS_LOG2-1:0] == i}};
-    for (genvar j = 1; j < 32; j++) begin : fpr
+    assign fpr_bank_wr_en[i][31:0] = fpr_wr_en[31:0] & {32{fpr_bank_id[FPR_BANKS_LOG2-1:0] == i}};
+    for (genvar j = 0; j < 32; j++) begin : fpr
       rvdffe #(FLEN) fprff (
           .*,
           .en  (fpr_bank_wr_en[i][j]),
@@ -84,13 +84,13 @@ module dec_fpr_ctl #(
     rd0[FLEN-1:0] = 32'b0;
     rd1[FLEN-1:0] = 32'b0;
     rd2[FLEN-1:0] = 32'b0;
-    w0v[31:1] = 31'b0;
-    w1v[31:1] = 31'b0;
-    fpr_in[31:1] = '0;
+    w0v[31:0] = 32'b0;
+    w1v[31:0] = 32'b0;
+    fpr_in[31:0] = '0;
 
     // FPR Read logic
     for (int i = 0; i < FPR_BANKS; i++) begin
-      for (int j = 1; j < 32; j++) begin
+      for (int j = 0; j < 32; j++) begin
         rd0 |= ({FLEN{rden0 & (raddr0[4:0]== 5'(j)) & (fpr_bank_id[FPR_BANKS_LOG2-1:0] == 1'(i))}} & fpr_out[i][j]);
         rd1 |= ({FLEN{rden1 & (raddr1[4:0]== 5'(j)) & (fpr_bank_id[FPR_BANKS_LOG2-1:0] == 1'(i))}} & fpr_out[i][j]);
         rd2 |= ({FLEN{rden2 & (raddr2[4:0]== 5'(j)) & (fpr_bank_id[FPR_BANKS_LOG2-1:0] == 1'(i))}} & fpr_out[i][j]);
@@ -98,7 +98,7 @@ module dec_fpr_ctl #(
     end
 
     // FPR Write logic
-    for (int j = 1; j < 32; j++) begin
+    for (int j = 0; j < 32; j++) begin
       w0v[j]    = wen0 & (waddr0[4:0] == 5'(j));
       w1v[j]    = wen1 & (waddr1[4:0] == 5'(j));
       fpr_in[j] = ({FLEN{w0v[j]}} & wd0) | ({FLEN{w1v[j]}} & wd1);
