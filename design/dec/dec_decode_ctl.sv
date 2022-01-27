@@ -1203,19 +1203,15 @@ module dec_decode_ctl
   assign mul_p.load_mul_rs2_bypass_e1 = load_mul_rs2_bypass_e1;
 
   /* Creating FPU Packet */
-  assign fpu_p.valid = i0_dp.fpu | i1_dp.fpu;
-  assign fpu_p.rnd_mode = i0_dp.fpu ? i0[14:12] : i1[14:12];
+  assign fpu_p.valid = i0_dp.fpu;
+  assign fpu_p.rnd_mode = i0[14:12];  /* MUX here for dynamic roundig mode from the CSR */
 
-  assign fpu_p.op = (i0_dp.fpu) ? ({4{i0_dp.fpu_fmadd}} & 4'b0000) |  /* FMADD */
+  assign fpu_p.op = ({4{i0_dp.fpu_fmadd}} & 4'b0000) |  /* FMADD */
       ({4{i0_dp.fpu_fnmsub}} & 4'b0001) |  /* FNMSUB */
       ({4{i0_dp.fpu_add}} & 4'b0010) |  /* ADD */
-      ({4{i0_dp.fpu_mul}} & 4'b0011)  /* MUL */
-      : ({4{i1_dp.fpu_fmadd}} & 4'b0000) |  /* FMADD */
-      ({4{i1_dp.fpu_fnmsub}} & 4'b0001) |  /* FNMSUB */
-      ({4{i1_dp.fpu_add}} & 4'b0010) |  /* ADD */
-      ({4{i1_dp.fpu_mul}} & 4'b0011);  /* MUL */
+      ({4{i0_dp.fpu_mul}} & 4'b0011);  /* MUL */
 
-  assign fpu_p.op_mod = (i0_dp.fpu) ? i0_dp.fpu_op_mod : i1_dp.fpu_op_mod;
+  assign fpu_p.op_mod = i0_dp.fpu_op_mod;
 
   assign fpu_p.fma = (i0_dp.fpu) ? (i0_dp.fpu_fmadd | i0_dp.fpu_fnmsub | i0_dp.fpu_add | i0_dp.fpu_mul) : (i1_dp.fpu_fmadd | i1_dp.fpu_fnmsub | i1_dp.fpu_add | i1_dp.fpu_mul);
   assign fpu_p.mv = (i0_dp.fpu) ? i0_dp.fpu_mv : i1_dp.fpu_mv;
