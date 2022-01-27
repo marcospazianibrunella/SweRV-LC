@@ -1535,6 +1535,7 @@ module dec_decode_ctl
                        i1_load2_block_d |  // back-to-back load's at decode
       i1_mul2_block_d | i1_load_stall_d |  // prior stores
       i1_secondary_block_d |  // secondary alu data not ready and op is not alu
+      i1_dp.fpu | // only issue 1 fp op per cycle
       dec_tlu_dual_issue_disable;  // dual issue is disabled
 
   // all legals go here
