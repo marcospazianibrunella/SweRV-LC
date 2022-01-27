@@ -328,6 +328,8 @@ package swerv_types;
     logic [2:0] rnd_mode;
     logic [3:0] op;
     logic op_mod;
+    logic mv;
+    logic fma;
   } fpu_pkt_t;
 
   typedef struct packed {

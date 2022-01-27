@@ -151,7 +151,7 @@ module exu
    output logic [31:1]  exu_flush_path_final,                          // Target for the oldest flush source
 
    output logic [XLEN-1:0] exu_mul_result_e3,                              // Multiply result
-   output logic [FLEN-1:0] fpu_fma_result_e3,                              // FMA result
+   output logic [FLEN-1:0] exu_fpu_result_e3,                              // FMA result
 
    output logic [XLEN-1:0]  exu_div_result,                                // Divide result
    output logic exu_div_finish,                                        // Divide is finished
@@ -219,7 +219,7 @@ module exu
 
    logic [XLEN-1:0] i0_rs1_d,i0_rs2_d,i1_rs1_d,i1_rs2_d;
 
-
+ logic [31:0] fpu_fma_result_e3_d;
 
    logic        exu_i0_flush_upper_e1;
    logic [31:1] exu_i0_flush_path_e1;
@@ -358,6 +358,7 @@ module exu
 
    rvdffe #(XLEN) csr_rs1_ff (.*, .en(i0_e1_data_en), .din(csr_rs1_in_d[XLEN-1:0]), .dout(exu_csr_rs1_e1[XLEN-1:0]));
 
+   /* Start FPU Implementation */
  /* -----> FMA <----- */
    logic                  [      2:0][FMA_OPERAND_WIDTH-1:0] fma_operands = 0;  // 3 operands
 
@@ -389,7 +390,7 @@ module exu
       .tag_i('b0),
       .aux_i('b0),
       
-      .in_valid_i(fpu_p.valid),
+      .in_valid_i(fpu_p.valid & fpu_p.fma),
       .in_ready_o(),
       .flush_i(~rst_l),
       
@@ -406,6 +407,29 @@ module exu
    );
 
    /* -------------------------------- */
+   
+   /* ----- fmv.w.x Instruction Implementation ----- */
+   logic [31:0] fpu_fmv_result_init_d, fpu_fmv_result_e1_d, fpu_fmv_result_e2_d, fpu_fmv_result_e3_d; 
+
+   assign fmv_result_init_d = {FLEN{(fpu_p.valid & fpu_p.mv)}} & i0_rs1_final_d[FLEN-1:0];
+
+   rvdffe #(FLEN) fpu_fmv_result_e1_ff (.*, .en(i0_e1_data_en), .din(fpu_fmv_result_init_d),.dout(fpu_fmv_result_e2_d) );
+   rvdffe #(FLEN) fpu_fmv_result_e2_ff (.*, .en(i0_e2_data_en), .din(fpu_fmv_result_e1_d),.dout(fpu_fmv_result_e2_d) );
+   rvdffe #(FLEN) fpu_fmv_result_e3_ff (.*, .en(i0_e3_data_en), .din(fpu_fmv_result_e2_d),.dout(fpu_fmv_result_e3_d) );
+
+   /* ----- ----- */
+
+   /* ----- FPU Result MUX ----- */
+   fpu_pkt_t fpu_p_e1, fpu_p_e2, fpu_p_e3;
+   rvdffe #($bits(fpu_p)) fpu_p_e1_ff (.*, .en(i0_e1_ctl_en), .din(fpu_p),.dout(fpu_p_e1) );
+   rvdffe #($bits(fpu_p)) fpu_p_e2_ff (.*, .en(i0_e2_ctl_en), .din(fpu_p_e1),.dout(fpu_p_e2));
+   rvdffe #($bits(fpu_p)) fpu_p_e3_ff (.*, .en(i0_e3_ctl_en), .din(fpu_p_e2),.dout(fpu_p_e3));
+
+   assign exu_fpu_result_e3 = {32{fpu_p_e3.mv}} & fpu_fmv_result_e3_d |
+                          {32{fpu_p_e3.fma}} & fpu_fma_result_e3_d;
+   
+
+   /* End FPU Implementation */
 
    exu_mul_ctl mul_e1    (.*,
                           .clk_override  ( clk_override                ),   // I

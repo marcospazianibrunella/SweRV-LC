@@ -188,6 +188,8 @@ module tb_exu
   /* input */ logic [FLEN-1:0] fpr_rs1_d = 0;
   /* input */ logic [FLEN-1:0] fpr_rs2_d = 0;
   /* input */ logic [FLEN-1:0] fpr_rs3_d = 0;
+  
+  /* input */ logic [FLEN-1:0] fpu_result_e3 = 0;
 
   exu DUT_i (.*);
 

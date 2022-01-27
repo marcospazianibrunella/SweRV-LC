@@ -91,7 +91,7 @@ module dec_decode_ctl
     input logic dec_tlu_postsync_d,      // CSR ops that need to be postsync'd
 
     input logic [XLEN-1:0] exu_mul_result_e3,  // multiply result
-    input logic [FLEN-1:0] fpu_fma_result_e3,
+    input logic [FLEN-1:0] exu_fpu_result_e3,
 
 
     input logic dec_i0_pc4_d,  // inst is 4B inst else 2B
@@ -1217,6 +1217,8 @@ module dec_decode_ctl
 
   assign fpu_p.op_mod = (i0_dp.fpu) ? i0_dp.fpu_op_mod : i1_dp.fpu_op_mod;
 
+  assign fpu_p.fma = (i0_dp.fpu) ? (i0_dp.fpu_fmadd | i0_dp.fpu_fnmsub | i0_dp.fpu_add | i0_dp.fpu_mul) : (i1_dp.fpu_fmadd | i1_dp.fpu_fnmsub | i1_dp.fpu_add | i1_dp.fpu_mul);
+  assign fpu_p.mv = (i0_dp.fpu) ? i0_dp.fpu_mv : i1_dp.fpu_mv;
 
 
   assign lsu_p.valid = lsu_decode_d;
@@ -2737,7 +2739,7 @@ module dec_decode_ctl
 
   assign i1_result_e3_final = (e3d.i1v & e3d.i1load) ? lsu_result_dc3 : (e3d.i1v & e3d.i1mul) ? exu_mul_result_e3 : i1_result_e3;
 
-  assign fpu_result_e3_final = fpu_fma_result_e3;
+  assign fpu_result_e3_final = exu_fpu_result_e3;
 
 
   rvdffe #(XLEN) i0e4resultff (

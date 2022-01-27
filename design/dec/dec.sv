@@ -145,7 +145,7 @@ module dec (
     input logic            exu_div_finish,  // cycle div finishes
 
     input logic [XLEN-1:0] exu_mul_result_e3,  // 32b mul result
-    input logic [FLEN-1:0] fpu_fma_result_e3,
+    input logic [FLEN-1:0] exu_fpu_result_e3,
 
 
     input logic [XLEN-1:0] exu_csr_rs1_e1,  // rs1 for csr instruction

@@ -367,7 +367,7 @@ module tb_dec
   /* output */ logic [FLEN-1:0] fpr_rs2_d;
   /* output */ logic [FLEN-1:0] fpr_rs3_d;
 
-  /* input */ logic [FLEN-1:0] fpu_fma_result_e3;
+  /* input */ logic [FLEN-1:0] exu_fpu_result_e3;
 
   /* input */ logic scan_mode = 0;
 
