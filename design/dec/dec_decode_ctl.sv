@@ -1535,7 +1535,7 @@ module dec_decode_ctl
                        i1_load2_block_d |  // back-to-back load's at decode
       i1_mul2_block_d | i1_load_stall_d |  // prior stores
       i1_secondary_block_d |  // secondary alu data not ready and op is not alu
-      i1_dp.fpu | // only issue 1 fp op per cycle
+      i1_dp.fpu |  // only issue 1 fp op per cycle
       dec_tlu_dual_issue_disable;  // dual issue is disabled
 
   // all legals go here
@@ -2421,10 +2421,14 @@ module dec_decode_ctl
       .dout(i1_wbc)
   );
 
+  logic i0_fpu_rd_en_d;
+
+  assign i0_fpu_rd_en_d    = i0_dp.fpu_rd;
 
   assign dd.i0rd[4:0]      = i0r.rd[4:0];
-  assign dd.i0v            = i0_rd_en_d & i0_legal_decode_d;
+  assign dd.i0v            = (i0_rd_en_d | i0_fpu_rd_en_d) & i0_legal_decode_d;
   assign dd.i0valid        = dec_i0_decode_d;  // has flush_final_e3
+  assign dd.i0fpu          = i0_dp.fpu & i0_legal_decode_d;
 
   assign dd.i0mul          = i0_dp.mul & i0_legal_decode_d;
   assign dd.i0load         = i0_dp.load & i0_legal_decode_d;
