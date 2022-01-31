@@ -220,6 +220,7 @@ module exu
    logic [XLEN-1:0] i0_rs1_d,i0_rs2_d,i1_rs1_d,i1_rs2_d;
 
  logic [31:0] fpu_fma_result_e3_d;
+ logic [XLEN-1:0] exu_i0_result_e1_d;
 
    logic        exu_i0_flush_upper_e1;
    logic [31:1] exu_i0_flush_path_e1;
@@ -394,7 +395,7 @@ module exu
       .in_ready_o(),
       .flush_i(~rst_l),
       
-      .result_o(fpu_fma_result_e3),
+      .result_o(fpu_fma_result_e3_d),
       .status_o(fpu_fflags),
       .extension_bit_o(),
       .tag_o(),
@@ -409,13 +410,25 @@ module exu
    /* -------------------------------- */
    
    /* ----- fmv.w.x Instruction Implementation ----- */
-   logic [31:0] fpu_fmv_result_init_d, fpu_fmv_result_e1_d, fpu_fmv_result_e2_d, fpu_fmv_result_e3_d; 
+   logic [FLEN-1:0] fpu_fmv_result_init_d, fpu_fmv_result_e1_d, fpu_fmv_result_e2_d, fpu_fmv_result_e3_d; 
 
-   assign fmv_result_init_d = {FLEN{(fpu_p.valid & fpu_p.mv)}} & i0_rs1_final_d[FLEN-1:0];
+   assign fpu_fmv_result_init_d = {FLEN{(fpu_p.valid & fpu_p.mv_int_to_float)}} & i0_rs1_final_d[FLEN-1:0];
 
-   rvdffe #(FLEN) fpu_fmv_result_e1_ff (.*, .en(i0_e1_data_en), .din(fpu_fmv_result_init_d),.dout(fpu_fmv_result_e2_d) );
+   rvdffe #(FLEN) fpu_fmv_result_e1_ff (.*, .en(i0_e1_data_en), .din(fpu_fmv_result_init_d),.dout(fpu_fmv_result_e1_d) );
    rvdffe #(FLEN) fpu_fmv_result_e2_ff (.*, .en(i0_e2_data_en), .din(fpu_fmv_result_e1_d),.dout(fpu_fmv_result_e2_d) );
    rvdffe #(FLEN) fpu_fmv_result_e3_ff (.*, .en(i0_e3_data_en), .din(fpu_fmv_result_e2_d),.dout(fpu_fmv_result_e3_d) );
+
+   /* ----- ----- */
+   
+   /* ----- fmv.x.w Instruction Implementation ----- */
+   logic [XLEN-1:0] int_fmv_result_init_d, int_fmv_result_e1_d; 
+
+   assign int_fmv_result_init_d = {XLEN{(fpu_p.valid & fpu_p.mv_float_to_int)}} & {{XLEN-FLEN{fpr_rs1_d[FLEN]}}, i0_rs1_final_d[FLEN-1:0]};
+
+   rvdffe #(XLEN) int_fmv_result_e1_ff (.*, .en(i0_e1_data_en), .din(int_fmv_result_init_d),.dout(int_fmv_result_e1_d) );
+
+   /* Mux Between ALU and FPU on i0 */
+   assign exu_i0_result_e1 = (fpu_p_e1.mv_float_to_int) ? int_fmv_result_e1_d : exu_i0_result_e1_d;
 
    /* ----- ----- */
 
@@ -425,7 +438,7 @@ module exu
    rvdffe #($bits(fpu_p)) fpu_p_e2_ff (.*, .en(i0_e2_ctl_en), .din(fpu_p_e1),.dout(fpu_p_e2));
    rvdffe #($bits(fpu_p)) fpu_p_e3_ff (.*, .en(i0_e3_ctl_en), .din(fpu_p_e2),.dout(fpu_p_e3));
 
-   assign exu_fpu_result_e3 = {32{fpu_p_e3.mv}} & fpu_fmv_result_e3_d |
+   assign exu_fpu_result_e3 = {32{fpu_p_e3.mv_int_to_float}} & fpu_fmv_result_e3_d |
                           {32{fpu_p_e3.fma}} & fpu_fma_result_e3_d;
    
 
@@ -492,7 +505,7 @@ module exu
                           .pc            ( dec_i0_pc_d[31:1]           ),   // I
                           .brimm         ( dec_i0_br_immed_d[12:1]     ),   // I
                           .ap            ( i0_ap_e1                    ),   // I
-                          .out           ( exu_i0_result_e1[XLEN-1:0]      ),   // O
+                          .out           ( exu_i0_result_e1_d[XLEN-1:0]      ),   // O
                           .flush_upper   ( exu_i0_flush_upper_e1       ),   // O : will be 0 if freeze this cycle
                           .flush_path    ( exu_i0_flush_path_e1[31:1]  ),   // O
                           .predict_p_ff  ( i0_predict_p_e1             ),   // O

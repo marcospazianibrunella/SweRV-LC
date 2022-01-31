@@ -328,7 +328,8 @@ package swerv_types;
     logic [2:0] rnd_mode;
     logic [3:0] op;
     logic op_mod;
-    logic mv;
+    logic mv_int_to_float;
+    logic mv_float_to_int;
     logic fma;
   } fpu_pkt_t;
 

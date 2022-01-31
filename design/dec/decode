@@ -141,6 +141,7 @@ fadd_s      = [0000000..................1010011]
 fsub_s      = [0000100..................1010011] 
 fmul_s      = [0001000..................1010011]
 fmv_w_x     = [111100000000.....000.....1010011]
+fmv_x_w     = [111000000000.....000.....1010011]
 
 .input
 
@@ -259,6 +260,7 @@ rv32i[fadd_s] = {fpu fpu_src_fp32 fpu_dst_fp32 fpu_rs1 fpu_rs2 fpu_rd fpu_add}
 rv32i[fsub_s] = {fpu fpu_src_fp32 fpu_dst_fp32 fpu_rs1 fpu_rs2 fpu_rd fpu_add fpu_op_mod}
 rv32i[fmul_s] = {fpu fpu_src_fp32 fpu_dst_fp32 fpu_rs1 fpu_rs2 fpu_rd fpu_mul}
 rv32i[fmv_w_x] = {fpu fpu_src_fp32 fpu_dst_fp32 rs1 fpu_rd fpu_mv}
+rv32i[fmv_x_w] = {fpu fpu_src_fp32 fpu_dst_fp32 fpu_rs1 rd fpu_mv}
 
 rv32i[mul]    = { mul rs1 rs2 rd low }
 rv32i[mulw]    = { mul alu_half rs1 rs2 rd low }
