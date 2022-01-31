@@ -423,7 +423,7 @@ module exu
    /* ----- fmv.x.w Instruction Implementation ----- */
    logic [XLEN-1:0] int_fmv_result_init_d, int_fmv_result_e1_d; 
 
-   assign int_fmv_result_init_d = {XLEN{(fpu_p.valid & fpu_p.mv_float_to_int)}} & {{XLEN-FLEN{fpr_rs1_d[FLEN]}}, i0_rs1_final_d[FLEN-1:0]};
+   assign int_fmv_result_init_d = {XLEN{(fpu_p.valid & fpu_p.mv_float_to_int)}} & {{XLEN-FLEN{fpr_rs1_d[FLEN]}}, fpr_rs1_d[FLEN-1:0]};
 
    rvdffe #(XLEN) int_fmv_result_e1_ff (.*, .en(i0_e1_data_en), .din(int_fmv_result_init_d),.dout(int_fmv_result_e1_d) );
 
