@@ -281,7 +281,7 @@ package fpnew_pkg;
   // -----------------------
   // Synthesis optimization
   // -----------------------
-  localparam logic DONT_CARE = 1'b1; // the value to assign as don't care
+  localparam logic DONT_CARE = 1'b0; // the value to assign as don't care
 
   // -------------------------
   // General helper functions
