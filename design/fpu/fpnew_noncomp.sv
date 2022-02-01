@@ -294,64 +294,18 @@ module fpnew_noncomp #(
 
   assign is_class_d = (op_i == fpnew_pkg::CLASSIFY);
 
-  // ----------------
-  // Output Pipeline
-  // ----------------
-  // Output pipeline signals, index i holds signal after i register stages
-  fp_t                   [0:NUM_OUT_REGS] out_pipe_result_q;
-  fpnew_pkg::status_t    [0:NUM_OUT_REGS] out_pipe_status_q;
-  logic                  [0:NUM_OUT_REGS] out_pipe_extension_bit_q;
-  fpnew_pkg::classmask_e [0:NUM_OUT_REGS] out_pipe_class_mask_q;
-  logic                  [0:NUM_OUT_REGS] out_pipe_is_class_q;
-  TagType                [0:NUM_OUT_REGS] out_pipe_tag_q;
-  AuxType                [0:NUM_OUT_REGS] out_pipe_aux_q;
-  logic                  [0:NUM_OUT_REGS] out_pipe_valid_q;
-  // Ready signal is combinatorial for all stages
-  logic [0:NUM_OUT_REGS] out_pipe_ready;
 
-  // Input stage: First element of pipeline is taken from inputs
-  assign out_pipe_result_q[0]        = result_d;
-  assign out_pipe_status_q[0]        = status_d;
-  assign out_pipe_extension_bit_q[0] = extension_bit_d;
-  assign out_pipe_class_mask_q[0]    = class_mask_d;
-  assign out_pipe_is_class_q[0]      = is_class_d;
-  assign out_pipe_tag_q[0]           = tag_i;
-  assign out_pipe_aux_q[0]           = aux_i;
-  assign out_pipe_valid_q[0]         = in_valid_i;
-  // Input stage: Propagate pipeline ready signal to inside pipe
-  assign in_ready_o = out_pipe_ready[0];
-  // Generate the register stages
-  for (genvar i = 0; i < NUM_OUT_REGS; i++) begin : gen_output_pipeline
-    // Internal register enable for this stage
-    logic reg_ena;
-    // Determine the ready signal of the current stage - advance the pipeline:
-    // 1. if the next stage is ready for our data
-    // 2. if the next stage only holds a bubble (not valid) -> we can pop it
-    assign out_pipe_ready[i] = out_pipe_ready[i+1] | ~out_pipe_valid_q[i+1];
-    // Valid: enabled by ready signal, synchronous clear with the flush signal
-    `FFLARNC(out_pipe_valid_q[i+1], out_pipe_valid_q[i], out_pipe_ready[i], flush_i, 1'b0, clk_i, rst_ni)
-    // Enable register if pipleine ready and a valid data item is present
-    assign reg_ena = out_pipe_ready[i] & out_pipe_valid_q[i];
-    // Generate the pipeline registers within the stages, use enable-registers
-    `FFL(out_pipe_result_q[i+1],        out_pipe_result_q[i],        reg_ena, '0)
-    `FFL(out_pipe_status_q[i+1],        out_pipe_status_q[i],        reg_ena, '0)
-    `FFL(out_pipe_extension_bit_q[i+1], out_pipe_extension_bit_q[i], reg_ena, '0)
-    `FFL(out_pipe_class_mask_q[i+1],    out_pipe_class_mask_q[i],    reg_ena, fpnew_pkg::QNAN)
-    `FFL(out_pipe_is_class_q[i+1],      out_pipe_is_class_q[i],      reg_ena, '0)
-    `FFL(out_pipe_tag_q[i+1],           out_pipe_tag_q[i],           reg_ena, TagType'('0))
-    `FFL(out_pipe_aux_q[i+1],           out_pipe_aux_q[i],           reg_ena, AuxType'('0))
-  end
-  // Output stage: Ready travels backwards from output side, driven by downstream circuitry
-  assign out_pipe_ready[NUM_OUT_REGS] = out_ready_i;
+  assign in_ready_o = out_ready_i;
+
   // Output stage: assign module outputs
-  assign result_o        = out_pipe_result_q[NUM_OUT_REGS];
-  assign status_o        = out_pipe_status_q[NUM_OUT_REGS];
-  assign extension_bit_o = out_pipe_extension_bit_q[NUM_OUT_REGS];
-  assign class_mask_o    = out_pipe_class_mask_q[NUM_OUT_REGS];
-  assign is_class_o      = out_pipe_is_class_q[NUM_OUT_REGS];
-  assign tag_o           = out_pipe_tag_q[NUM_OUT_REGS];
-  assign aux_o           = out_pipe_aux_q[NUM_OUT_REGS];
-  assign out_valid_o     = out_pipe_valid_q[NUM_OUT_REGS];
+  assign result_o        = result_d;
+  assign status_o        = status_d;
+  assign extension_bit_o = extension_bit_d;
+  assign class_mask_o    = class_mask_d;
+  assign is_class_o      = is_class_d;
+  assign tag_o           = tag_i;
+  assign aux_o           = aux_i;
+  assign out_valid_o     = in_valid_i;
   //assign busy_o          = (| {inp_pipe_valid_q, out_pipe_valid_q});
   assign busy_o          = 'b0;
 endmodule
