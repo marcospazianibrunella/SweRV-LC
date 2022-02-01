@@ -76,7 +76,6 @@ module fpnew_noncomp #(
   TagType                                 tag_fpx1;
   AuxType                                 aux_fpx1;
   logic                                   in_valid_fpx1;
-  logic                                   in_ready_o;
 
   assign operands_fpx1 = operands_i;
   assign is_boxed_fpx1 = is_boxed_i;
