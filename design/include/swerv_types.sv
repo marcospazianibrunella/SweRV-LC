@@ -310,6 +310,11 @@ package swerv_types;
     logic fpu_add;
     logic fpu_mul;
     logic fpu_mv;
+    logic fpu_noncomp;
+    logic fpu_sign_inject;
+    logic fpu_min_max;
+    logic fpu_classify;
+    logic fpu_cmp;
     logic legal;
   } dec_pkt_t;
 
@@ -331,6 +336,8 @@ package swerv_types;
     logic mv_int_to_float;
     logic mv_float_to_int;
     logic fma;
+    logic noncomp;
+    logic classify;
   } fpu_pkt_t;
 
   typedef struct packed {

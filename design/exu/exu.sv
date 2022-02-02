@@ -219,8 +219,8 @@ module exu
 
    logic [XLEN-1:0] i0_rs1_d,i0_rs2_d,i1_rs1_d,i1_rs2_d;
 
- logic [31:0] fpu_fma_result_e3_d;
- logic [XLEN-1:0] exu_i0_result_e1_d;
+ logic [31:0] fpu_fma_result_e3_d, fpu_noncomp_result_e4_d, fpu_noncomp_result_e3_d;
+ logic [XLEN-1:0] exu_i0_result_e1_d, exu_i0_result_e4_d;
 
    logic        exu_i0_flush_upper_e1;
    logic [31:1] exu_i0_flush_path_e1;
@@ -408,6 +408,44 @@ module exu
    );
 
    /* -------------------------------- */
+
+   /* ----- NonComp ----- */
+   logic                  [      1:0][FLEN-1:0] noncomp_operands;  // 3 operands
+   assign noncomp_operands[0] = fpr_rs1_d;
+   assign noncomp_operands[1] = fpr_rs2_d;
+
+   fpnew_noncomp noncomp_e1
+   (
+    .clk_i(clk),
+    .rst_ni(rst_l),
+    
+    .operands_i(noncomp_operands),       // 2 operands
+    .is_boxed_i('b11),       // 2 operands
+    .rnd_mode_i(fpnew_pkg::roundmode_e'(fpu_p.rnd_mode)),
+    .op_i(fpnew_pkg::operation_e'(fpu_p.op)),
+    .op_mod_i(fpu_p.op_mod),
+    .tag_i('b0),
+    .aux_i('b0),
+    
+    .in_valid_i(fpu_p.valid & fpu_p.noncomp),
+    .in_ready_o(),
+    .flush_i(~rst_l),
+    
+    .result_o(fpu_noncomp_result_e3_d),
+    .status_o(),
+    .extension_bit_o(),
+    .class_mask_o(),
+    .is_class_o(),
+    .tag_o(),
+    .aux_o(),
+    
+    .out_valid_o(),
+    .out_ready_i(),
+    
+    .busy_o()
+);
+   
+   rvdffe #(FLEN) fpu_fnoncomp_result_e4_ff (.*, .en(i0_e4_data_en), .din(fpu_noncomp_result_e3_d), .dout(fpu_noncomp_result_e4_d) );
    
    /* ----- fmv.w.x Instruction Implementation ----- */
    logic [FLEN-1:0] fpu_fmv_result_init_d, fpu_fmv_result_e1_d, fpu_fmv_result_e2_d, fpu_fmv_result_e3_d; 
@@ -423,23 +461,26 @@ module exu
    /* ----- fmv.x.w Instruction Implementation ----- */
    logic [XLEN-1:0] int_fmv_result_init_d, int_fmv_result_e1_d; 
 
-   assign int_fmv_result_init_d = {XLEN{(fpu_p.valid & fpu_p.mv_float_to_int)}} & {{XLEN-FLEN{fpr_rs1_d[FLEN]}}, fpr_rs1_d[FLEN-1:0]};
+   assign int_fmv_result_init_d = {XLEN{(fpu_p.valid & fpu_p.mv_float_to_int)}} & {{XLEN-FLEN{fpr_rs1_d[FLEN]}}, fpr_rs1_d[FLEN-1:0]}; /* Sign Extended */
 
    rvdffe #(XLEN) int_fmv_result_e1_ff (.*, .en(i0_e1_data_en), .din(int_fmv_result_init_d),.dout(int_fmv_result_e1_d) );
 
    /* Mux Between ALU and FPU on i0 */
    assign exu_i0_result_e1 = (fpu_p_e1.mv_float_to_int) ? int_fmv_result_e1_d : exu_i0_result_e1_d;
+   assign exu_i0_result_e4 = (fpu_p_e4.classify) ? fpu_noncomp_result_e4_d : exu_i0_result_e4_d;
 
    /* ----- ----- */
 
    /* ----- FPU Result MUX ----- */
-   fpu_pkt_t fpu_p_e1, fpu_p_e2, fpu_p_e3;
+   fpu_pkt_t fpu_p_e1, fpu_p_e2, fpu_p_e3, fpu_p_e4;
    rvdffe #($bits(fpu_p)) fpu_p_e1_ff (.*, .en(i0_e1_ctl_en), .din(fpu_p),.dout(fpu_p_e1) );
    rvdffe #($bits(fpu_p)) fpu_p_e2_ff (.*, .en(i0_e2_ctl_en), .din(fpu_p_e1),.dout(fpu_p_e2));
    rvdffe #($bits(fpu_p)) fpu_p_e3_ff (.*, .en(i0_e3_ctl_en), .din(fpu_p_e2),.dout(fpu_p_e3));
+   rvdffe #($bits(fpu_p)) fpu_p_e4_ff (.*, .en(i0_e4_ctl_en), .din(fpu_p_e3),.dout(fpu_p_e4));
 
    assign exu_fpu_result_e3 = {32{fpu_p_e3.mv_int_to_float}} & fpu_fmv_result_e3_d |
-                          {32{fpu_p_e3.fma}} & fpu_fma_result_e3_d;
+                              {32{fpu_p_e3.fma}} & fpu_fma_result_e3_d | 
+                              {32{fpu_p_e3.noncomp}} & fpu_noncomp_result_e3_d;
    
 
    /* End FPU Implementation */
@@ -696,7 +737,7 @@ module exu
                           .pc            ( dec_i0_pc_e3[31:1]          ),   // I
                           .brimm         ( i0_br_immed_e3[12:1]        ),   // I
                           .ap            ( i0_ap_e4                    ),   // I
-                          .out           ( exu_i0_result_e4[XLEN-1:0]      ),   // O
+                          .out           ( exu_i0_result_e4_d[XLEN-1:0]      ),   // O
                           .flush_upper   ( exu_i0_flush_lower_e4       ),   // O
                           .flush_path    ( exu_i0_flush_path_e4[31:1]  ),   // O
                           .predict_p_ff  ( i0_predict_p_e4             ),   // O
