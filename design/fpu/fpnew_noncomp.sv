@@ -75,15 +75,24 @@ module fpnew_noncomp #(
   AuxType                                 aux_fpx1;
   logic                                   in_valid_fpx1;
 
-  assign operands_fpx1 = operands_i;
-  assign is_boxed_fpx1 = is_boxed_i;
-  assign rnd_mode_fpx1 = rnd_mode_i;
-  assign op_fpx1       = op_i;
-  assign op_mod_fpx1   = op_mod_i;
-  assign tag_fpx1      = tag_i;
-  assign aux_fpx1      = aux_i;
-  assign in_valid_fpx1 = in_valid_i;
 
+  `FFNR({operands_fpx1,  
+  is_boxed_fpx1,  
+  rnd_mode_fpx1,  
+  op_fpx1        ,
+  op_mod_fpx1    ,
+  tag_fpx1       ,
+  aux_fpx1       ,
+  in_valid_fpx1}  ,
+
+{operands_i,
+is_boxed_i,
+rnd_mode_i,
+op_i,
+op_mod_i,
+tag_i,  
+aux_i,
+in_valid_i} , clk_i)
   // ---------------------
   // Input classification
   // ---------------------

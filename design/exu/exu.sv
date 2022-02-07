@@ -219,7 +219,7 @@ module exu
 
    logic [XLEN-1:0] i0_rs1_d,i0_rs2_d,i1_rs1_d,i1_rs2_d;
 
- logic [31:0] fpu_fma_result_e3_d, fpu_noncomp_result_e4_d, fpu_noncomp_result_e3_d;
+ logic [FLEN-1:0] fpu_fma_result_e3_d, fpu_noncomp_result_e1_d;
  logic [XLEN-1:0] exu_i0_result_e1_d, exu_i0_result_e4_d;
 
    logic        exu_i0_flush_upper_e1;
@@ -431,7 +431,7 @@ module exu
     .in_ready_o(),
     .flush_i(~rst_l),
     
-    .result_o(fpu_noncomp_result_e3_d),
+    .result_o(fpu_noncomp_result_e1_d),
     .status_o(),
     .extension_bit_o(),
     .class_mask_o(),
@@ -466,8 +466,11 @@ module exu
    rvdffe #(XLEN) int_fmv_result_e1_ff (.*, .en(i0_e1_data_en), .din(int_fmv_result_init_d),.dout(int_fmv_result_e1_d) );
 
    /* Mux Between ALU and FPU on i0 */
-   assign exu_i0_result_e1 = (fpu_p_e1.mv_float_to_int) ? int_fmv_result_e1_d : exu_i0_result_e1_d;
-   assign exu_i0_result_e4 = (fpu_p_e4.classify) ? fpu_noncomp_result_e4_d : exu_i0_result_e4_d;
+   assign exu_i0_result_e1 = ({FLEN{fpu_p_e1.mv_float_to_int}} & int_fmv_result_e1_d) |
+                             ({FLEN{fpu_p_e1.classify}} & fpu_noncomp_result_e1_d) |
+                             ({FLEN{~fpu_p_e1.valid}} & exu_i0_result_e1_d);                         
+   
+   assign exu_i0_result_e4 = exu_i0_result_e4_d;
 
    /* ----- ----- */
 
