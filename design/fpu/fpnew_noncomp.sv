@@ -14,9 +14,9 @@
 `include "registers.svh"
 
 module fpnew_noncomp #(
-    parameter fpnew_pkg::fp_format_e   FpFormat    = fpnew_pkg::fp_format_e'(0),
-    parameter type                     TagType     = logic,
-    parameter type                     AuxType     = logic,
+    parameter fpnew_pkg::fp_format_e FpFormat = fpnew_pkg::fp_format_e'(0),
+    parameter type                   TagType  = logic,
+    parameter type                   AuxType  = logic,
 
     localparam int unsigned WIDTH = fpnew_pkg::fp_width(FpFormat)  // do not change
 ) (
@@ -76,23 +76,16 @@ module fpnew_noncomp #(
   logic                                   in_valid_fpx1;
 
 
-  `FFNR({operands_fpx1,  
-  is_boxed_fpx1,  
-  rnd_mode_fpx1,  
-  op_fpx1        ,
-  op_mod_fpx1    ,
-  tag_fpx1       ,
-  aux_fpx1       ,
-  in_valid_fpx1}  ,
-
-{operands_i,
-is_boxed_i,
-rnd_mode_i,
-op_i,
-op_mod_i,
-tag_i,  
-aux_i,
-in_valid_i} , clk_i)
+  `FFNR({
+        operands_fpx1,
+        is_boxed_fpx1,
+        rnd_mode_fpx1,
+        op_fpx1,
+        op_mod_fpx1,
+        tag_fpx1,
+        aux_fpx1,
+        in_valid_fpx1
+        }, {operands_i, is_boxed_i, rnd_mode_i, op_i, op_mod_i, tag_i, aux_i, in_valid_i}, clk_i)
   // ---------------------
   // Input classification
   // ---------------------
@@ -318,7 +311,7 @@ in_valid_i} , clk_i)
     endcase
   end
 
-  assign is_class_d_fpx1      = (op_fpx1 == fpnew_pkg::CLASSIFY);
+  assign is_class_d_fpx1 = (op_fpx1 == fpnew_pkg::CLASSIFY);
 
 
   assign in_ready_o      = 'b1;
