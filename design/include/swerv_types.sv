@@ -315,6 +315,9 @@ package swerv_types;
     logic fpu_min_max;
     logic fpu_classify;
     logic fpu_cmp;
+    logic fpu_cvt;
+    logic fpu_f2i;
+    logic fpu_i2f;
     logic legal;
   } dec_pkt_t;
 

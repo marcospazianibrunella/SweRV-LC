@@ -154,6 +154,11 @@ feq.s       = [1010000..........010.....1010011]
 flt.s       = [1010000..........001.....1010011]
 fle.s       = [1010000..........000.....1010011]
 
+fcvt.w.s    = [110000000000.............1010011]
+fcvt.wu.s   = [110000000001.............1010011]
+fcvt.s.w    = [110100000000.............1010011]
+fcvt.s.wu   = [110100000001.............1010011]
+
 .input
 
 rv32i = {
@@ -262,6 +267,9 @@ rv32i = {
       fpu_min_max
       fpu_classify
       fpu_cmp
+      fpu_cvt
+      fpu_f2i
+      fpu_i2f
       fpu_src_fp32
       fpu_dst_fp32
 }
@@ -288,6 +296,11 @@ rv32i[fclass.s] = {fpu fpu_src_fp32 fpu_dst_fp32 fpu_rs1 rd fpu_noncomp fpu_clas
 rv32i[feq.s]    = {fpu fpu_src_fp32 fpu_dst_fp32 fpu_rs1 fpu_rs2 rd fpu_noncomp fpu_cmp} 
 rv32i[flt.s]    = {fpu fpu_src_fp32 fpu_dst_fp32 fpu_rs1 fpu_rs2 rd fpu_noncomp fpu_cmp} 
 rv32i[fle.s]    = {fpu fpu_src_fp32 fpu_dst_fp32 fpu_rs1 fpu_rs2 rd fpu_noncomp fpu_cmp} 
+
+rv32i[fcvt.w.s]    = {fpu fpu_src_fp32 fpu_dst_fp32 fpu_rs1 rd fpu_cvt fpu_f2i} 
+rv32i[fcvt.wu.s]   = {fpu fpu_src_fp32 fpu_dst_fp32 fpu_rs1 rd fpu_cvt fpu_f2i fpu_op_mod} 
+rv32i[fcvt.s.w]    = {fpu fpu_src_fp32 fpu_dst_fp32 rs1 fpu_rd fpu_cvt fpu_i2f} 
+rv32i[fcvt.s.wu]   = {fpu fpu_src_fp32 fpu_dst_fp32 rs1 fpu_rd fpu_cvt fpu_i2f fpu_op_mod} 
 
 rv32i[mul]    = { mul rs1 rs2 rd low }
 rv32i[mulw]    = { mul alu_half rs1 rs2 rd low }
